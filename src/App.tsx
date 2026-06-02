@@ -5315,7 +5315,7 @@ const buildAriaFareRecommendation = (selections, recommendedAmount) => {
       departureTime: firstFlight?.SaidaTime || baseSelection.departureTime,
       arrivalTime: lastFlight?.ChegadaTime || baseSelection.arrivalTime
     },
-    title: 'A ARIA encontrou um voo melhor',
+    title: 'Encontrei um voo melhor',
     subtitle: `${airlineNames.join(' + ') || baseSelection.airline} tem uma alternativa mais aderente à política, economizando ${formatCurrencyBRL(savingsAmount)} em relação ao voo escolhido.`,
     price: recommendedAmount,
     savings: savingsAmount,
@@ -5752,8 +5752,8 @@ const TariffSummaryScreen = ({ selectedFares, flightsMap, searchCriteria, onBack
         ? `Tarifa escolhida ${formatCurrencyBRL(positiveLowestDifference)} acima da menor opção carregada.`
         : 'Tarifa escolhida alinhada à menor opção carregada.',
       ariaComment: positiveLowestDifference > 0.01
-        ? 'ARIA recomenda justificar esta escolha ou trocar para a menor tarifa, pois há alternativa mais econômica para o mesmo trecho.'
-        : 'ARIA não identificou oportunidade relevante de economia para esta seleção.',
+        ? 'Recomendo justificar esta escolha ou trocar para a menor tarifa, pois há alternativa mais econômica para o mesmo trecho.'
+        : 'Não identifiquei oportunidade relevante de economia para esta seleção.',
       details: {
         selectedAmount: baseValue,
         referenceAmount: policyLowestReferenceValue,
@@ -5775,8 +5775,8 @@ const TariffSummaryScreen = ({ selectedFares, flightsMap, searchCriteria, onBack
         ? `Compra realizada com ${missingAdvanceDays} dias abaixo da antecedência exigida.`
         : `Compra realizada com ${effectiveAdvanceDays} dias de antecedência, acima do mínimo exigido.`,
       ariaComment: isAdvanceViolated
-        ? 'ARIA alerta que a antecedência reduzida pode elevar o custo e exigir aprovação adicional.'
-        : 'ARIA confirma que a antecedência está dentro do prazo esperado para compra corporativa.',
+        ? 'A antecedência reduzida pode elevar o custo e exigir aprovação adicional.'
+        : 'Confirmo que a antecedência está dentro do prazo esperado para compra corporativa.',
       details: {
         effectiveDays: effectiveAdvanceDays,
         requiredDays: requiredAdvanceDays,
