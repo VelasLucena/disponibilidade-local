@@ -5850,41 +5850,39 @@ const TariffSummaryScreen = ({ selectedFares, flightsMap, searchCriteria, onBack
 
         <div className="dv-summary-layout">
           <section className="dv-summary-main">
+            {ariaFareRecommendation && (
+              <section className="dv-summary-aria-card aria-card">
+                <div className="aria-card__body">
+                  <div className="aria-card__identity">
+                    <span className="aria-card__icon">
+                      <span className="q-icon" style={{fontSize: 24}}>auto_awesome</span>
+                    </span>
+                    <span className="aria-card__copy">
+                      <span className="aria-card__title">{ariaFareRecommendation.title}</span>
+                      <span className="aria-card__subtitle">{ariaFareRecommendation.subtitle}</span>
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    className="aria-card__toggle"
+                    onClick={() => onChooseAriaRecommendation?.(ariaFareRecommendation.selection)}
+                  >
+                    Escolher este voo <span className="q-icon">arrow_forward</span>
+                  </button>
+                  <ul className="aria-insights">
+                    <li className="aria-insights__chip"><span className="q-icon">paid</span>{formatCurrencyBRL(ariaFareRecommendation.savings)} mais barato</li>
+                    <li className="aria-insights__chip"><span className="q-icon">schedule</span>{ariaFareRecommendation.schedule}</li>
+                    <li className="aria-insights__chip"><span className="q-icon">flight</span>{ariaFareRecommendation.route}</li>
+                  </ul>
+                </div>
+              </section>
+            )}
+
             <section className="dv-summary-policy-section" aria-labelledby="summary-policy-title">
               <div className="dv-summary-policy-heading" id="summary-policy-title">
                 <span className="q-icon">business</span>
                 Políticas de Viagem
               </div>
-              {ariaFareRecommendation && (
-                <section className="dv-summary-aria-card aria-card">
-                  <div className="aria-card__body">
-                    <div className="aria-card__identity">
-                      <span className="aria-card__icon">
-                        <span className="q-icon" style={{fontSize: 24}}>auto_awesome</span>
-                      </span>
-                      <span className="aria-card__copy">
-                        <span className="aria-card__badge">
-                          <span className="q-icon" style={{fontSize: 14}}>lightbulb</span> Recomendação ARIA
-                        </span>
-                        <span className="aria-card__title">{ariaFareRecommendation.title}</span>
-                        <span className="aria-card__subtitle">{ariaFareRecommendation.subtitle}</span>
-                      </span>
-                    </div>
-                    <button
-                      type="button"
-                      className="aria-card__toggle"
-                      onClick={() => onChooseAriaRecommendation?.(ariaFareRecommendation.selection)}
-                    >
-                      Escolher este voo <span className="q-icon">arrow_forward</span>
-                    </button>
-                    <ul className="aria-insights">
-                      <li className="aria-insights__chip"><span className="q-icon">paid</span>{formatCurrencyBRL(ariaFareRecommendation.savings)} mais barato</li>
-                      <li className="aria-insights__chip"><span className="q-icon">schedule</span>{ariaFareRecommendation.schedule}</li>
-                      <li className="aria-insights__chip"><span className="q-icon">flight</span>{ariaFareRecommendation.route}</li>
-                    </ul>
-                  </div>
-                </section>
-              )}
               <div className="dv-policy-list">
                 {policies.map(policy => (
                   <CompliancePolicyCard
