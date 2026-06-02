@@ -3392,9 +3392,81 @@ const INJECTED_CSS = `
   }
 
   .dv-confirm-passenger-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 10px;
+  }
+
+  .dv-confirm-passenger-card {
     display: flex;
-    flex-wrap: wrap;
+    min-width: 0;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 10px 10px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 8px 18px -18px rgba(15, 23, 42, 0.36);
+  }
+
+  .dv-confirm-passenger-identity {
+    display: inline-flex;
+    min-width: 0;
+    align-items: center;
     gap: 8px;
+    color: #374151;
+    font-size: 13px;
+    font-weight: 900;
+  }
+
+  .dv-confirm-passenger-identity > .q-icon {
+    color: #428f70;
+  }
+
+  .dv-confirm-passenger-identity strong {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .dv-confirm-passenger-share {
+    display: inline-flex;
+    flex: 0 1 auto;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 7px;
+    color: #64748b;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1.25;
+    text-align: right;
+  }
+
+  .dv-confirm-passenger-share input {
+    width: 16px;
+    height: 16px;
+    flex: 0 0 auto;
+    accent-color: #428f70;
+  }
+
+  .dv-confirm-passenger-remove {
+    display: inline-flex;
+    width: 26px;
+    height: 26px;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    color: #81868b;
+    cursor: pointer;
+  }
+
+  .dv-confirm-passenger-remove:hover {
+    background: rgba(186,46,15,0.1);
+    color: #ba2e0f;
   }
 
   .dv-confirm-passenger-chip {
@@ -5241,7 +5313,8 @@ const getInitialConfirmationPassengers = (searchCriteria = {}) => {
       id: passenger.id,
       name: passenger.name,
       quantity: 1,
-      fixed: passenger.id === 'matheus-castro'
+      fixed: passenger.id === 'matheus-castro',
+      shareWithAirline: true
     }));
   const anonymousPassengerCount = getAnonymousPassengerCount(searchCriteria);
 
@@ -5256,7 +5329,7 @@ const getInitialConfirmationPassengers = (searchCriteria = {}) => {
 
   return passengers.length > 0
     ? passengers
-    : [{ id: 'matheus-castro', name: 'Matheus Castro (Você)', quantity: 1, fixed: true }];
+    : [{ id: 'matheus-castro', name: 'Matheus Castro (Você)', quantity: 1, fixed: true, shareWithAirline: true }];
 };
 
 const getItineraryLegs = (selections) => (
@@ -5674,7 +5747,7 @@ const TariffSummaryScreen = ({ selectedFares, flightsMap, searchCriteria, onBack
 
     setConfirmationPassengers(prev => ([
       ...prev,
-      { id: `confirmation-${Date.now()}`, name, quantity: 1 }
+      { id: `confirmation-${Date.now()}`, name, quantity: 1, shareWithAirline: true }
     ]));
     setPassengerInput('');
     setIsPassengerPickerOpen(false);
@@ -5686,6 +5759,14 @@ const TariffSummaryScreen = ({ selectedFares, flightsMap, searchCriteria, onBack
         ? prev
         : prev.filter(passenger => passenger.id !== passengerId)
     ));
+  };
+
+  const togglePassengerSharing = (passengerId) => {
+    setConfirmationPassengers(prev => prev.map(passenger => (
+      passenger.id === passengerId
+        ? { ...passenger, shareWithAirline: !passenger.shareWithAirline }
+        : passenger
+    )));
   };
 
   const handlePassengerInputKeyDown = (event) => {
@@ -5884,13 +5965,23 @@ const TariffSummaryScreen = ({ selectedFares, flightsMap, searchCriteria, onBack
 
                 <div className="dv-confirm-passenger-list">
                   {namedConfirmationPassengers.map(passenger => (
-                    <span className="dv-confirm-passenger-chip" key={passenger.id}>
-                      <span className="q-icon">person</span>
-                      {passenger.name}
-                      <button type="button" aria-label={`Remover ${passenger.name}`} onClick={() => removeConfirmationPassenger(passenger.id)}>
+                    <div className="dv-confirm-passenger-card" key={passenger.id}>
+                      <span className="dv-confirm-passenger-identity">
+                        <span className="q-icon">person</span>
+                        <strong>{passenger.name}</strong>
+                      </span>
+                      <label className="dv-confirm-passenger-share">
+                        <input
+                          type="checkbox"
+                          checked={passenger.shareWithAirline !== false}
+                          onChange={() => togglePassengerSharing(passenger.id)}
+                        />
+                        <span>Compartilhar dados com a companhia aérea</span>
+                      </label>
+                      <button type="button" className="dv-confirm-passenger-remove" aria-label={`Remover ${passenger.name}`} onClick={() => removeConfirmationPassenger(passenger.id)}>
                         <span className="q-icon">cancel</span>
                       </button>
-                    </span>
+                    </div>
                   ))}
                   {Array.from({ length: pendingPassengerSlots }, (_, index) => (
                     <span className="dv-confirm-passenger-chip dv-confirm-passenger-chip--pending" key={`pending-passenger-${index}`}>
@@ -5924,7 +6015,7 @@ const TariffSummaryScreen = ({ selectedFares, flightsMap, searchCriteria, onBack
                   <span className="q-icon">done_all</span>
                   Confirmar Reserva
                 </button>
-                <p className="dv-confirm-privacy">Ao confirmar, os dados dos passageiros serão compartilhados com a companhia aérea para emissão do bilhete e comunicação operacional do voo.</p>
+                <p className="dv-confirm-privacy">O compartilhamento de dados com a companhia aérea é definido individualmente em cada passageiro vinculado.</p>
               </div>
             </article>
           </aside>
