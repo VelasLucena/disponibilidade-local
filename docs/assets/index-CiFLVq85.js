@@ -3412,10 +3412,11 @@ Error generating stack: `+e.message+`
   .dv-confirm-passenger-card {
     display: flex;
     min-width: 0;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
-    gap: 10px;
-    padding: 10px 10px 10px 12px;
+    gap: 8px 10px;
+    flex-wrap: wrap;
+    padding: 10px 10px 11px 12px;
     border: 1px solid #e5e7eb;
     border-radius: 12px;
     background: #ffffff;
@@ -3425,6 +3426,8 @@ Error generating stack: `+e.message+`
   .dv-confirm-passenger-identity {
     display: inline-flex;
     min-width: 0;
+    flex: 1 1 calc(100% - 36px);
+    order: 0;
     align-items: center;
     gap: 8px;
     color: #374151;
@@ -3445,16 +3448,18 @@ Error generating stack: `+e.message+`
 
   .dv-confirm-passenger-share {
     display: inline-flex;
-    flex: 0 1 auto;
+    flex: 1 1 100%;
+    order: 2;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: flex-start;
     gap: 7px;
+    padding-left: 28px;
     color: #64748b;
     cursor: pointer;
     font-size: 11px;
     font-weight: 800;
     line-height: 1.25;
-    text-align: right;
+    text-align: left;
   }
 
   .dv-confirm-passenger-share input {
@@ -3469,6 +3474,7 @@ Error generating stack: `+e.message+`
     width: 26px;
     height: 26px;
     flex: 0 0 auto;
+    order: 1;
     align-items: center;
     justify-content: center;
     border-radius: 999px;
