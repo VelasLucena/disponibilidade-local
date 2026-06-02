@@ -4609,35 +4609,35 @@ const PASSENGER_OPTIONS = [
 const FEATURED_FLIGHTS = [
   {
     id: 1,
+    origin: 'Rio de Janeiro',
+    destination: 'São Paulo',
+    date: 'Jun - Jul 2026',
+    price: 'R$ 418',
+    imageUrl: 'https://images.unsplash.com/photo-1543059080-f9b1272213d5?auto=format&fit=crop&w=600&q=80'
+  },
+  {
+    id: 2,
+    origin: 'Belo Horizonte',
+    destination: 'São Paulo',
+    date: 'Jul - Ago 2026',
+    price: 'R$ 365',
+    imageUrl: 'https://images.unsplash.com/photo-1515896769750-31548aa180ed?auto=format&fit=crop&w=600&q=80'
+  },
+  {
+    id: 3,
+    origin: 'Sao Paulo',
+    destination: 'Rio de Janeiro',
+    date: 'Ago - Set 2026',
+    price: 'R$ 452',
+    imageUrl: 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=600&q=80'
+  },
+  {
+    id: 4,
     origin: 'Sao Paulo',
     destination: 'Paris, Franca',
     date: 'Out - Nov 2026',
     price: 'R$ 4.250',
     imageUrl: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80'
-  },
-  {
-    id: 2,
-    origin: 'Rio de Janeiro',
-    destination: 'Miami, EUA',
-    date: 'Set - Out 2026',
-    price: 'R$ 2.890',
-    imageUrl: 'https://images.unsplash.com/photo-1514214246283-d427a95c5d2f?auto=format&fit=crop&w=600&q=80'
-  },
-  {
-    id: 3,
-    origin: 'Sao Paulo',
-    destination: 'Lisboa, Portugal',
-    date: 'Nov - Dez 2026',
-    price: 'R$ 3.800',
-    imageUrl: 'https://images.unsplash.com/photo-1558451878-83141ff8afae?auto=format&fit=crop&w=600&q=80'
-  },
-  {
-    id: 4,
-    origin: 'Campinas',
-    destination: 'Nova York, EUA',
-    date: 'Ago - Set 2026',
-    price: 'R$ 3.100',
-    imageUrl: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&w=600&q=80'
   }
 ];
 
