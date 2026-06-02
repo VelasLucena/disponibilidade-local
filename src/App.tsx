@@ -5146,7 +5146,7 @@ const SearchScreen = ({ criteria, onCriteriaChange, onSubmit, inline = false, sh
                       <small>A partir de</small>
                       <strong>{flight.price}</strong>
                     </span>
-                    <button type="button">Ver mais</button>
+                    <button type="button">Selecionar</button>
                   </div>
                 </div>
               </article>
