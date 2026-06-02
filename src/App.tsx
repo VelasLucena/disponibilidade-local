@@ -4617,11 +4617,11 @@ const FEATURED_FLIGHTS = [
   },
   {
     id: 2,
-    origin: 'Belo Horizonte',
-    destination: 'São Paulo',
+    origin: 'Sao Paulo',
+    destination: 'Shenzhen, China',
     date: 'Jul - Ago 2026',
-    price: 'R$ 365',
-    imageUrl: 'https://images.unsplash.com/photo-1515896769750-31548aa180ed?auto=format&fit=crop&w=600&q=80'
+    price: 'R$ 5.420',
+    imageUrl: 'https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 3,
