@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef } from 'react';
-import { Plane, Search, Loader2, Filter, X, SlidersHorizontal, Sparkles } from 'lucide-react';
+import { Plane, Search, Loader2, Filter, X, SlidersHorizontal, Sparkles, BaggageClaim } from 'lucide-react';
 
 const INJECTED_CSS = `
   @import url("https://fonts.googleapis.com/css2?family=Material+Icons&family=Open+Sans:wght@400;500;600;700;800;900&display=swap");
@@ -435,6 +435,7 @@ const INJECTED_CSS = `
   .lowest-fare .class-badge { background: linear-gradient(135deg, var(--lowest-fare) 0%, #b98100 100%); }
   .lowest-baggage .class-badge { background: linear-gradient(135deg, var(--lowest-baggage) 0%, #3f7d33 100%); }
   .benefits-icons-inline { gap: 4px; margin-top: 5px; color: var(--reserve-primary); }
+  .benefits-icons-inline .benefit-lucide-icon { width: 16px; height: 16px; flex: 0 0 auto; }
   .benefit-disabled { color: #c9ced4; opacity: 0.45; }
   .fare-price-row { justify-content: space-between; gap: 6px; margin-top: 5px; }
   .fare-price-compact { align-items: baseline; gap: 2px; }
@@ -3202,7 +3203,8 @@ const INJECTED_CSS = `
     border-bottom: 1px solid rgba(66,143,112,0.18);
   }
 
-  .dv-confirm-addon-heading > .q-icon {
+  .dv-confirm-addon-heading > .q-icon,
+  .dv-confirm-addon-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -3216,6 +3218,12 @@ const INJECTED_CSS = `
     color: #428f70;
     font-size: 21px;
     line-height: 1;
+  }
+
+  .dv-confirm-addon-icon svg {
+    width: 22px;
+    height: 22px;
+    stroke-width: 2.2;
   }
 
   .dv-confirm-addon-heading strong {
@@ -5931,7 +5939,7 @@ const TariffSummaryScreen = ({ selectedFares, flightsMap, searchCriteria, onBack
               <div className="dv-summary-flat-body">
                 <div className="dv-confirm-baggage-box">
                   <div className="dv-confirm-addon-heading">
-                    <span className="q-icon">work</span>
+                    <span className="dv-confirm-addon-icon"><BaggageClaim aria-hidden="true" /></span>
                     <div>
                       <strong>Adicionar Bagagem Extra</strong>
                       <span>Leve malas extras ou equipamentos especiais com você.</span>
@@ -6250,7 +6258,7 @@ const FlightCard = ({ flight, onSelectFare, selectedFareKeys }) => {
                     <span className={`q-icon ${!hasBaggage ? 'benefit-disabled' : ''}`}>luggage</span>
                     <span className="q-icon">assignment_return</span>
                     <span className={`q-icon ${!hasBaggage && !isCombined ? 'benefit-disabled' : ''}`}>airline_seat_recline_normal</span>
-                    <span className="q-icon">work</span>
+                    <BaggageClaim className="benefit-lucide-icon" aria-hidden="true" />
                   </span>
 
                   <span className="fare-price-row">
