@@ -2381,7 +2381,14 @@ const INJECTED_CSS = `
     gap: 12px;
   }
 
-  .dv-summary-policy-heading {
+  .dv-summary-flat-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .dv-summary-policy-heading,
+  .dv-summary-flat-heading {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -2391,9 +2398,15 @@ const INJECTED_CSS = `
     font-weight: 950;
   }
 
-  .dv-summary-policy-heading .q-icon {
+  .dv-summary-policy-heading .q-icon,
+  .dv-summary-flat-heading .q-icon {
     color: #64748b;
     font-size: 18px;
+  }
+
+  .dv-summary-flat-body {
+    display: grid;
+    gap: 14px;
   }
 
   .dv-summary-policy-section .dv-policy-list {
@@ -5660,11 +5673,12 @@ const TariffSummaryScreen = ({ selectedFares, flightsMap, searchCriteria, onBack
               </div>
             </article>
 
-            <article className="dv-summary-card">
-              <header className="dv-summary-card__header">
-                <div className="dv-summary-card__title"><span className="q-icon">luggage</span> Serviços Adicionais</div>
-              </header>
-              <div className="dv-summary-card__body">
+            <section className="dv-summary-flat-section" aria-labelledby="summary-addons-title">
+              <div className="dv-summary-flat-heading" id="summary-addons-title">
+                <span className="q-icon">luggage</span>
+                Serviços Adicionais
+              </div>
+              <div className="dv-summary-flat-body">
                 <div className="dv-confirm-baggage-box">
                   <div className="dv-confirm-addon-heading">
                     <span className="q-icon">work</span>
@@ -5715,7 +5729,7 @@ const TariffSummaryScreen = ({ selectedFares, flightsMap, searchCriteria, onBack
                   </div>
                 </div>
               </div>
-            </article>
+            </section>
 
             <article className="dv-summary-card">
               <header className="dv-summary-card__header">
