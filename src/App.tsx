@@ -5403,12 +5403,15 @@ const buildFareInclusions = (selection) => {
   const hasSeat = hasCheckedBaggage || fareName.includes("PLUS") || fareName.includes("FLEX");
   const hasRefund = fareName.includes("FLEX");
   const segmentScope = getSelectionSegmentScope(selection);
+  const selectionSegments = new Set(segmentScope);
 
   return [
     { label: 'Bagagem de mao', included: true, segmentScope },
     { label: 'Bagagem despachada', included: hasCheckedBaggage, segmentScope },
     { label: 'Marcacao de assento', included: hasSeat, segmentScope },
-    { label: 'Reembolso integral', included: hasRefund, segmentScope }
+    { label: 'Reembolso integral', included: hasRefund, segmentScope },
+    { label: 'Embarque prioritario', included: selectionSegments.has("0"), segmentScope: ["0"] },
+    { label: 'Wi-Fi a bordo', included: selectionSegments.has("1"), segmentScope: ["1"] }
   ];
 };
 
