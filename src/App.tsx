@@ -2375,59 +2375,382 @@ const INJECTED_CSS = `
     padding: 0;
   }
 
-  .dv-policy-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
-  }
-
-  .dv-policy-card {
-    min-height: 88px;
-    align-items: flex-start;
+  .dv-summary-card--policy .dv-policy-list {
+    grid-template-columns: 1fr;
     gap: 12px;
-    padding: 16px;
+  }
+
+  .dv-auth-policy-card {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #eef2f7;
+    border-left: 4px solid #cbd5e1;
     border-radius: 14px;
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
   }
 
-  .dv-policy-card--warning {
-    border-color: rgba(242, 187, 29, 0.34);
-    background: rgba(242, 187, 29, 0.1);
+  .dv-auth-policy-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 14px 28px -24px rgba(15, 23, 42, 0.46);
   }
 
-  .dv-policy-card--success {
-    border-color: rgba(103, 163, 83, 0.32);
+  .dv-auth-policy-card--danger {
+    border-color: rgba(239, 68, 68, 0.2);
+    border-left-color: #ef4444;
+    box-shadow: 0 1px 3px rgba(239, 68, 68, 0.06);
+  }
+
+  .dv-auth-policy-card--success {
+    border-color: rgba(103, 163, 83, 0.22);
+    border-left-color: #67a353;
+    box-shadow: 0 1px 3px rgba(103, 163, 83, 0.06);
+  }
+
+  .dv-auth-policy-summary {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 14px 14px 16px;
+    background: #ffffff;
+    color: inherit;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.2s ease;
+  }
+
+  .dv-auth-policy-summary:hover {
+    background: #f8fafc;
+  }
+
+  .dv-auth-policy-main {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .dv-auth-policy-icon {
+    display: inline-flex;
+    width: 38px;
+    height: 38px;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: #f8fafc;
+    color: #94a3b8;
+    transition: transform 0.22s ease;
+  }
+
+  .dv-auth-policy-card:hover .dv-auth-policy-icon {
+    transform: scale(1.05) rotate(-4deg);
+  }
+
+  .dv-auth-policy-card--danger .dv-auth-policy-icon {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+  }
+
+  .dv-auth-policy-card--success .dv-auth-policy-icon {
     background: rgba(103, 163, 83, 0.1);
+    color: #67a353;
   }
 
-  .dv-policy-card--warning .dv-policy-icon,
-  .dv-policy-card--warning .dv-policy-title,
-  .dv-policy-card--warning .dv-policy-description {
-    color: #7d2105;
+  .dv-auth-policy-icon .q-icon {
+    font-size: 20px;
   }
 
-  .dv-policy-card--success .dv-policy-icon,
-  .dv-policy-card--success .dv-policy-title,
-  .dv-policy-card--success .dv-policy-description {
-    color: #428f70;
+  .dv-auth-policy-copy {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    flex-direction: column;
+    gap: 5px;
   }
 
-  .dv-policy-icon {
-    width: 22px;
-    height: 22px;
-    background: transparent;
+  .dv-auth-policy-title {
+    overflow: hidden;
+    color: #1f2937;
+    font-size: 14px;
+    font-weight: 900;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
-  .dv-policy-icon .q-icon {
-    font-size: 22px;
+  .dv-auth-policy-meta {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 8px;
   }
 
-  .dv-policy-title {
+  .dv-auth-policy-status {
+    display: inline-flex;
+    flex: 0 0 auto;
+    min-height: 20px;
+    align-items: center;
+    padding: 3px 7px;
+    border-radius: 4px;
+    color: #ffffff;
+    font-size: 9px;
+    font-weight: 950;
+    letter-spacing: 0.06em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .dv-auth-policy-card--danger .dv-auth-policy-status {
+    background: #ef4444;
+  }
+
+  .dv-auth-policy-card--success .dv-auth-policy-status {
+    background: #67a353;
+  }
+
+  .dv-auth-policy-insight {
+    min-width: 0;
+    overflow: hidden;
+    margin: 0;
+    color: #94a3b8;
+    font-size: 10px;
+    font-weight: 750;
+    line-height: 1.35;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .dv-auth-policy-chevron {
+    display: inline-flex;
+    width: 30px;
+    height: 30px;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: #f8fafc;
+    color: #94a3b8;
+    transition: transform 0.22s ease, background 0.22s ease, color 0.22s ease;
+  }
+
+  .dv-auth-policy-card--danger .dv-auth-policy-chevron.is-expanded {
+    background: rgba(239, 68, 68, 0.12);
+    color: #ef4444;
+  }
+
+  .dv-auth-policy-card--success .dv-auth-policy-chevron.is-expanded {
+    background: rgba(103, 163, 83, 0.12);
+    color: #67a353;
+  }
+
+  .dv-auth-policy-chevron.is-expanded {
+    transform: rotate(180deg);
+  }
+
+  .dv-auth-policy-detail {
+    padding: 0 20px 16px;
+  }
+
+  .dv-auth-policy-divider {
+    height: 1px;
+    margin-bottom: 14px;
+    background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+  }
+
+  .dv-auth-policy-fare-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .dv-auth-policy-kicker {
+    display: block;
+    margin-bottom: 4px;
+    color: #94a3b8;
+    font-size: 9px;
+    font-weight: 950;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .dv-auth-policy-value {
+    color: #ef4444;
+    font-size: 20px;
+    font-weight: 950;
+    letter-spacing: -0.01em;
+    line-height: 1;
+  }
+
+  .dv-auth-policy-card--success .dv-auth-policy-value {
+    color: #67a353;
+  }
+
+  .dv-auth-policy-diff {
+    color: #ef4444;
     font-size: 13px;
+    font-weight: 900;
+    line-height: 1;
+  }
+
+  .dv-auth-policy-bar {
+    display: flex;
+    height: 10px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #f1f5f9;
+    box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.08);
+  }
+
+  .dv-auth-policy-bar__allowed {
+    display: block;
+    min-width: 6px;
+    background: #67a353;
+  }
+
+  .dv-auth-policy-bar__exceeded {
+    position: relative;
+    display: block;
+    min-width: 0;
+    background: #ef4444;
+  }
+
+  .dv-auth-policy-bar__exceeded::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.22;
+    background: repeating-linear-gradient(45deg, transparent 0, transparent 5px, #ffffff 5px, #ffffff 10px);
+  }
+
+  .dv-auth-policy-scale {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 8px;
+    color: #67a353;
+    font-size: 10px;
     font-weight: 900;
   }
 
-  .dv-policy-description {
+  .dv-auth-policy-scale strong:last-child {
+    color: #ef4444;
+  }
+
+  .dv-auth-policy-metrics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .dv-auth-policy-metric {
+    padding: 10px;
+    border: 1px solid #f1f5f9;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0 8px 20px -18px rgba(100, 116, 139, 0.42);
+    text-align: center;
+  }
+
+  .dv-auth-policy-metric span {
+    display: block;
+    margin-bottom: 4px;
+    color: #94a3b8;
+    font-size: 9px;
+    font-weight: 950;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .dv-auth-policy-metric strong {
+    color: #1f2937;
+    font-size: 13px;
+    font-weight: 950;
+  }
+
+  .dv-auth-policy-timeline {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 14px;
+    padding: 2px 2px 0;
+  }
+
+  .dv-auth-policy-timepoint {
+    display: grid;
+    justify-items: center;
+    gap: 8px;
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 900;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .dv-auth-policy-timepoint .q-icon {
+    width: 34px;
+    height: 34px;
+    border: 1px solid rgba(103, 163, 83, 0.3);
+    border-radius: 999px;
+    background: rgba(103, 163, 83, 0.1);
+    color: #67a353;
+    font-size: 18px;
+  }
+
+  .dv-auth-policy-timepoint--alert .q-icon {
+    border-color: rgba(239, 68, 68, 0.3);
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+  }
+
+  .dv-auth-policy-timepoint strong {
+    display: block;
+    color: inherit;
     font-size: 12px;
-    font-weight: 650;
+  }
+
+  .dv-auth-policy-track {
+    display: grid;
+    gap: 6px;
+    color: #67a353;
+    font-size: 10px;
+    font-weight: 950;
+    letter-spacing: 0.04em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .dv-auth-policy-track__line {
+    display: block;
+    height: 7px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(103, 163, 83, 0.18);
+  }
+
+  .dv-auth-policy-track__fill {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: #67a353;
+  }
+
+  .dv-auth-policy-track.is-danger {
+    color: #ef4444;
+  }
+
+  .dv-auth-policy-track.is-danger .dv-auth-policy-track__line {
+    background: rgba(239, 68, 68, 0.18);
+  }
+
+  .dv-auth-policy-track.is-danger .dv-auth-policy-track__fill {
+    background: #ef4444;
   }
 
   .dv-confirm-leg {
@@ -4938,12 +5261,131 @@ const BaggageStepper = ({ title, subtitle, price, value, onDecrease, onIncrease 
   </div>
 );
 
+const CompliancePolicyCard = ({ policy, expanded, onToggle }) => {
+  const isDanger = policy.variant === 'danger';
+  const cardClassName = `dv-auth-policy-card dv-auth-policy-card--${policy.variant}`;
+
+  const renderLowestFareDetails = () => {
+    const selectedAmount = Math.max(policy.details.selectedAmount, 0);
+    const referenceAmount = Math.max(policy.details.referenceAmount, 0);
+    const differenceAmount = Math.max(policy.details.differenceAmount, 0);
+    const allowedPercent = selectedAmount > 0
+      ? Math.min(100, Math.max(6, Math.round((referenceAmount / selectedAmount) * 100)))
+      : 100;
+    const exceededPercent = selectedAmount > 0
+      ? Math.min(100 - allowedPercent, Math.max(0, Math.round((differenceAmount / selectedAmount) * 100)))
+      : 0;
+
+    return (
+      <>
+        <div className="dv-auth-policy-fare-head">
+          <div>
+            <span className="dv-auth-policy-kicker">Tarifa selecionada</span>
+            <strong className="dv-auth-policy-value">{formatCurrencyBRL(selectedAmount)}</strong>
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            <span className="dv-auth-policy-kicker">{differenceAmount > 0 ? 'Excedido' : 'Diferença'}</span>
+            <strong className="dv-auth-policy-diff">{differenceAmount > 0 ? `+ ${formatCurrencyBRL(differenceAmount)}` : formatCurrencyBRL(0)}</strong>
+          </div>
+        </div>
+
+        <div className="dv-auth-policy-bar" aria-hidden="true">
+          <span className="dv-auth-policy-bar__allowed" style={{ width: `${allowedPercent}%` }} />
+          <span className="dv-auth-policy-bar__exceeded" style={{ width: `${exceededPercent}%` }} />
+        </div>
+
+        <div className="dv-auth-policy-scale">
+          <strong>Menor tarifa ({formatCurrencyBRL(referenceAmount)})</strong>
+          <strong>{differenceAmount > 0 ? 'Acima da política' : 'Dentro da política'}</strong>
+        </div>
+
+        <div className="dv-auth-policy-metrics">
+          <div className="dv-auth-policy-metric">
+            <span>Valor escolhido</span>
+            <strong>{formatCurrencyBRL(selectedAmount)}</strong>
+          </div>
+          <div className="dv-auth-policy-metric">
+            <span>Referência</span>
+            <strong>{formatCurrencyBRL(referenceAmount)}</strong>
+          </div>
+        </div>
+      </>
+    );
+  };
+
+  const renderAdvanceDetails = () => {
+    const progress = Math.min(100, Math.max(8, Math.round((policy.details.effectiveDays / policy.details.requiredDays) * 100)));
+
+    return (
+      <>
+        <div className="dv-auth-policy-timeline">
+          <div className={`dv-auth-policy-timepoint ${isDanger ? 'dv-auth-policy-timepoint--alert' : ''}`}>
+            <span className="q-icon">schedule</span>
+            <span>Compra<strong>{policy.details.effectiveDays} d</strong></span>
+          </div>
+
+          <div className={`dv-auth-policy-track ${isDanger ? 'is-danger' : ''}`}>
+            <span>{isDanger ? `${policy.details.missingDays} dias faltantes` : 'Dentro do prazo'}</span>
+            <span className="dv-auth-policy-track__line">
+              <span className="dv-auth-policy-track__fill" style={{ width: `${progress}%` }} />
+            </span>
+          </div>
+
+          <div className="dv-auth-policy-timepoint">
+            <span className="q-icon">flight_takeoff</span>
+            <span>Exigido<strong>{policy.details.requiredDays} d</strong></span>
+          </div>
+        </div>
+
+        <div className="dv-auth-policy-metrics">
+          <div className="dv-auth-policy-metric">
+            <span>Antecedência da compra</span>
+            <strong>{policy.details.effectiveDays} dias</strong>
+          </div>
+          <div className="dv-auth-policy-metric">
+            <span>Mínimo exigido</span>
+            <strong>{policy.details.requiredDays} dias</strong>
+          </div>
+        </div>
+      </>
+    );
+  };
+
+  return (
+    <div className={cardClassName}>
+      <button type="button" className="dv-auth-policy-summary" onClick={() => onToggle(policy.id)}>
+        <span className="dv-auth-policy-main">
+          <span className="dv-auth-policy-icon"><span className="q-icon">{policy.icon}</span></span>
+          <span className="dv-auth-policy-copy">
+            <span className="dv-auth-policy-title">{policy.title}</span>
+            <span className="dv-auth-policy-meta">
+              <span className="dv-auth-policy-status">{policy.status}</span>
+              <span className="dv-auth-policy-insight">{policy.description}</span>
+            </span>
+          </span>
+        </span>
+        <span className={`dv-auth-policy-chevron ${expanded ? 'is-expanded' : ''}`} aria-hidden="true">
+          <span className="q-icon">expand_more</span>
+        </span>
+      </button>
+
+      {expanded && (
+        <div className="dv-auth-policy-detail">
+          <div className="dv-auth-policy-divider" />
+          {policy.type === 'lowest-fare' ? renderLowestFareDetails() : renderAdvanceDetails()}
+        </div>
+      )}
+    </div>
+  );
+};
+
 const TariffSummaryScreen = ({ selectedFares, flightsMap, searchCriteria, onBack }) => {
   const [selectedSeat, setSelectedSeat] = useState('');
   const [baggageCounts, setBaggageCounts] = useState({ standard: 0, special: 0 });
   const [confirmationPassengers, setConfirmationPassengers] = useState(() => getInitialConfirmationPassengers(searchCriteria));
   const [passengerInput, setPassengerInput] = useState('');
   const [isPassengerPickerOpen, setIsPassengerPickerOpen] = useState(false);
+  const [expandedPolicyId, setExpandedPolicyId] = useState(null);
   const [corporateFields, setCorporateFields] = useState({
     company: 'Tech Solutions S.A.',
     costCenter: 'CC-4092 (Desenvolvimento)',
@@ -4980,7 +5422,11 @@ const TariffSummaryScreen = ({ selectedFares, flightsMap, searchCriteria, onBack
   const baggagePrice = formatPrice(baggageValue);
   const seatPrice = formatPrice(seatValue);
   const grandPrice = formatPrice(grandTotal);
-  const lowestDiffPrice = formatPrice(Math.abs(lowestDifference));
+  const positiveLowestDifference = Math.max(0, lowestDifference);
+  const requiredAdvanceDays = 15;
+  const effectiveAdvanceDays = 18;
+  const missingAdvanceDays = Math.max(0, requiredAdvanceDays - effectiveAdvanceDays);
+  const isAdvanceViolated = missingAdvanceDays > 0;
   const mockCompanies = ['Tech Solutions S.A.', 'Acme Corp', 'Global Industries', 'Nexus Tech'];
   const mockCostCenters = ['CC-4092 (Desenvolvimento)', 'CC-1021 (Marketing)', 'CC-3055 (Vendas)', 'CC-9901 (RH)'];
   const mockProjects = ['PRJ-Nexus Implantação', 'PRJ-Alpha Upgrade', 'PRJ-Omega Migration', 'Operação Padrão'];
@@ -4994,20 +5440,36 @@ const TariffSummaryScreen = ({ selectedFares, flightsMap, searchCriteria, onBack
 
   const policies = [
     {
+      id: 'lowest-fare',
+      type: 'lowest-fare',
       title: 'Menor tarifa',
-      status: lowestDifference > 0.01 ? 'Violada' : 'Cumprida',
-      variant: lowestDifference > 0.01 ? 'warning' : 'success',
-      icon: lowestDifference > 0.01 ? 'warning' : 'check_circle',
-      description: lowestDifference > 0.01
-        ? `A seleção está R$ ${lowestDiffPrice.integer},${lowestDiffPrice.decimals} acima da menor tarifa carregada.`
-        : 'Cumprida com sucesso.'
+      status: positiveLowestDifference > 0.01 ? 'Violada' : 'Cumprida',
+      variant: positiveLowestDifference > 0.01 ? 'danger' : 'success',
+      icon: positiveLowestDifference > 0.01 ? 'warning' : 'check_circle',
+      description: positiveLowestDifference > 0.01
+        ? `Tarifa escolhida ${formatCurrencyBRL(positiveLowestDifference)} acima da menor opção carregada.`
+        : 'Tarifa escolhida alinhada à menor opção carregada.',
+      details: {
+        selectedAmount: baseValue,
+        referenceAmount: lowestReferenceValue,
+        differenceAmount: positiveLowestDifference
+      }
     },
     {
+      id: 'advance',
+      type: 'advance',
       title: 'Antecedência mínima',
-      status: 'Cumprida',
-      variant: 'success',
-      icon: 'check_circle',
-      description: 'Reserva feita com mais de 15 dias de antecedência.'
+      status: isAdvanceViolated ? 'Violada' : 'Cumprida',
+      variant: isAdvanceViolated ? 'danger' : 'success',
+      icon: isAdvanceViolated ? 'warning' : 'event_available',
+      description: isAdvanceViolated
+        ? `Compra realizada com ${missingAdvanceDays} dias abaixo da antecedência exigida.`
+        : `Compra realizada com ${effectiveAdvanceDays} dias de antecedência, acima do mínimo exigido.`,
+      details: {
+        effectiveDays: effectiveAdvanceDays,
+        requiredDays: requiredAdvanceDays,
+        missingDays: missingAdvanceDays
+      }
     }
   ];
 
@@ -5048,6 +5510,10 @@ const TariffSummaryScreen = ({ selectedFares, flightsMap, searchCriteria, onBack
     addConfirmationPassenger(filteredPassengers[0] || passengerInput);
   };
 
+  const togglePolicy = (policyId) => {
+    setExpandedPolicyId(prev => (prev === policyId ? null : policyId));
+  };
+
   return (
     <main className="dv-summary-screen">
       <div className="dv-summary-shell">
@@ -5071,13 +5537,12 @@ const TariffSummaryScreen = ({ selectedFares, flightsMap, searchCriteria, onBack
               <div className="dv-summary-card__body">
                 <div className="dv-policy-list">
                   {policies.map(policy => (
-                    <div className={`dv-policy-card dv-policy-card--${policy.variant}`} key={policy.title}>
-                      <span className="dv-policy-icon"><span className="q-icon">{policy.icon}</span></span>
-                      <div className="dv-policy-copy">
-                        <span className="dv-policy-title">{policy.title} {policy.status}</span>
-                        <span className="dv-policy-description">{policy.description}</span>
-                      </div>
-                    </div>
+                    <CompliancePolicyCard
+                      key={policy.id}
+                      policy={policy}
+                      expanded={expandedPolicyId === policy.id}
+                      onToggle={togglePolicy}
+                    />
                   ))}
                 </div>
               </div>
