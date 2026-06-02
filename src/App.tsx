@@ -1260,6 +1260,14 @@ const INJECTED_CSS = `
     align-items: stretch;
   }
 
+  .dv-flight-search-grid--oneway {
+    grid-template-columns: minmax(0, 1fr) 42px minmax(0, 1fr) minmax(150px, 0.8fr);
+  }
+
+  .dv-flight-search-grid--multi {
+    grid-template-columns: minmax(0, 1fr) 42px minmax(0, 1fr) minmax(150px, 0.8fr) minmax(150px, 0.8fr);
+  }
+
   .dv-booking-field {
     display: flex;
     min-width: 0;
@@ -1321,6 +1329,37 @@ const INJECTED_CSS = `
     font-weight: 800;
     line-height: 1.25;
     outline: none;
+  }
+
+  .dv-multi-route-preview {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: -2px;
+  }
+
+  .dv-multi-route-step {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 10px;
+    border: 1px dashed rgba(66,143,112,0.28);
+    border-radius: 12px;
+    background: rgba(66,143,112,0.06);
+    color: #475569;
+    font-size: 11px;
+    font-weight: 800;
+  }
+
+  .dv-multi-route-step strong {
+    color: #1f2937;
+  }
+
+  .dv-multi-route-step .q-icon {
+    color: #428f70;
+    font-size: 17px;
   }
 
   .dv-booking-swap {
@@ -3667,6 +3706,12 @@ const INJECTED_CSS = `
       grid-template-columns: 1fr;
     }
 
+    .dv-flight-search-grid--oneway,
+    .dv-flight-search-grid--multi,
+    .dv-multi-route-preview {
+      grid-template-columns: 1fr;
+    }
+
     .dv-booking-swap {
       justify-self: center;
       transform: rotate(90deg);
@@ -4639,11 +4684,47 @@ const INITIAL_SUPPLIERS = [
   { id: 'SABRE', name: 'SabreV2', status: 'idle', count: 0 },
 ];
 
+const TRIP_MODE_OPTIONS = [
+  { value: 'oneway', label: 'So ida' },
+  { value: 'roundtrip', label: 'Ida e volta' },
+  { value: 'multi', label: 'Multiplos trechos' }
+];
+
+const TRIP_MODE_PRESETS = {
+  oneway: {
+    origin: 'Sao Paulo',
+    destination: 'Shenzhen, China',
+    departureDate: 'seg, 20 jul',
+    returnDate: '',
+    multiSegments: []
+  },
+  roundtrip: {
+    origin: 'Rio de Janeiro',
+    destination: 'Sao Paulo',
+    departureDate: 'qui, 14 mai',
+    returnDate: 'sex, 15 mai',
+    multiSegments: []
+  },
+  multi: {
+    origin: 'Rio de Janeiro',
+    destination: 'Shenzhen, China',
+    departureDate: 'qui, 14 mai',
+    returnDate: 'sex, 22 mai',
+    multiSegments: [
+      { origin: 'Rio de Janeiro', destination: 'Sao Paulo', date: 'qui, 14 mai' },
+      { origin: 'Sao Paulo', destination: 'Paris, Franca', date: 'dom, 17 mai' },
+      { origin: 'Paris, Franca', destination: 'Shenzhen, China', date: 'sex, 22 mai' }
+    ]
+  }
+};
+
 const DEFAULT_SEARCH_CRITERIA = {
+  tripType: 'roundtrip',
   origin: 'Rio de Janeiro',
   destination: 'Sao Paulo',
   departureDate: 'qui, 14 mai',
   returnDate: 'sex, 15 mai',
+  multiSegments: [],
   passengers: ['matheus-castro'],
   customPassengers: [],
   anonymousPassengerCount: 0
@@ -4830,6 +4911,8 @@ const SearchScreen = ({ criteria, onCriteriaChange, onSubmit, inline = false, sh
   const selectedPassengers = getSelectedPassengers(selectedPassengerIds, customPassengers);
   const anonymousPassengerCount = getAnonymousPassengerCount(criteria);
   const passengerCount = getPassengerCount(criteria);
+  const tripType = criteria.tripType || DEFAULT_SEARCH_CRITERIA.tripType;
+  const multiSegments = Array.isArray(criteria.multiSegments) ? criteria.multiSegments : [];
   const originName = getAirportNameFromLabel(criteria.origin);
   const destinationName = getAirportNameFromLabel(criteria.destination);
   const normalizedPassengerQuery = passengerQuery.trim().toLowerCase();
@@ -4912,6 +4995,15 @@ const SearchScreen = ({ criteria, onCriteriaChange, onSubmit, inline = false, sh
     onCriteriaChange('origin', criteria.destination);
     onCriteriaChange('destination', previousOrigin);
   };
+  const selectTripMode = (nextTripType) => {
+    const preset = TRIP_MODE_PRESETS[nextTripType] || TRIP_MODE_PRESETS.roundtrip;
+    onCriteriaChange('tripType', nextTripType);
+    onCriteriaChange('origin', preset.origin);
+    onCriteriaChange('destination', preset.destination);
+    onCriteriaChange('departureDate', preset.departureDate);
+    onCriteriaChange('returnDate', preset.returnDate);
+    onCriteriaChange('multiSegments', preset.multiSegments);
+  };
 
   return (
   <main className={`dv-search-screen dv-search-screen--reserve ${inline ? 'dv-search-screen--inline' : ''}`}>
@@ -4935,9 +5027,16 @@ const SearchScreen = ({ criteria, onCriteriaChange, onSubmit, inline = false, sh
       <form className="dv-booking-card" onSubmit={onSubmit}>
         <div className="dv-booking-top">
           <div className="dv-trip-segmented" aria-label="Tipo de viagem">
-            <button type="button" className="dv-trip-segmented__item">So ida</button>
-            <button type="button" className="dv-trip-segmented__item is-active">Ida e volta</button>
-            <button type="button" className="dv-trip-segmented__item">Multiplos trechos</button>
+            {TRIP_MODE_OPTIONS.map(option => (
+              <button
+                type="button"
+                className={`dv-trip-segmented__item ${tripType === option.value ? 'is-active' : ''}`}
+                key={option.value}
+                onClick={() => selectTripMode(option.value)}
+              >
+                {option.label}
+              </button>
+            ))}
           </div>
 
           <div className="dv-booking-tools">
@@ -5064,7 +5163,7 @@ const SearchScreen = ({ criteria, onCriteriaChange, onSubmit, inline = false, sh
           </div>
         </div>
 
-        <div className="dv-flight-search-grid">
+        <div className={`dv-flight-search-grid dv-flight-search-grid--${tripType}`}>
           <label className="dv-booking-field dv-booking-field--route">
             <span className="dv-booking-label">Origem</span>
             <span className="dv-booking-field__body">
@@ -5109,22 +5208,38 @@ const SearchScreen = ({ criteria, onCriteriaChange, onSubmit, inline = false, sh
             </span>
           </label>
 
-          <label className="dv-booking-field dv-booking-field--date">
-            <span className="dv-booking-label">Volta</span>
-            <span className="dv-booking-field__body">
-              <span className="q-icon">event_available</span>
-              <input
-                className="dv-booking-input"
-                value={criteria.returnDate}
-                onChange={(event) => onCriteriaChange('returnDate', event.target.value)}
-              />
-            </span>
-          </label>
+          {tripType !== 'oneway' && (
+            <label className="dv-booking-field dv-booking-field--date">
+              <span className="dv-booking-label">{tripType === 'multi' ? 'Ultimo trecho' : 'Volta'}</span>
+              <span className="dv-booking-field__body">
+                <span className="q-icon">event_available</span>
+                <input
+                  className="dv-booking-input"
+                  value={criteria.returnDate}
+                  onChange={(event) => onCriteriaChange('returnDate', event.target.value)}
+                />
+              </span>
+            </label>
+          )}
 
           <button type="submit" className="dv-search-submit dv-search-submit--booking">
             <Search className="w-4 h-4" />
             Buscar voos
           </button>
+
+          {tripType === 'multi' && (
+            <div className="dv-multi-route-preview" aria-label="Trechos pre definidos">
+              {multiSegments.map((segment, index) => (
+                <span className="dv-multi-route-step" key={`${segment.origin}-${segment.destination}-${index}`}>
+                  <strong>{index + 1}</strong>
+                  <span>{segment.origin}</span>
+                  <span className="q-icon">arrow_forward</span>
+                  <span>{segment.destination}</span>
+                  <small>{segment.date}</small>
+                </span>
+              ))}
+            </div>
+          )}
         </div>
 
         {showFilters && (
@@ -5262,20 +5377,25 @@ const SelectedFareSlot = ({ title, selection, emptyText }) => {
   );
 };
 
-const SelectionPanel = ({ selectedFares, onClear, onTarifar }) => {
+const SelectionPanel = ({ selectedFares, tripType, onClear, onTarifar }) => {
   const selectedSegment0 = selectedFares.segments["0"];
   const selectedSegment1 = selectedFares.segments["1"];
   const selectedCombined = selectedFares.combined;
+  const isOneWay = tripType === 'oneway';
   const hasSegmentSelection = Boolean(selectedSegment0 || selectedSegment1);
-  const canTarifar = Boolean(selectedCombined || (selectedSegment0 && selectedSegment1));
+  const canTarifar = isOneWay
+    ? Boolean(selectedSegment0)
+    : Boolean(selectedCombined || (selectedSegment0 && selectedSegment1));
   const totalValue = selectedCombined
     ? selectedCombined.fare.Valor
-    : (selectedSegment0?.fare.Valor || 0) + (selectedSegment1?.fare.Valor || 0);
+    : isOneWay
+      ? (selectedSegment0?.fare.Valor || 0)
+      : (selectedSegment0?.fare.Valor || 0) + (selectedSegment1?.fare.Valor || 0);
   const totalPrice = formatPrice(totalValue);
   const hasSelection = Boolean(selectedCombined || selectedSegment0 || selectedSegment1);
 
   const hint = canTarifar && !selectedCombined
-    ? 'Trechos selecionados para reservar.'
+    ? isOneWay ? 'Trecho selecionado para reservar.' : 'Trechos selecionados para reservar.'
     : hasSelection
       ? ''
       : 'Selecione uma tarifa para iniciar.';
@@ -5296,6 +5416,8 @@ const SelectionPanel = ({ selectedFares, onClear, onTarifar }) => {
         <div className="dv-selection-stack">
           {selectedCombined ? (
             <SelectedFareSlot title="Combinado" selection={selectedCombined} emptyText="" />
+          ) : isOneWay ? (
+            <SelectedFareSlot title="Só ida" selection={selectedSegment0} emptyText="Aguardando a tarifa de ida." />
           ) : (
             <>
               <SelectedFareSlot title="Trecho 1" selection={selectedSegment0} emptyText="Aguardando a tarifa do trecho 1." />
@@ -6496,6 +6618,8 @@ export default function App() {
 
   const startSearch = (event) => {
     event?.preventDefault();
+    const tripType = searchCriteria.tripType || DEFAULT_SEARCH_CRITERIA.tripType;
+    const isOneWay = tripType === 'oneway';
     clearPendingSearch();
     clearFilters();
     clearSelectedFares();
@@ -6519,8 +6643,10 @@ export default function App() {
           setFlightsMap(prev => ({ ...prev, "0": JSON_MOCK_DATA.flightsBySegment["0"] }));
           updateSupplierStatus(supplier.id, 'success', 1);
         } else if (supplier.id === 'G3') {
-          setFlightsMap(prev => ({ ...prev, "1": JSON_MOCK_DATA.flightsBySegment["1"] }));
-          updateSupplierStatus(supplier.id, 'success', 2);
+          if (!isOneWay) {
+            setFlightsMap(prev => ({ ...prev, "1": JSON_MOCK_DATA.flightsBySegment["1"] }));
+          }
+          updateSupplierStatus(supplier.id, 'success', isOneWay ? 0 : 2);
         } else if (supplier.id === 'AD') {
           updateSupplierStatus(supplier.id, 'success', 0);
         }
@@ -6530,9 +6656,12 @@ export default function App() {
         
         if (completedCount === INITIAL_SUPPLIERS.length) {
           setIsSearching(false);
-          // Adiciona os combinados ao final da busca
-          setFlightsMap(prev => ({ ...prev, "99": JSON_MOCK_DATA.flightsBySegment["99"] }));
-          setActiveTab('99'); // Pula pra aba de combinados como o ARIA sugere
+          if (!isOneWay) {
+            setFlightsMap(prev => ({ ...prev, "99": JSON_MOCK_DATA.flightsBySegment["99"] }));
+            setActiveTab('99'); // Pula pra aba de combinados como o ARIA sugere
+          } else {
+            setActiveTab('0');
+          }
           pendingTimeoutsRef.current = [];
         }
       }, delay);
@@ -6542,7 +6671,10 @@ export default function App() {
   };
 
   const openTariffSummary = () => {
-    const canOpenSummary = Boolean(selectedFares.combined || (selectedFares.segments["0"] && selectedFares.segments["1"]));
+    const isOneWay = searchCriteria.tripType === 'oneway';
+    const canOpenSummary = isOneWay
+      ? Boolean(selectedFares.segments["0"])
+      : Boolean(selectedFares.combined || (selectedFares.segments["0"] && selectedFares.segments["1"]));
     if (canOpenSummary) {
       setCurrentScreen('summary');
     }
@@ -6741,6 +6873,8 @@ export default function App() {
 
   const successCount = suppliers.filter(s => s.status === 'success').length;
   const warningCount = suppliers.filter(s => s.status === 'warning').length;
+  const tripType = searchCriteria.tripType || DEFAULT_SEARCH_CRITERIA.tripType;
+  const isOneWayTrip = tripType === 'oneway';
 
   const FilterContent = () => (
     <>
@@ -7093,7 +7227,7 @@ export default function App() {
           <main className="dv-root !pt-0 !mt-0 !w-full" style={{ maxWidth: '100%', padding: 0 }}>
             
             {/* RECOMENDAÇÃO ARIA */}
-            {!isSearching && flightsMap["99"].length > 0 && (
+            {!isOneWayTrip && !isSearching && flightsMap["99"].length > 0 && (
               <section className="dv-aria-card-panel aria-card">
                 <div className="aria-card__body">
                   <div className="aria-card__identity">
@@ -7130,20 +7264,24 @@ export default function App() {
                     <span className="dv-tab__count">{flightsMap["0"].length}</span>
                   </button>
 
-                  <button className="dv-tab" type="button" aria-selected={activeTab === '1'} onClick={() => setActiveTab('1')}>
-                    <span className="q-icon">flight_land</span>
-                    <span className="dv-tab__copy">
-                      <span className="dv-tab__title">Trecho 2</span>
-                      <span className="dv-tab__subtitle">SAO -&gt; RIO</span>
-                    </span>
-                    <span className="dv-tab__count">{flightsMap["1"].length}</span>
-                  </button>
+                  {!isOneWayTrip && (
+                    <>
+                      <button className="dv-tab" type="button" aria-selected={activeTab === '1'} onClick={() => setActiveTab('1')}>
+                        <span className="q-icon">flight_land</span>
+                        <span className="dv-tab__copy">
+                          <span className="dv-tab__title">Trecho 2</span>
+                          <span className="dv-tab__subtitle">SAO -&gt; RIO</span>
+                        </span>
+                        <span className="dv-tab__count">{flightsMap["1"].length}</span>
+                      </button>
 
-                  <button className="dv-tab" type="button" aria-selected={activeTab === '99'} onClick={() => setActiveTab('99')}>
-                    <span className="q-icon">connecting_airports</span>
-                    <span className="dv-tab__copy"><span className="dv-tab__title">Voos Combinados</span></span>
-                    <span className="dv-tab__count">{flightsMap["99"].length}</span>
-                  </button>
+                      <button className="dv-tab" type="button" aria-selected={activeTab === '99'} onClick={() => setActiveTab('99')}>
+                        <span className="q-icon">connecting_airports</span>
+                        <span className="dv-tab__copy"><span className="dv-tab__title">Voos Combinados</span></span>
+                        <span className="dv-tab__count">{flightsMap["99"].length}</span>
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
             </section>
@@ -7320,7 +7458,7 @@ export default function App() {
         </div>
         </main>
         </div>
-        <SelectionPanel selectedFares={selectedFares} onClear={clearSelectedFares} onTarifar={openTariffSummary} />
+        <SelectionPanel selectedFares={selectedFares} tripType={tripType} onClear={clearSelectedFares} onTarifar={openTariffSummary} />
       </div>
       </section>
       ) : null}
