@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef } from 'react';
-import { Plane, Search, Loader2, Filter, X, SlidersHorizontal } from 'lucide-react';
+import { Plane, Search, Loader2, Filter, X, SlidersHorizontal, Sparkles } from 'lucide-react';
 
 const INJECTED_CSS = `
   @import url("https://fonts.googleapis.com/css2?family=Material+Icons&family=Open+Sans:wght@400;500;600;700;800;900&display=swap");
@@ -2595,54 +2595,67 @@ const INJECTED_CSS = `
     background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
   }
 
-  .dv-auth-policy-aria-comment {
+  .dv-auth-policy-aria-insight {
+    position: relative;
     display: flex;
+    min-width: 0;
     align-items: flex-start;
-    gap: 10px;
-    margin-bottom: 14px;
-    padding: 12px;
-    border: 1px solid rgba(124, 58, 237, 0.16);
-    border-radius: 12px;
-    background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(255, 255, 255, 0.95));
-    box-shadow: 0 12px 24px -22px rgba(91, 33, 182, 0.45);
+    gap: 6px;
+    margin: 4px 0 12px;
+    padding: 6px 10px;
+    border: 1px solid rgba(196, 181, 253, 0.6);
+    border-radius: 8px;
+    background: rgba(245, 243, 255, 0.8);
+    color: #7c3aed;
+    box-shadow: 0 8px 24px -18px rgba(139, 92, 246, 0.4);
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
   }
 
-  .dv-auth-policy-aria-comment__icon {
+  .dv-auth-policy-aria-insight:hover {
+    transform: translateY(-1px);
+    border-color: rgba(167, 139, 250, 0.72);
+    box-shadow: 0 18px 36px -22px rgba(139, 92, 246, 0.35);
+  }
+
+  .dv-auth-policy-aria-insight::after {
+    position: absolute;
+    inset: 1px;
+    border-radius: 7px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.55), transparent 58%);
+    content: "";
+    pointer-events: none;
+  }
+
+  .dv-auth-policy-aria-insight__icon {
     display: inline-flex;
-    width: 28px;
-    height: 28px;
     flex: 0 0 auto;
     align-items: center;
     justify-content: center;
-    border-radius: 999px;
-    background: #7c3aed;
-    color: #ffffff;
+    color: #8b5cf6;
+    transition: transform 0.2s ease;
+    z-index: 1;
   }
 
-  .dv-auth-policy-aria-comment__icon .q-icon {
-    font-size: 16px;
+  .dv-auth-policy-aria-insight:hover .dv-auth-policy-aria-insight__icon {
+    transform: scale(1.1) rotate(-6deg);
   }
 
-  .dv-auth-policy-aria-comment__copy {
+  .dv-auth-policy-aria-insight__icon .q-icon {
+    font-size: 13px;
+  }
+
+  .dv-auth-policy-aria-insight__text {
     min-width: 0;
-  }
-
-  .dv-auth-policy-aria-comment__label {
-    display: block;
-    margin-bottom: 3px;
-    color: #6d28d9;
-    font-size: 9px;
-    font-weight: 950;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .dv-auth-policy-aria-comment__text {
     margin: 0;
-    color: #4c1d95;
-    font-size: 11px;
-    font-weight: 750;
-    line-height: 1.45;
+    color: #7c3aed;
+    font-size: 10px;
+    font-weight: 650;
+    line-height: 1.35;
+    z-index: 1;
+  }
+
+  .dv-auth-policy-aria-insight__label {
+    font-weight: 950;
   }
 
   .dv-auth-policy-fare-head {
@@ -5505,7 +5518,9 @@ const CompliancePolicyCard = ({ policy, expanded, onToggle }) => {
             <span className="dv-auth-policy-title">{policy.title}</span>
             <span className="dv-auth-policy-meta">
               <span className="dv-auth-policy-status">{policy.status}</span>
-              <span className="dv-auth-policy-insight">{policy.description}</span>
+              {!expanded && policy.ariaComment && (
+                <span className="dv-auth-policy-insight">{policy.ariaComment}</span>
+              )}
             </span>
           </span>
         </span>
@@ -5518,12 +5533,13 @@ const CompliancePolicyCard = ({ policy, expanded, onToggle }) => {
         <div className="dv-auth-policy-detail">
           <div className="dv-auth-policy-divider" />
           {policy.ariaComment && (
-            <div className="dv-auth-policy-aria-comment">
-              <span className="dv-auth-policy-aria-comment__icon"><span className="q-icon">auto_awesome</span></span>
-              <span className="dv-auth-policy-aria-comment__copy">
-                <span className="dv-auth-policy-aria-comment__label">Comentário ARIA</span>
-                <p className="dv-auth-policy-aria-comment__text">{policy.ariaComment}</p>
-              </span>
+            <div className="dv-auth-policy-aria-insight">
+              <span className="dv-auth-policy-aria-insight__icon"><Sparkles size={12} strokeWidth={2.25} aria-hidden="true" /></span>
+              <p className="dv-auth-policy-aria-insight__text">
+                <span className="dv-auth-policy-aria-insight__label">ARIA</span>
+                <span aria-hidden="true">&nbsp;&middot;&nbsp;</span>
+                {policy.ariaComment}
+              </p>
             </div>
           )}
           {policy.type === 'lowest-fare' ? renderLowestFareDetails() : renderAdvanceDetails()}
