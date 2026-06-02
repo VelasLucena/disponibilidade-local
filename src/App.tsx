@@ -5869,11 +5869,10 @@ const TariffSummaryScreen = ({ selectedFares, flightsMap, searchCriteria, onBack
                   >
                     Escolher este voo <span className="q-icon">arrow_forward</span>
                   </button>
-                  <ul className="aria-insights">
-                    <li className="aria-insights__chip"><span className="q-icon">paid</span>{formatCurrencyBRL(ariaFareRecommendation.savings)} mais barato</li>
-                    <li className="aria-insights__chip"><span className="q-icon">schedule</span>{ariaFareRecommendation.schedule}</li>
-                    <li className="aria-insights__chip"><span className="q-icon">flight</span>{ariaFareRecommendation.route}</li>
-                  </ul>
+                    <ul className="aria-insights">
+                      <li className="aria-insights__chip"><span className="q-icon">paid</span>{formatCurrencyBRL(ariaFareRecommendation.savings)} mais barato</li>
+                      <li className="aria-insights__chip"><span className="q-icon">schedule</span>{ariaFareRecommendation.schedule}</li>
+                    </ul>
                 </div>
               </section>
             )}
