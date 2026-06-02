@@ -1119,13 +1119,13 @@ Error generating stack: `+e.message+`
   }
 
   .dv-passenger-chip--anonymous {
-    background: rgba(66, 143, 112, 0.1);
-    color: var(--reserve-primary);
+    background: #fef3c7;
+    color: #92400e;
   }
 
   .dv-passenger-chip--anonymous button {
-    background: rgba(66, 143, 112, 0.16);
-    color: var(--reserve-primary);
+    background: #fde68a;
+    color: #92400e;
   }
 
   .dv-passenger-chip button:disabled {
