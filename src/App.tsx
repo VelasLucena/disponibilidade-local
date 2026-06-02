@@ -3067,9 +3067,37 @@ const INJECTED_CSS = `
     font-weight: 700;
   }
 
+  .dv-inclusion-label {
+    display: inline-flex;
+    min-width: 0;
+    align-items: center;
+    gap: 7px;
+    flex-wrap: wrap;
+  }
+
+  .dv-inclusion-chip {
+    display: inline-flex;
+    min-height: 20px;
+    align-items: center;
+    padding: 3px 7px;
+    border: 1px solid rgba(66,143,112,0.2);
+    border-radius: 999px;
+    background: rgba(66,143,112,0.08);
+    color: #428f70;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
   .dv-inclusion-item.is-not-included span:last-child {
     color: #81868b;
     text-decoration: line-through;
+  }
+
+  .dv-inclusion-item.is-not-included .dv-inclusion-chip {
+    display: none;
   }
 
   .dv-confirm-baggage-box {
@@ -5338,32 +5366,54 @@ const buildAriaFareRecommendation = (selections, recommendedAmount) => {
   };
 };
 
+const getSelectionSegmentScope = (selection) => (
+  selection.isCombined
+    ? ["0", "1"]
+    : [String(selection.segmentKey ?? "0")]
+);
+
+const getInclusionSegmentChip = (includedSegments = [], selectedSegments = []) => {
+  if (includedSegments.length !== 1 || selectedSegments.length < 2) return '';
+  return includedSegments[0] === "0" ? 'Somente ida' : 'Somente volta';
+};
+
 const buildFareInclusions = (selection) => {
   const fareName = selection.fare.Nome.toUpperCase();
   const hasCheckedBaggage = selection.fare.Bagage !== "0";
   const hasSeat = hasCheckedBaggage || fareName.includes("PLUS") || fareName.includes("FLEX");
   const hasRefund = fareName.includes("FLEX");
+  const segmentScope = getSelectionSegmentScope(selection);
 
   return [
-    { label: 'Bagagem de mao', included: true },
-    { label: 'Bagagem despachada', included: hasCheckedBaggage },
-    { label: 'Marcacao de assento', included: hasSeat },
-    { label: 'Reembolso integral', included: hasRefund }
+    { label: 'Bagagem de mao', included: true, segmentScope },
+    { label: 'Bagagem despachada', included: hasCheckedBaggage, segmentScope },
+    { label: 'Marcacao de assento', included: hasSeat, segmentScope },
+    { label: 'Reembolso integral', included: hasRefund, segmentScope }
   ];
 };
 
 const getConsolidatedFareInclusions = (selections) => {
   const inclusionsByLabel = new Map();
+  const selectedSegments = [...new Set(selections.flatMap(getSelectionSegmentScope))].sort();
 
   selections.flatMap(buildFareInclusions).forEach(item => {
     const current = inclusionsByLabel.get(item.label);
+    const includedSegments = new Set(current?.includedSegments || []);
+    if (item.included) {
+      item.segmentScope.forEach(segmentKey => includedSegments.add(segmentKey));
+    }
+
     inclusionsByLabel.set(item.label, {
       label: item.label,
-      included: Boolean(current?.included || item.included)
+      included: Boolean(current?.included || item.included),
+      includedSegments: [...includedSegments].sort()
     });
   });
 
-  return Array.from(inclusionsByLabel.values());
+  return Array.from(inclusionsByLabel.values()).map(item => ({
+    ...item,
+    segmentChip: item.included ? getInclusionSegmentChip(item.includedSegments, selectedSegments) : ''
+  }));
 };
 
 const formatCurrencyBRL = (value) => (
@@ -5923,7 +5973,10 @@ const TariffSummaryScreen = ({ selectedFares, flightsMap, searchCriteria, onBack
                     {fareInclusions.map(item => (
                       <div className={`dv-inclusion-item ${item.included ? 'is-included' : 'is-not-included'}`} key={item.label}>
                         <span className="q-icon">{item.included ? 'check_circle' : 'cancel'}</span>
-                        <span>{item.label}</span>
+                        <span className="dv-inclusion-label">
+                          <span>{item.label}</span>
+                          {item.segmentChip && <span className="dv-inclusion-chip">{item.segmentChip}</span>}
+                        </span>
                       </div>
                     ))}
                   </div>
