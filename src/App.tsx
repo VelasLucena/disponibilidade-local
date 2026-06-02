@@ -2375,7 +2375,28 @@ const INJECTED_CSS = `
     padding: 0;
   }
 
-  .dv-summary-card--policy .dv-policy-list {
+  .dv-summary-policy-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .dv-summary-policy-heading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 2px;
+    color: var(--dv-primary);
+    font-size: 14px;
+    font-weight: 950;
+  }
+
+  .dv-summary-policy-heading .q-icon {
+    color: #64748b;
+    font-size: 18px;
+  }
+
+  .dv-summary-policy-section .dv-policy-list {
     grid-template-columns: 1fr;
     gap: 12px;
   }
@@ -5599,23 +5620,22 @@ const TariffSummaryScreen = ({ selectedFares, flightsMap, searchCriteria, onBack
 
         <div className="dv-summary-layout">
           <section className="dv-summary-main">
-            <article className="dv-summary-card dv-summary-card--policy">
-              <header className="dv-summary-card__header">
-                <div className="dv-summary-card__title"><span className="q-icon">business</span> Políticas de Viagem</div>
-              </header>
-              <div className="dv-summary-card__body">
-                <div className="dv-policy-list">
-                  {policies.map(policy => (
-                    <CompliancePolicyCard
-                      key={policy.id}
-                      policy={policy}
-                      expanded={expandedPolicyId === policy.id}
-                      onToggle={togglePolicy}
-                    />
-                  ))}
-                </div>
+            <section className="dv-summary-policy-section" aria-labelledby="summary-policy-title">
+              <div className="dv-summary-policy-heading" id="summary-policy-title">
+                <span className="q-icon">business</span>
+                Políticas de Viagem
               </div>
-            </article>
+              <div className="dv-policy-list">
+                {policies.map(policy => (
+                  <CompliancePolicyCard
+                    key={policy.id}
+                    policy={policy}
+                    expanded={expandedPolicyId === policy.id}
+                    onToggle={togglePolicy}
+                  />
+                ))}
+              </div>
+            </section>
 
             <article className="dv-summary-card">
               <header className="dv-summary-card__header">
