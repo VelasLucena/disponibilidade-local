@@ -159,6 +159,8 @@ const INJECTED_CSS = `
   .dv-sisres-list { display: flex; width: 100%; gap: 10px; overflow-x: auto; padding: 4px 20px 8px; scroll-snap-type: x proximity; scrollbar-width: none; }
   .dv-sisres-card { display: flex; width: 120px; min-height: 62px; flex: 0 0 auto; flex-direction: column; justify-content: center; padding: 10px 14px; border: 1px solid rgba(229, 231, 235, 0.8); border-radius: 8px; background: #ffffff; box-shadow: var(--shadow-sm); text-align: left; }
   .dv-sisres-logo-wrap { display: flex; width: 100%; height: 20px; min-width: 0; align-items: center; justify-content: flex-start; margin-bottom: 4px; font-weight: 800; color: var(--reserve-secondary); font-size: 14px; }
+  .dv-sisres-logo { display: block; max-width: 92px; max-height: 20px; object-fit: contain; }
+  .dv-sisres-logo-fallback { color: var(--reserve-secondary); font-size: 14px; font-weight: 900; }
   .dv-sisres-status { display: flex; min-width: 0; align-items: center; justify-content: flex-start; gap: 4px; font-size: 10px; font-weight: 800; }
   .dv-status--success { color: #059669; } .dv-status--error { color: #dc2626; } .dv-status--warning { color: #d97706; } .dv-status--loading { color: #3b82f6; }
 
@@ -331,7 +333,8 @@ const INJECTED_CSS = `
   .dv-calendar-shop__date-line { display: flex; min-height: 38px; align-items: center; justify-content: center; padding: 8px 14px; border-bottom: 1px solid #f3f4f6; }
   .dv-calendar-shop__date { color: #6b7280; font-size: 15px; font-weight: 500; }
   .dv-calendar-shop__fare { display: flex; min-height: 48px; align-items: center; justify-content: center; gap: 10px; padding: 10px 14px 12px; }
-  .dv-calendar-shop__company { font-weight: 800; color: var(--reserve-secondary); font-size: 14px; }
+  .dv-calendar-shop__company { display: inline-flex; min-width: 54px; align-items: center; font-weight: 800; color: var(--reserve-secondary); font-size: 14px; }
+  .dv-calendar-shop__logo { display: block; max-width: 54px; max-height: 18px; object-fit: contain; }
   .dv-calendar-shop__price-group { display: inline-flex; align-items: baseline; color: #334155; }
   .dv-calendar-shop__price-group--best { color: #047857; }
   .dv-calendar-shop__price-symbol { font-size: 12px; font-weight: 750; }
@@ -350,7 +353,9 @@ const INJECTED_CSS = `
   .flight-details { flex: 1; min-width: 0; gap: 12px; flex-wrap: wrap; }
   .airline-info { min-width: 0; gap: 5px; flex-wrap: wrap; }
   .preferred-star { color: #ffc107; }
-  .airline-logo-wrapper { width: 70px; height: 20px; display: flex; align-items: center; font-weight: 900; color: var(--reserve-secondary); font-size: 15px; }
+  .airline-logo-wrapper { width: 76px; height: 24px; display: flex; align-items: center; justify-content: flex-start; font-weight: 900; color: var(--reserve-secondary); font-size: 15px; }
+  .airline-logo-image { display: block; max-width: 76px; max-height: 24px; object-fit: contain; }
+  .airline-logo-fallback { overflow: hidden; color: var(--reserve-secondary); font-size: 15px; font-weight: 900; text-overflow: ellipsis; white-space: nowrap; }
   .vertical-divider { width: 1px; height: 20px; margin: 0 4px; background: #dee2e6; }
   .q-chip { display: inline-flex; min-height: 22px; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 12px; background: #ffffff; font-size: 10px; font-weight: 700; line-height: 1; white-space: nowrap; }
   .q-chip .q-icon { margin-right: 3px; font-size: 13px; }
@@ -4118,6 +4123,33 @@ const getFlightTotalDuration = (flight) => flight.Voos.reduce((total, voo) => to
 
 const getFlightMainAirline = (flight) => flight.Voos[0]?.NomeCia || flight.CodSisRes || '';
 
+const AIRLINE_LOGO_PATHS = {
+  LA: 'img/airLines/LA.png',
+  LATAM: 'img/airLines/LA.png',
+  G3: 'img/airLines/G3.png',
+  GOL: 'img/airLines/G3.png',
+  AD: 'img/airLines/AD2.gif',
+  AZUL: 'img/airLines/AD2.gif',
+  SBR: 'img/sistemasReserva/aereo/SBR.gif',
+  SABRE: 'img/sistemasReserva/aereo/SBR.gif',
+  SABREV2: 'img/sistemasReserva/aereo/SBR.gif'
+};
+
+const getAirlineLogoSrc = (value = '') => {
+  const key = String(value).replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+  const logoPath = AIRLINE_LOGO_PATHS[key];
+  return logoPath ? `${import.meta.env.BASE_URL}${logoPath}` : '';
+};
+
+const AirlineLogo = ({ code, name, className = 'airline-logo-image', fallbackClassName = 'airline-logo-fallback' }) => {
+  const label = name || code || '';
+  const src = getAirlineLogoSrc(code) || getAirlineLogoSrc(name);
+
+  return src
+    ? <img className={className} src={src} alt={label} loading="lazy" draggable="false" />
+    : <span className={fallbackClassName}>{label}</span>;
+};
+
 const getFlightFirstOrigin = (flight) => flight.Voos[0]?.CodAeroportoOrigem || '';
 
 const getFlightLastDestination = (flight) => flight.Voos[flight.Voos.length - 1]?.CodAeroportoDestino || '';
@@ -5247,7 +5279,9 @@ const FlightCard = ({ flight, onSelectFare, selectedFareKeys }) => {
         <div className="flight-details">
           <div className="airline-info">
             <span className="q-icon preferred-star">star</span>
-            <div className="airline-logo-wrapper">{mainAirline}</div>
+            <div className="airline-logo-wrapper">
+              <AirlineLogo code={flight.CodSisRes} name={mainAirline} />
+            </div>
             <div className="vertical-divider"></div>
             
             {isCombined ? (
@@ -6190,7 +6224,9 @@ export default function App() {
                 <div className="dv-sisres-list">
                   {suppliers.map(s => (
                     <div key={s.id} className="dv-sisres-card">
-                      <span className="dv-sisres-logo-wrap">{s.name}</span>
+                      <span className="dv-sisres-logo-wrap">
+                        <AirlineLogo code={s.id} name={s.name} className="dv-sisres-logo" fallbackClassName="dv-sisres-logo-fallback" />
+                      </span>
                       <span className={`dv-sisres-status dv-status--${s.status}`}>
                         {s.status === 'loading' && <Loader2 className="w-3 h-3 animate-spin" />}
                         {s.status === 'success' && <><span className="q-icon">check_circle</span> {s.count} voos</>}
@@ -6277,7 +6313,7 @@ export default function App() {
                 <button className="dv-calendar-shop__item">
                   <span className="dv-calendar-shop__fare-delta"><span className="q-icon">trending_down</span> 9%</span>
                   <span className="dv-calendar-shop__date-line"><span className="dv-calendar-shop__date">ter, 12 mai</span></span>
-                  <span className="dv-calendar-shop__fare"><span className="dv-calendar-shop__company">GOL</span><span className="dv-calendar-shop__price-group dv-calendar-shop__price-group--best"><span className="dv-calendar-shop__price-symbol">R$</span><span className="dv-calendar-shop__price-integer">1.888</span></span></span>
+                  <span className="dv-calendar-shop__fare"><span className="dv-calendar-shop__company"><AirlineLogo name="GOL" className="dv-calendar-shop__logo" /></span><span className="dv-calendar-shop__price-group dv-calendar-shop__price-group--best"><span className="dv-calendar-shop__price-symbol">R$</span><span className="dv-calendar-shop__price-integer">1.888</span></span></span>
                 </button>
                 <button className="dv-calendar-shop__item dv-calendar-shop__item--segment-date-marker">
                   <span className="dv-calendar-shop__date-line"><span className="dv-calendar-shop__date">qui, 14 mai</span></span>
@@ -6285,7 +6321,7 @@ export default function App() {
                 </button>
                 <button className="dv-calendar-shop__item dv-calendar-shop__item--active">
                   <span className="dv-calendar-shop__date-line"><span className="dv-calendar-shop__date">sex, 15 mai</span></span>
-                  <span className="dv-calendar-shop__fare"><span className="dv-calendar-shop__company">LATAM</span><span className="dv-calendar-shop__price-group"><span className="dv-calendar-shop__price-symbol">R$</span><span className="dv-calendar-shop__price-integer">2.216</span></span></span>
+                  <span className="dv-calendar-shop__fare"><span className="dv-calendar-shop__company"><AirlineLogo name="LATAM" className="dv-calendar-shop__logo" /></span><span className="dv-calendar-shop__price-group"><span className="dv-calendar-shop__price-symbol">R$</span><span className="dv-calendar-shop__price-integer">2.216</span></span></span>
                 </button>
               </div>
             </section>
