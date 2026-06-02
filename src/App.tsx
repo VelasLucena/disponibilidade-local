@@ -1044,6 +1044,16 @@ const INJECTED_CSS = `
     transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
   }
 
+  .dv-passenger-quick-add--decrease {
+    border-left: 1px solid #d1d5db;
+    border-radius: 0;
+    color: #64748b;
+  }
+
+  .dv-passenger-quick-add--increase {
+    border-left: 1px solid #d1d5db;
+  }
+
   .dv-passenger-quick-add:hover {
     background: rgba(66, 143, 112, 0.1);
     color: #38634f;
@@ -5024,7 +5034,17 @@ const SearchScreen = ({ criteria, onCriteriaChange, onSubmit, inline = false, sh
 
               <button
                 type="button"
-                className="dv-passenger-quick-add"
+                className="dv-passenger-quick-add dv-passenger-quick-add--decrease"
+                aria-label="Diminuir quantidade de passageiros"
+                disabled={anonymousPassengerCount <= 0 || passengerCount <= 1}
+                onClick={removeAnonymousPassenger}
+              >
+                <span className="q-icon">remove</span>
+              </button>
+
+              <button
+                type="button"
+                className="dv-passenger-quick-add dv-passenger-quick-add--increase"
                 aria-label="Adicionar passageiro sem especificar"
                 disabled={passengerCount >= 9}
                 onClick={addAnonymousPassenger}
