@@ -2649,6 +2649,27 @@ const INJECTED_CSS = `
     margin-top: 12px;
   }
 
+  .dv-auth-policy-metrics--averages {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .dv-auth-policy-average-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 16px 0 10px;
+    color: #94a3b8;
+    font-size: 9px;
+    font-weight: 950;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .dv-auth-policy-average-title .q-icon {
+    color: #3b82f6;
+    font-size: 15px;
+  }
+
   .dv-auth-policy-metric {
     padding: 10px;
     border: 1px solid #f1f5f9;
@@ -2672,6 +2693,21 @@ const INJECTED_CSS = `
     color: #1f2937;
     font-size: 13px;
     font-weight: 950;
+  }
+
+  .dv-auth-policy-metric small {
+    display: block;
+    margin-top: 4px;
+    color: #64748b;
+    font-size: 9px;
+    font-weight: 850;
+    line-height: 1.25;
+  }
+
+  @media (max-width: 768px) {
+    .dv-auth-policy-metrics--averages {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 
   .dv-auth-policy-timeline {
@@ -5269,12 +5305,29 @@ const CompliancePolicyCard = ({ policy, expanded, onToggle }) => {
     const selectedAmount = Math.max(policy.details.selectedAmount, 0);
     const referenceAmount = Math.max(policy.details.referenceAmount, 0);
     const differenceAmount = Math.max(policy.details.differenceAmount, 0);
+    const rangeAverageAmount = Math.max(policy.details.rangeAverageAmount ?? 0, 0);
+    const routeAverageAmount = Math.max(policy.details.routeAverageAmount ?? 0, 0);
+    const historicLowestAmount = Math.max(policy.details.historicLowestAmount ?? 0, 0);
+    const historicHighestAmount = Math.max(policy.details.historicHighestAmount ?? 0, 0);
     const allowedPercent = selectedAmount > 0
       ? Math.min(100, Math.max(6, Math.round((referenceAmount / selectedAmount) * 100)))
       : 100;
     const exceededPercent = selectedAmount > 0
       ? Math.min(100 - allowedPercent, Math.max(0, Math.round((differenceAmount / selectedAmount) * 100)))
       : 0;
+    const getComparisonText = (amount) => {
+      const difference = selectedAmount - amount;
+      if (Math.abs(difference) < 0.01) return 'Igual à selecionada';
+      return difference > 0
+        ? `Selecionada + ${formatCurrencyBRL(difference)}`
+        : `Selecionada - ${formatCurrencyBRL(Math.abs(difference))}`;
+    };
+    const averageMetrics = [
+      { label: 'Média da faixa', amount: rangeAverageAmount },
+      { label: 'Média da rota', amount: routeAverageAmount },
+      { label: 'Menor histórico', amount: historicLowestAmount },
+      { label: 'Maior histórico', amount: historicHighestAmount }
+    ].filter(metric => metric.amount > 0);
 
     return (
       <>
@@ -5298,6 +5351,24 @@ const CompliancePolicyCard = ({ policy, expanded, onToggle }) => {
           <strong>Menor tarifa ({formatCurrencyBRL(referenceAmount)})</strong>
           <strong>{differenceAmount > 0 ? 'Acima da política' : 'Dentro da política'}</strong>
         </div>
+
+        {averageMetrics.length > 0 && (
+          <>
+            <div className="dv-auth-policy-average-title">
+              <span className="q-icon">bar_chart</span>
+              Comparações com a média
+            </div>
+            <div className="dv-auth-policy-metrics dv-auth-policy-metrics--averages">
+              {averageMetrics.map(metric => (
+                <div className="dv-auth-policy-metric" key={metric.label}>
+                  <span>{metric.label}</span>
+                  <strong>{formatCurrencyBRL(metric.amount)}</strong>
+                  <small>{getComparisonText(metric.amount)}</small>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
 
         <div className="dv-auth-policy-metrics">
           <div className="dv-auth-policy-metric">
@@ -5410,7 +5481,6 @@ const TariffSummaryScreen = ({ selectedFares, flightsMap, searchCriteria, onBack
   const racValue = 35 * passengerCount;
   const serviceFeeValue = 48 * passengerCount;
   const lowestReferenceValue = getLowestReferenceValue(selectedFares, flightsMap) || baseValue;
-  const lowestDifference = baseValue - lowestReferenceValue;
   const baggageValue = ((baggageCounts.standard * 120) + (baggageCounts.special * 250)) * passengerCount;
   const seatValue = selectedSeat ? 45 * passengerCount : 0;
   const subTotalPerPassenger = baseValue + 58 + 35 + 48 + (baggageCounts.standard * 120) + (baggageCounts.special * 250) + (selectedSeat ? 45 : 0);
@@ -5422,7 +5492,12 @@ const TariffSummaryScreen = ({ selectedFares, flightsMap, searchCriteria, onBack
   const baggagePrice = formatPrice(baggageValue);
   const seatPrice = formatPrice(seatValue);
   const grandPrice = formatPrice(grandTotal);
-  const positiveLowestDifference = Math.max(0, lowestDifference);
+  const policyLowestReferenceValue = Math.max(1, Math.round(Math.min(lowestReferenceValue || baseValue, baseValue * 0.88) * 100) / 100);
+  const positiveLowestDifference = Math.max(0, baseValue - policyLowestReferenceValue);
+  const policyRangeAverageValue = Math.round(baseValue * 0.96 * 100) / 100;
+  const policyRouteAverageValue = Math.round(baseValue * 1.08 * 100) / 100;
+  const policyHistoricLowestValue = Math.round(policyLowestReferenceValue * 0.94 * 100) / 100;
+  const policyHistoricHighestValue = Math.round(policyRouteAverageValue * 1.18 * 100) / 100;
   const requiredAdvanceDays = 15;
   const effectiveAdvanceDays = 18;
   const missingAdvanceDays = Math.max(0, requiredAdvanceDays - effectiveAdvanceDays);
@@ -5451,8 +5526,12 @@ const TariffSummaryScreen = ({ selectedFares, flightsMap, searchCriteria, onBack
         : 'Tarifa escolhida alinhada à menor opção carregada.',
       details: {
         selectedAmount: baseValue,
-        referenceAmount: lowestReferenceValue,
-        differenceAmount: positiveLowestDifference
+        referenceAmount: policyLowestReferenceValue,
+        differenceAmount: positiveLowestDifference,
+        rangeAverageAmount: policyRangeAverageValue,
+        routeAverageAmount: policyRouteAverageValue,
+        historicLowestAmount: policyHistoricLowestValue,
+        historicHighestAmount: policyHistoricHighestValue
       }
     },
     {
