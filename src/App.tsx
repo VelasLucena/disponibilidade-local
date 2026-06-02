@@ -1265,7 +1265,7 @@ const INJECTED_CSS = `
   }
 
   .dv-flight-search-grid--multi {
-    grid-template-columns: minmax(0, 1fr) 42px minmax(0, 1fr) minmax(150px, 0.8fr) minmax(150px, 0.8fr);
+    grid-template-columns: 1fr;
   }
 
   .dv-booking-field {
@@ -1331,35 +1331,86 @@ const INJECTED_CSS = `
     outline: none;
   }
 
-  .dv-multi-route-preview {
+  .dv-multi-route-builder {
     display: grid;
     grid-column: 1 / -1;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 8px;
-    margin-top: -2px;
+    gap: 12px;
   }
 
-  .dv-multi-route-step {
-    display: flex;
+  .dv-multi-route-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(150px, 0.66fr) 42px;
     min-width: 0;
     align-items: center;
-    gap: 8px;
-    padding: 9px 10px;
-    border: 1px dashed rgba(66,143,112,0.28);
-    border-radius: 12px;
-    background: rgba(66,143,112,0.06);
-    color: #475569;
-    font-size: 11px;
-    font-weight: 800;
+    gap: 12px;
   }
 
-  .dv-multi-route-step strong {
-    color: #1f2937;
+  .dv-booking-field--multi-route {
+    min-height: 54px;
   }
 
-  .dv-multi-route-step .q-icon {
-    color: #428f70;
-    font-size: 17px;
+  .dv-multi-route-remove {
+    display: inline-flex;
+    width: 42px;
+    height: 42px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #fee2e2;
+    border-radius: var(--radius-md);
+    background: #fff7f7;
+    color: #b91c1c;
+    cursor: pointer;
+    transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+  }
+
+  .dv-multi-route-remove:hover:not(:disabled) {
+    border-color: #fecaca;
+    background: #fef2f2;
+    color: #991b1b;
+  }
+
+  .dv-multi-route-remove:disabled {
+    cursor: not-allowed;
+    opacity: 0.35;
+  }
+
+  .dv-multi-route-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 2px;
+  }
+
+  .dv-multi-route-add {
+    display: inline-flex;
+    min-height: 42px;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 0 14px;
+    border: 1px solid rgba(66,143,112,0.22);
+    border-radius: var(--radius-md);
+    background: rgba(66,143,112,0.08);
+    color: var(--reserve-primary);
+    font-size: 13px;
+    font-weight: 850;
+    cursor: pointer;
+    transition: background 0.18s ease, border-color 0.18s ease;
+  }
+
+  .dv-multi-route-add:hover:not(:disabled) {
+    border-color: rgba(66,143,112,0.35);
+    background: rgba(66,143,112,0.14);
+  }
+
+  .dv-multi-route-add:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+  }
+
+  .dv-multi-route-footer .dv-search-submit {
+    min-width: 168px;
   }
 
   .dv-booking-swap {
@@ -3708,8 +3759,17 @@ const INJECTED_CSS = `
 
     .dv-flight-search-grid--oneway,
     .dv-flight-search-grid--multi,
-    .dv-multi-route-preview {
+    .dv-multi-route-row {
       grid-template-columns: 1fr;
+    }
+
+    .dv-multi-route-remove {
+      width: 100%;
+    }
+
+    .dv-multi-route-footer {
+      align-items: stretch;
+      flex-direction: column;
     }
 
     .dv-booking-swap {
@@ -4693,35 +4753,34 @@ const TRIP_MODE_OPTIONS = [
 const TRIP_MODE_PRESETS = {
   oneway: {
     origin: 'Sao Paulo',
-    destination: 'Shenzhen, China',
-    departureDate: 'seg, 20 jul',
+    destination: 'Rio de Janeiro',
+    departureDate: 'qui, 14 mai',
     returnDate: '',
     multiSegments: []
   },
   roundtrip: {
-    origin: 'Rio de Janeiro',
-    destination: 'Sao Paulo',
+    origin: 'Sao Paulo',
+    destination: 'Rio de Janeiro',
     departureDate: 'qui, 14 mai',
     returnDate: 'sex, 15 mai',
     multiSegments: []
   },
   multi: {
-    origin: 'Rio de Janeiro',
-    destination: 'Shenzhen, China',
+    origin: 'Sao Paulo',
+    destination: 'Rio de Janeiro',
     departureDate: 'qui, 14 mai',
-    returnDate: 'sex, 22 mai',
+    returnDate: 'sex, 15 mai',
     multiSegments: [
-      { origin: 'Rio de Janeiro', destination: 'Sao Paulo', date: 'qui, 14 mai' },
-      { origin: 'Sao Paulo', destination: 'Paris, Franca', date: 'dom, 17 mai' },
-      { origin: 'Paris, Franca', destination: 'Shenzhen, China', date: 'sex, 22 mai' }
+      { origin: 'Sao Paulo', destination: 'Rio de Janeiro', date: 'qui, 14 mai' },
+      { origin: 'Rio de Janeiro', destination: 'Sao Paulo', date: 'sex, 15 mai' }
     ]
   }
 };
 
 const DEFAULT_SEARCH_CRITERIA = {
   tripType: 'roundtrip',
-  origin: 'Rio de Janeiro',
-  destination: 'Sao Paulo',
+  origin: 'Sao Paulo',
+  destination: 'Rio de Janeiro',
   departureDate: 'qui, 14 mai',
   returnDate: 'sex, 15 mai',
   multiSegments: [],
@@ -5002,7 +5061,43 @@ const SearchScreen = ({ criteria, onCriteriaChange, onSubmit, inline = false, sh
     onCriteriaChange('destination', preset.destination);
     onCriteriaChange('departureDate', preset.departureDate);
     onCriteriaChange('returnDate', preset.returnDate);
-    onCriteriaChange('multiSegments', preset.multiSegments);
+    onCriteriaChange('multiSegments', preset.multiSegments.map(segment => ({ ...segment })));
+  };
+  const syncMultiSegments = (nextSegments) => {
+    onCriteriaChange('multiSegments', nextSegments);
+
+    const firstSegment = nextSegments[0];
+    const lastSegment = nextSegments[nextSegments.length - 1];
+    if (firstSegment) {
+      onCriteriaChange('origin', firstSegment.origin);
+      onCriteriaChange('departureDate', firstSegment.date);
+    }
+    if (lastSegment) {
+      onCriteriaChange('destination', lastSegment.destination);
+      onCriteriaChange('returnDate', lastSegment.date);
+    }
+  };
+  const updateMultiSegment = (index, field, value) => {
+    syncMultiSegments(multiSegments.map((segment, currentIndex) => (
+      currentIndex === index ? { ...segment, [field]: value } : segment
+    )));
+  };
+  const addMultiSegment = () => {
+    if (multiSegments.length >= 6) return;
+
+    const previousSegment = multiSegments[multiSegments.length - 1] || TRIP_MODE_PRESETS.multi.multiSegments[0];
+    syncMultiSegments([
+      ...multiSegments,
+      {
+        origin: previousSegment?.destination || '',
+        destination: '',
+        date: ''
+      }
+    ]);
+  };
+  const removeMultiSegment = (index) => {
+    if (multiSegments.length <= 2) return;
+    syncMultiSegments(multiSegments.filter((_, currentIndex) => currentIndex !== index));
   };
 
   return (
@@ -5164,81 +5259,144 @@ const SearchScreen = ({ criteria, onCriteriaChange, onSubmit, inline = false, sh
         </div>
 
         <div className={`dv-flight-search-grid dv-flight-search-grid--${tripType}`}>
-          <label className="dv-booking-field dv-booking-field--route">
-            <span className="dv-booking-label">Origem</span>
-            <span className="dv-booking-field__body">
-              <span className="q-icon">flight_takeoff</span>
-              <span className="dv-booking-route-copy">
-                <input
-                  className="dv-booking-input"
-                  value={originName}
-                  onChange={(event) => onCriteriaChange('origin', event.target.value)}
-                />
-              </span>
-            </span>
-          </label>
-
-          <button type="button" className="dv-booking-swap" aria-label="Inverter origem e destino" onClick={swapRoute}>
-            <span className="q-icon">sync_alt</span>
-          </button>
-
-          <label className="dv-booking-field dv-booking-field--route">
-            <span className="dv-booking-label">Destino</span>
-            <span className="dv-booking-field__body">
-              <span className="q-icon">flight_land</span>
-              <span className="dv-booking-route-copy">
-                <input
-                  className="dv-booking-input"
-                  value={destinationName}
-                  onChange={(event) => onCriteriaChange('destination', event.target.value)}
-                />
-              </span>
-            </span>
-          </label>
-
-          <label className="dv-booking-field dv-booking-field--date">
-            <span className="dv-booking-label">Ida</span>
-            <span className="dv-booking-field__body">
-              <span className="q-icon">calendar_month</span>
-              <input
-                className="dv-booking-input"
-                value={criteria.departureDate}
-                onChange={(event) => onCriteriaChange('departureDate', event.target.value)}
-              />
-            </span>
-          </label>
-
-          {tripType !== 'oneway' && (
-            <label className="dv-booking-field dv-booking-field--date">
-              <span className="dv-booking-label">{tripType === 'multi' ? 'Ultimo trecho' : 'Volta'}</span>
-              <span className="dv-booking-field__body">
-                <span className="q-icon">event_available</span>
-                <input
-                  className="dv-booking-input"
-                  value={criteria.returnDate}
-                  onChange={(event) => onCriteriaChange('returnDate', event.target.value)}
-                />
-              </span>
-            </label>
-          )}
-
-          <button type="submit" className="dv-search-submit dv-search-submit--booking">
-            <Search className="w-4 h-4" />
-            Buscar voos
-          </button>
-
-          {tripType === 'multi' && (
-            <div className="dv-multi-route-preview" aria-label="Trechos pre definidos">
+          {tripType === 'multi' ? (
+            <div className="dv-multi-route-builder" aria-label="Trechos adicionados">
               {multiSegments.map((segment, index) => (
-                <span className="dv-multi-route-step" key={`${segment.origin}-${segment.destination}-${index}`}>
-                  <strong>{index + 1}</strong>
-                  <span>{segment.origin}</span>
-                  <span className="q-icon">arrow_forward</span>
-                  <span>{segment.destination}</span>
-                  <small>{segment.date}</small>
-                </span>
+                <div className="dv-multi-route-row" key={`${segment.origin}-${segment.destination}-${index}`}>
+                  <label className="dv-booking-field dv-booking-field--multi-route">
+                    <span className="dv-booking-label">Trecho {index + 1} - Origem</span>
+                    <span className="dv-booking-field__body">
+                      <span className="q-icon">flight_takeoff</span>
+                      <span className="dv-booking-route-copy">
+                        <input
+                          className="dv-booking-input"
+                          value={getAirportNameFromLabel(segment.origin)}
+                          onChange={(event) => updateMultiSegment(index, 'origin', event.target.value)}
+                        />
+                      </span>
+                    </span>
+                  </label>
+
+                  <label className="dv-booking-field dv-booking-field--multi-route">
+                    <span className="dv-booking-label">Destino</span>
+                    <span className="dv-booking-field__body">
+                      <span className="q-icon">flight_land</span>
+                      <span className="dv-booking-route-copy">
+                        <input
+                          className="dv-booking-input"
+                          value={getAirportNameFromLabel(segment.destination)}
+                          onChange={(event) => updateMultiSegment(index, 'destination', event.target.value)}
+                        />
+                      </span>
+                    </span>
+                  </label>
+
+                  <label className="dv-booking-field dv-booking-field--multi-route">
+                    <span className="dv-booking-label">Data</span>
+                    <span className="dv-booking-field__body">
+                      <span className="q-icon">calendar_month</span>
+                      <input
+                        className="dv-booking-input"
+                        value={segment.date}
+                        onChange={(event) => updateMultiSegment(index, 'date', event.target.value)}
+                      />
+                    </span>
+                  </label>
+
+                  <button
+                    type="button"
+                    className="dv-multi-route-remove"
+                    aria-label={`Remover trecho ${index + 1}`}
+                    disabled={multiSegments.length <= 2}
+                    onClick={() => removeMultiSegment(index)}
+                  >
+                    <span className="q-icon">close</span>
+                  </button>
+                </div>
               ))}
+
+              <div className="dv-multi-route-footer">
+                <button
+                  type="button"
+                  className="dv-multi-route-add"
+                  disabled={multiSegments.length >= 6}
+                  onClick={addMultiSegment}
+                >
+                  <span className="q-icon">add</span>
+                  Adicionar trecho
+                </button>
+
+                <button type="submit" className="dv-search-submit dv-search-submit--booking">
+                  <Search className="w-4 h-4" />
+                  Buscar voos
+                </button>
+              </div>
             </div>
+          ) : (
+            <>
+              <label className="dv-booking-field dv-booking-field--route">
+                <span className="dv-booking-label">Origem</span>
+                <span className="dv-booking-field__body">
+                  <span className="q-icon">flight_takeoff</span>
+                  <span className="dv-booking-route-copy">
+                    <input
+                      className="dv-booking-input"
+                      value={originName}
+                      onChange={(event) => onCriteriaChange('origin', event.target.value)}
+                    />
+                  </span>
+                </span>
+              </label>
+
+              <button type="button" className="dv-booking-swap" aria-label="Inverter origem e destino" onClick={swapRoute}>
+                <span className="q-icon">sync_alt</span>
+              </button>
+
+              <label className="dv-booking-field dv-booking-field--route">
+                <span className="dv-booking-label">Destino</span>
+                <span className="dv-booking-field__body">
+                  <span className="q-icon">flight_land</span>
+                  <span className="dv-booking-route-copy">
+                    <input
+                      className="dv-booking-input"
+                      value={destinationName}
+                      onChange={(event) => onCriteriaChange('destination', event.target.value)}
+                    />
+                  </span>
+                </span>
+              </label>
+
+              <label className="dv-booking-field dv-booking-field--date">
+                <span className="dv-booking-label">Ida</span>
+                <span className="dv-booking-field__body">
+                  <span className="q-icon">calendar_month</span>
+                  <input
+                    className="dv-booking-input"
+                    value={criteria.departureDate}
+                    onChange={(event) => onCriteriaChange('departureDate', event.target.value)}
+                  />
+                </span>
+              </label>
+
+              {tripType !== 'oneway' && (
+                <label className="dv-booking-field dv-booking-field--date">
+                  <span className="dv-booking-label">Volta</span>
+                  <span className="dv-booking-field__body">
+                    <span className="q-icon">event_available</span>
+                    <input
+                      className="dv-booking-input"
+                      value={criteria.returnDate}
+                      onChange={(event) => onCriteriaChange('returnDate', event.target.value)}
+                    />
+                  </span>
+                </label>
+              )}
+
+              <button type="submit" className="dv-search-submit dv-search-submit--booking">
+                <Search className="w-4 h-4" />
+                Buscar voos
+              </button>
+            </>
           )}
         </div>
 
