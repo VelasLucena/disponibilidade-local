@@ -5370,16 +5370,6 @@ const CompliancePolicyCard = ({ policy, expanded, onToggle }) => {
           </>
         )}
 
-        <div className="dv-auth-policy-metrics">
-          <div className="dv-auth-policy-metric">
-            <span>Valor escolhido</span>
-            <strong>{formatCurrencyBRL(selectedAmount)}</strong>
-          </div>
-          <div className="dv-auth-policy-metric">
-            <span>Referência</span>
-            <strong>{formatCurrencyBRL(referenceAmount)}</strong>
-          </div>
-        </div>
       </>
     );
   };
