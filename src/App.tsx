@@ -2959,6 +2959,17 @@ const INJECTED_CSS = `
     color: #428f70;
   }
 
+  .dv-confirm-passenger-chip--pending {
+    padding-right: 12px;
+    border: 1.5px dashed #d4a72c;
+    background: #fffaf0;
+    color: #7a5b10;
+  }
+
+  .dv-confirm-passenger-chip--pending > .q-icon {
+    color: #d49b00;
+  }
+
   .dv-confirm-passenger-chip button {
     display: inline-flex;
     width: 24px;
@@ -4945,8 +4956,12 @@ const TariffSummaryScreen = ({ selectedFares, flightsMap, searchCriteria, onBack
   const selections = getSelectedFareList(selectedFares);
   const itineraryLegs = getItineraryLegs(selections);
   const fareInclusions = getConsolidatedFareInclusions(selections);
-  const passengerCount = Math.max(1, confirmationPassengers.reduce((total, passenger) => total + passenger.quantity, 0));
-  const passengerNames = confirmationPassengers.map(passenger => passenger.name).join(', ');
+  const namedConfirmationPassengers = confirmationPassengers.filter(passenger => !passenger.anonymous);
+  const requestedPassengerCount = getPassengerCount(searchCriteria);
+  const namedPassengerCount = namedConfirmationPassengers.reduce((total, passenger) => total + passenger.quantity, 0);
+  const pendingPassengerSlots = Math.max(0, requestedPassengerCount - namedPassengerCount);
+  const passengerCount = Math.max(1, requestedPassengerCount, namedPassengerCount);
+  const passengerNames = namedConfirmationPassengers.map(passenger => passenger.name).join(', ');
   const baseValue = getBaseSelectionValue(selections);
   const fareTotalValue = baseValue * passengerCount;
   const boardingTaxValue = 58 * passengerCount;
@@ -5219,13 +5234,19 @@ const TariffSummaryScreen = ({ selectedFares, flightsMap, searchCriteria, onBack
                 </div>
 
                 <div className="dv-confirm-passenger-list">
-                  {confirmationPassengers.map(passenger => (
+                  {namedConfirmationPassengers.map(passenger => (
                     <span className="dv-confirm-passenger-chip" key={passenger.id}>
                       <span className="q-icon">person</span>
                       {passenger.name}
                       <button type="button" aria-label={`Remover ${passenger.name}`} onClick={() => removeConfirmationPassenger(passenger.id)}>
                         <span className="q-icon">cancel</span>
                       </button>
+                    </span>
+                  ))}
+                  {Array.from({ length: pendingPassengerSlots }, (_, index) => (
+                    <span className="dv-confirm-passenger-chip dv-confirm-passenger-chip--pending" key={`pending-passenger-${index}`}>
+                      <span className="q-icon">person_add</span>
+                      Aguardando passageiro
                     </span>
                   ))}
                 </div>
