@@ -124,6 +124,13 @@ const INJECTED_CSS = `
   .aria-card__title { color: #ffffff; font-size: 22px; font-weight: 800; line-height: 1.12; }
   .aria-card__subtitle { max-width: 650px; color: rgba(237, 233, 254, 0.86); font-size: 14px; font-weight: 700; line-height: 1.45; }
   .aria-card__toggle { display: inline-flex; min-width: 168px; min-height: 42px; align-items: center; justify-content: center; gap: 8px; padding: 10px 16px; border-radius: 14px; background: #ffffff; color: #5d12d2; box-shadow: 0 16px 32px -18px rgba(17, 24, 39, 0.7); cursor: pointer; font-size: 13px; font-weight: 800; }
+  .dv-summary-aria-card { margin-bottom: 14px; border-radius: 18px; }
+  .dv-summary-aria-card .aria-card__body { grid-template-columns: minmax(0, 1fr) auto; padding: 16px; }
+  .dv-summary-aria-card .aria-card__icon { width: 44px; height: 44px; }
+  .dv-summary-aria-card .aria-card__title { font-size: 18px; }
+  .dv-summary-aria-card .aria-card__subtitle { max-width: 720px; font-size: 13px; }
+  .dv-summary-aria-card .aria-card__toggle { min-width: 156px; min-height: 40px; border-radius: 12px; }
+  .dv-summary-aria-card .aria-insights { grid-column: 1 / -1; }
   .aria-insights { display: flex; grid-column: 1; gap: 8px; flex-wrap: wrap; margin: 0; padding: 0; list-style: none; }
   .aria-insights__chip { display: inline-flex; min-height: 34px; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 12px; background: #ffffff; color: #5d12d2; box-shadow: 0 10px 22px -16px rgba(17, 24, 39, 0.72); font-size: 12px; font-weight: 800; line-height: 1.25; }
 
@@ -5275,6 +5282,48 @@ const getLowestReferenceValue = (selectedFares, flightsMap) => {
   }, 0);
 };
 
+const isAriaRecommendedSelection = (selection) => Boolean(selection?.fare?.AriaRecommended);
+
+const buildAriaFareRecommendation = (selections, recommendedAmount) => {
+  const baseSelection = selections[0];
+  if (!baseSelection || recommendedAmount <= 0) return null;
+
+  const firstFlight = baseSelection.flight.Voos[0];
+  const lastFlight = baseSelection.flight.Voos[baseSelection.flight.Voos.length - 1];
+  const airlineNames = [...new Set(baseSelection.flight.Voos.map(flight => flight.NomeCia || baseSelection.flight.CodSisRes).filter(Boolean))];
+  const flightNumbers = baseSelection.flight.Voos.map(flight => `${flight.NomeCia || baseSelection.flight.CodSisRes} ${flight.NumeroVoo}`).join(' + ');
+  const selectedAmount = getBaseSelectionValue(selections);
+  const savingsAmount = Math.max(0, selectedAmount - recommendedAmount);
+  const recommendedFare = {
+    ...baseSelection.fare,
+    IdTarifa: `aria-${baseSelection.fare.IdTarifa}`,
+    Nome: baseSelection.fare.Nome.includes('ARIA') ? baseSelection.fare.Nome : `${baseSelection.fare.Nome} ARIA`,
+    Valor: recommendedAmount,
+    AriaRecommended: true
+  };
+
+  return {
+    selection: {
+      ...baseSelection,
+      key: `${baseSelection.key}-aria-recommended`,
+      fare: recommendedFare,
+      flightNumber: flightNumbers,
+      airline: airlineNames.join(' + ') || baseSelection.airline,
+      origin: firstFlight?.CodAeroportoOrigem || baseSelection.origin,
+      destination: lastFlight?.CodAeroportoDestino || baseSelection.destination,
+      departureDate: firstFlight?.SaidaDate || baseSelection.departureDate,
+      departureTime: firstFlight?.SaidaTime || baseSelection.departureTime,
+      arrivalTime: lastFlight?.ChegadaTime || baseSelection.arrivalTime
+    },
+    title: 'A ARIA encontrou um voo melhor',
+    subtitle: `${airlineNames.join(' + ') || baseSelection.airline} tem uma alternativa mais aderente à política, economizando ${formatCurrencyBRL(savingsAmount)} em relação ao voo escolhido.`,
+    price: recommendedAmount,
+    savings: savingsAmount,
+    route: `${firstFlight?.CodAeroportoOrigem || baseSelection.origin} → ${lastFlight?.CodAeroportoDestino || baseSelection.destination}`,
+    schedule: `${firstFlight?.SaidaTime || baseSelection.departureTime} - ${lastFlight?.ChegadaTime || baseSelection.arrivalTime}`
+  };
+};
+
 const buildFareInclusions = (selection) => {
   const fareName = selection.fare.Nome.toUpperCase();
   const hasCheckedBaggage = selection.fare.Bagage !== "0";
@@ -5622,7 +5671,7 @@ const CompliancePolicyCard = ({ policy, expanded, onToggle }) => {
   );
 };
 
-const TariffSummaryScreen = ({ selectedFares, flightsMap, searchCriteria, onBack }) => {
+const TariffSummaryScreen = ({ selectedFares, flightsMap, searchCriteria, onBack, onChooseAriaRecommendation }) => {
   const [selectedSeat, setSelectedSeat] = useState('');
   const [baggageCounts, setBaggageCounts] = useState({ standard: 0, special: 0 });
   const [confirmationPassengers, setConfirmationPassengers] = useState(() => getInitialConfirmationPassengers(searchCriteria));
@@ -5664,8 +5713,14 @@ const TariffSummaryScreen = ({ selectedFares, flightsMap, searchCriteria, onBack
   const baggagePrice = formatPrice(baggageValue);
   const seatPrice = formatPrice(seatValue);
   const grandPrice = formatPrice(grandTotal);
-  const policyLowestReferenceValue = Math.max(1, Math.round(Math.min(lowestReferenceValue || baseValue, baseValue * 0.88) * 100) / 100);
+  const hasAriaRecommendedSelection = selections.some(isAriaRecommendedSelection);
+  const policyLowestReferenceValue = hasAriaRecommendedSelection
+    ? baseValue
+    : Math.max(1, Math.round(Math.min(lowestReferenceValue || baseValue, baseValue * 0.88) * 100) / 100);
   const positiveLowestDifference = Math.max(0, baseValue - policyLowestReferenceValue);
+  const ariaFareRecommendation = !hasAriaRecommendedSelection && positiveLowestDifference > 0.01
+    ? buildAriaFareRecommendation(selections, policyLowestReferenceValue)
+    : null;
   const policyRangeAverageValue = Math.round(baseValue * 0.96 * 100) / 100;
   const policyRouteAverageValue = Math.round(baseValue * 1.08 * 100) / 100;
   const policyHistoricLowestValue = Math.round(policyLowestReferenceValue * 0.94 * 100) / 100;
@@ -5800,6 +5855,36 @@ const TariffSummaryScreen = ({ selectedFares, flightsMap, searchCriteria, onBack
                 <span className="q-icon">business</span>
                 Políticas de Viagem
               </div>
+              {ariaFareRecommendation && (
+                <section className="dv-summary-aria-card aria-card">
+                  <div className="aria-card__body">
+                    <div className="aria-card__identity">
+                      <span className="aria-card__icon">
+                        <span className="q-icon" style={{fontSize: 24}}>auto_awesome</span>
+                      </span>
+                      <span className="aria-card__copy">
+                        <span className="aria-card__badge">
+                          <span className="q-icon" style={{fontSize: 14}}>lightbulb</span> Recomendação ARIA
+                        </span>
+                        <span className="aria-card__title">{ariaFareRecommendation.title}</span>
+                        <span className="aria-card__subtitle">{ariaFareRecommendation.subtitle}</span>
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      className="aria-card__toggle"
+                      onClick={() => onChooseAriaRecommendation?.(ariaFareRecommendation.selection)}
+                    >
+                      Escolher este voo <span className="q-icon">arrow_forward</span>
+                    </button>
+                    <ul className="aria-insights">
+                      <li className="aria-insights__chip"><span className="q-icon">paid</span>{formatCurrencyBRL(ariaFareRecommendation.savings)} mais barato</li>
+                      <li className="aria-insights__chip"><span className="q-icon">schedule</span>{ariaFareRecommendation.schedule}</li>
+                      <li className="aria-insights__chip"><span className="q-icon">flight</span>{ariaFareRecommendation.route}</li>
+                    </ul>
+                  </div>
+                </section>
+              )}
               <div className="dv-policy-list">
                 {policies.map(policy => (
                   <CompliancePolicyCard
@@ -6376,6 +6461,26 @@ export default function App() {
     }
   };
 
+  const chooseAriaRecommendedFare = (selection) => {
+    if (!selection) return;
+
+    if (selection.isCombined) {
+      setSelectedFares({
+        segments: { "0": null, "1": null },
+        combined: selection
+      });
+      return;
+    }
+
+    setSelectedFares(prev => ({
+      segments: {
+        ...prev.segments,
+        [selection.segmentKey]: selection
+      },
+      combined: null
+    }));
+  };
+
   const sendAvailabilityByEmail = () => {
     setIsAvailabilityActionsOpen(false);
   };
@@ -6864,6 +6969,7 @@ export default function App() {
           flightsMap={flightsMap}
           searchCriteria={searchCriteria}
           onBack={() => setCurrentScreen('availability')}
+          onChooseAriaRecommendation={chooseAriaRecommendedFare}
         />
       ) : (
       <>
