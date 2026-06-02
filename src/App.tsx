@@ -2595,6 +2595,56 @@ const INJECTED_CSS = `
     background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
   }
 
+  .dv-auth-policy-aria-comment {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding: 12px;
+    border: 1px solid rgba(124, 58, 237, 0.16);
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(255, 255, 255, 0.95));
+    box-shadow: 0 12px 24px -22px rgba(91, 33, 182, 0.45);
+  }
+
+  .dv-auth-policy-aria-comment__icon {
+    display: inline-flex;
+    width: 28px;
+    height: 28px;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: #7c3aed;
+    color: #ffffff;
+  }
+
+  .dv-auth-policy-aria-comment__icon .q-icon {
+    font-size: 16px;
+  }
+
+  .dv-auth-policy-aria-comment__copy {
+    min-width: 0;
+  }
+
+  .dv-auth-policy-aria-comment__label {
+    display: block;
+    margin-bottom: 3px;
+    color: #6d28d9;
+    font-size: 9px;
+    font-weight: 950;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .dv-auth-policy-aria-comment__text {
+    margin: 0;
+    color: #4c1d95;
+    font-size: 11px;
+    font-weight: 750;
+    line-height: 1.45;
+  }
+
   .dv-auth-policy-fare-head {
     display: flex;
     align-items: flex-end;
@@ -5467,6 +5517,15 @@ const CompliancePolicyCard = ({ policy, expanded, onToggle }) => {
       {expanded && (
         <div className="dv-auth-policy-detail">
           <div className="dv-auth-policy-divider" />
+          {policy.ariaComment && (
+            <div className="dv-auth-policy-aria-comment">
+              <span className="dv-auth-policy-aria-comment__icon"><span className="q-icon">auto_awesome</span></span>
+              <span className="dv-auth-policy-aria-comment__copy">
+                <span className="dv-auth-policy-aria-comment__label">Comentário ARIA</span>
+                <p className="dv-auth-policy-aria-comment__text">{policy.ariaComment}</p>
+              </span>
+            </div>
+          )}
           {policy.type === 'lowest-fare' ? renderLowestFareDetails() : renderAdvanceDetails()}
         </div>
       )}
@@ -5548,6 +5607,9 @@ const TariffSummaryScreen = ({ selectedFares, flightsMap, searchCriteria, onBack
       description: positiveLowestDifference > 0.01
         ? `Tarifa escolhida ${formatCurrencyBRL(positiveLowestDifference)} acima da menor opção carregada.`
         : 'Tarifa escolhida alinhada à menor opção carregada.',
+      ariaComment: positiveLowestDifference > 0.01
+        ? 'ARIA recomenda justificar esta escolha ou trocar para a menor tarifa, pois há alternativa mais econômica para o mesmo trecho.'
+        : 'ARIA não identificou oportunidade relevante de economia para esta seleção.',
       details: {
         selectedAmount: baseValue,
         referenceAmount: policyLowestReferenceValue,
@@ -5568,6 +5630,9 @@ const TariffSummaryScreen = ({ selectedFares, flightsMap, searchCriteria, onBack
       description: isAdvanceViolated
         ? `Compra realizada com ${missingAdvanceDays} dias abaixo da antecedência exigida.`
         : `Compra realizada com ${effectiveAdvanceDays} dias de antecedência, acima do mínimo exigido.`,
+      ariaComment: isAdvanceViolated
+        ? 'ARIA alerta que a antecedência reduzida pode elevar o custo e exigir aprovação adicional.'
+        : 'ARIA confirma que a antecedência está dentro do prazo esperado para compra corporativa.',
       details: {
         effectiveDays: effectiveAdvanceDays,
         requiredDays: requiredAdvanceDays,
