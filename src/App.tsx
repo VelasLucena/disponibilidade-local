@@ -5077,6 +5077,206 @@ const INJECTED_CSS = `
       transform: none;
     }
   }
+
+  /* Global density pass */
+  .dv-search-hero { padding-top: 24px; padding-bottom: 82px; }
+  .dv-search-screen--inline .dv-search-hero { padding-bottom: 84px; }
+  .dv-search-screen--reserve .dv-search-shell { max-width: 1080px; margin-top: -70px; }
+  .dv-service-tabs { margin-bottom: 16px; }
+  .dv-service-tab { min-height: 34px; padding: 7px 15px; font-size: 12px; }
+  .dv-search-hero-copy h1 { font-size: clamp(24px, 2.8vw, 31px); }
+  .dv-search-hero-copy p { font-size: 14px; }
+  .dv-booking-card { padding: 16px; border-radius: 12px; box-shadow: 0 14px 34px -28px rgba(15, 23, 42, 0.58); }
+  .dv-booking-top { margin-bottom: 14px; }
+  .dv-trip-segmented__item { min-height: 30px; padding: 6px 10px; font-size: 11px; }
+  .dv-booking-service-title { font-size: 15px; }
+  .dv-passenger-toolbar, .dv-passenger-quick-add, .dv-filter-toggle { min-height: 36px; height: 36px; }
+  .dv-passenger-toolbar { padding: 8px 10px; }
+  .dv-booking-field { min-height: 48px; padding: 8px 10px; }
+  .dv-booking-field--route { min-height: 50px; }
+  .dv-booking-input { font-size: 13px; }
+  .dv-search-submit.dv-search-submit--booking { min-height: 42px; min-width: 158px; margin-top: 8px; padding: 9px 20px; border-radius: 10px; font-size: 13px; }
+  .dv-featured-flights { margin-top: 22px; }
+  .dv-featured-flights__header { margin-bottom: 12px; }
+  .dv-featured-flights__header h2 { font-size: 19px; }
+  .dv-featured-grid { gap: 14px; }
+  .dv-featured-card__image { height: 126px; }
+  .dv-featured-card__body { gap: 9px; padding: 11px; }
+  .dv-featured-route { font-size: 12px; }
+  .dv-featured-route strong { font-size: 15px; }
+  .dv-featured-price-row strong { font-size: 16px; }
+  .dv-featured-price-row button { min-height: 29px; padding: 6px 9px; font-size: 11px; }
+
+  .dv-main-wrapper { max-width: 1280px; padding: 14px 14px 24px; gap: 14px; }
+  .dv-content-area { min-width: 0; }
+  .dv-availability-filter__header { min-height: 52px; padding: 12px 14px; }
+  .dv-availability-filter-section__header { min-height: 42px; padding: 11px 14px; }
+  .dv-availability-filter-section__body { padding: 0 14px 12px; }
+  .dv-sisres-summary { padding: 9px 12px; }
+  .dv-calendar-shop__fare { min-height: 42px; padding: 8px 12px 9px; }
+  .flight-card-container { border-radius: 12px; box-shadow: 0 3px 14px rgba(15, 23, 42, 0.04); }
+  .flight-card-section-divider { margin: 0 12px; }
+  .flight-header-modern { min-height: 40px; gap: 8px; padding: 6px 12px; }
+  .flight-details { gap: 8px; }
+  .airline-logo-wrapper { width: 62px; height: 20px; }
+  .airline-logo-image { max-width: 62px; max-height: 20px; }
+  .q-chip { min-height: 20px; padding: 3px 7px; font-size: 9px; }
+  .segment { grid-template-columns: minmax(82px, 0.8fr) minmax(150px, 1.6fr) minmax(82px, 0.8fr) 172px; gap: 9px; padding: 9px 12px; }
+  .airport { height: 82px; gap: 2px; padding: 8px; border-radius: 8px; }
+  .airport-time { font-size: 20px; }
+  .period-icon { font-size: 16px; }
+  .airport-code { font-size: 12px; }
+  .airport-date, .airport-name { font-size: 10px; }
+  .route-container { gap: 4px; }
+  .route-details { gap: 7px; margin-top: 2px; font-size: 10px; }
+  .duration, .stops { padding: 3px 7px; }
+  .stats-column { gap: 7px; }
+  .stats-divider { min-height: 62px; }
+  .stats-triangle-layout { width: 158px; height: 82px; gap: 7px; }
+  .stat-card-top { gap: 6px; padding: 6px 8px; border-radius: 8px; }
+  .stat-card-icon-top { width: 26px; height: 26px; }
+  .stat-card-label-top { font-size: 8px; }
+  .stat-card-value-top { font-size: 14px; }
+  .stat-card-bottom { padding: 5px 6px; border-radius: 8px; }
+  .stat-card-icon-bottom { width: 19px; height: 19px; }
+  .stat-card-value-bottom { font-size: 11px; }
+  .flight-fares { gap: 6px; padding: 8px 10px; }
+  .fare-type-icon-wrapper { min-width: 46px; padding: 8px 0; }
+  .fare-type-icon-wrapper .q-icon { font-size: 20px; }
+  .fares-horizontal-container { grid-template-columns: repeat(auto-fit, minmax(132px, 1fr)); gap: 5px; padding: 6px; }
+  .fare-card-compact { padding: 7px 8px; border-radius: 8px; }
+  .best-fare-badge { width: 26px; height: 26px; top: -9px; right: -9px; }
+  .fare-name-text { max-width: 104px; font-size: 9px; }
+  .dv-selection-box { gap: 10px; padding: 12px; border-radius: 12px; }
+  .dv-selection-header { min-height: 50px; padding: 11px 13px; }
+  .dv-selection-title { font-size: 14px; }
+  .dv-selection-title .q-icon { font-size: 18px; }
+  .dv-selection-clear { width: 30px; min-width: 30px; height: 30px; }
+  .dv-selection-stack { gap: 9px; padding: 11px; }
+  .dv-selection-card { gap: 7px; padding: 10px; }
+  .dv-selection-card--empty { min-height: 74px; gap: 4px; padding: 8px 10px; }
+  .dv-selection-empty-icon { width: 24px; height: 24px; }
+  .dv-selection-empty-icon .q-icon { font-size: 18px; }
+  .dv-selection-empty-title { font-size: 11px; }
+  .dv-selection-empty-subtitle { max-width: 190px; font-size: 10px; line-height: 1.2; }
+  .dv-selection-footer { gap: 7px; padding: 10px 13px 11px; }
+  .dv-selection-hint { min-height: 14px; font-size: 10px; }
+  .dv-selection-price, .dv-selection-total strong { font-size: 16px; }
+  .dv-tarifar-btn { min-height: 38px; padding: 8px 14px; font-size: 12px; }
+
+  .dv-summary-screen { padding: 16px 14px 28px; }
+  .dv-summary-shell { max-width: 1160px; }
+  .dv-summary-hero { min-height: 112px; padding: 20px; border-radius: 16px; }
+  .dv-summary-title { font-size: 24px; }
+  .dv-summary-subtitle { font-size: 12px; }
+  .dv-summary-layout { gap: 14px; }
+  .dv-summary-main, .dv-summary-side { gap: 12px; }
+  .dv-summary-card { border-radius: 13px; }
+  .dv-summary-card__header, .dv-summary-card__body { padding: 13px; }
+  .dv-summary-card__title { font-size: 13px; }
+  .dv-summary-flight { gap: 12px; padding: 11px 0; }
+  .dv-summary-airports { font-size: 15px; }
+  .dv-summary-price-value { font-size: 18px; }
+  .dv-confirm-inclusions, .dv-summary-flat-body, .dv-confirm-form-grid, .dv-confirm-passenger-list { gap: 10px; }
+  .dv-confirm-leg { padding: 16px; }
+  .dv-confirm-leg__heading { margin-bottom: 12px; font-size: 11px; }
+  .dv-confirm-leg__content { grid-template-columns: minmax(0, 1fr) 148px; gap: 16px; padding: 0; }
+  .dv-confirm-route { grid-template-columns: 78px minmax(100px, 1fr) 78px; gap: 12px; }
+  .dv-confirm-airport { gap: 2px; }
+  .dv-confirm-airport strong { font-size: 21px; }
+  .dv-confirm-airport span { font-size: 12px; }
+  .dv-confirm-airport small { max-width: 96px; font-size: 10px; }
+  .dv-confirm-route-line { gap: 4px; font-size: 9px; }
+  .dv-confirm-flight-meta { gap: 5px; padding: 11px; border-radius: 11px; }
+  .dv-confirm-flight-meta span { font-size: 10px; }
+  .dv-confirm-flight-meta strong { font-size: 12px; }
+  .dv-confirm-flight-meta em { padding: 3px 7px; font-size: 10px; }
+  .dv-confirm-inclusions { padding: 16px; }
+  .dv-confirm-inclusions h3, .dv-confirm-subheading { margin-bottom: 10px; padding-bottom: 7px; font-size: 12px; }
+  .dv-inclusion-grid { gap: 8px 12px; }
+  .dv-inclusion-item { font-size: 12px; }
+  .dv-inclusion-chip { min-height: 18px; padding: 2px 6px; font-size: 8px; }
+  .dv-confirm-baggage-box, .dv-confirm-seat-box, .dv-confirm-passenger-card { padding: 12px; }
+  .dv-confirm-baggage-box { gap: 9px; margin-bottom: 14px; }
+  .dv-confirm-addon-heading { gap: 9px; padding-bottom: 10px; }
+  .dv-confirm-addon-heading > .q-icon, .dv-confirm-addon-icon { width: 32px; height: 32px; flex-basis: 32px; font-size: 18px; }
+  .dv-confirm-addon-icon svg { width: 19px; height: 19px; }
+  .dv-confirm-addon-heading strong { font-size: 14px; }
+  .dv-confirm-addon-heading div > span { font-size: 11px; }
+  .dv-confirm-baggage-option { gap: 12px; padding: 11px; }
+  .dv-confirm-baggage-option em { margin-top: 5px; padding: 3px 6px; font-size: 10px; }
+  .dv-confirm-seat-top { gap: 12px; }
+  .dv-confirm-seat-price { min-height: 27px; padding: 5px 10px; font-size: 11px; }
+  .dv-confirm-seat-actions { gap: 8px; }
+  .dv-confirm-seat-action { min-height: 34px; padding: 7px 12px; font-size: 12px; }
+  .dv-confirm-form-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 14px; margin-bottom: 18px; }
+  .dv-confirm-field { gap: 5px; }
+  .dv-confirm-field--wide { grid-column: span 2; }
+  .dv-confirm-label { font-size: 10px; }
+  .dv-confirm-input { min-height: 38px; padding: 8px 10px; font-size: 12px; }
+  .dv-confirm-passenger-picker { margin-bottom: 10px; }
+  .dv-confirm-passenger-card { gap: 9px; }
+  .dv-confirm-passenger-identity > .q-icon { width: 30px; height: 30px; }
+  .dv-confirm-passenger-share { margin-top: 6px; font-size: 11px; }
+  .dv-summary-final-btn { min-height: 40px; margin-top: 10px; }
+
+  .dv-hotel-results { max-width: 1240px; padding: 14px 14px 28px; }
+  .dv-hotel-layout { gap: 16px; }
+  .dv-hotel-progress { margin-bottom: 14px; }
+  .dv-hotel-progress-summary { padding: 12px; }
+  .dv-hotel-progress-icon { width: 34px; height: 34px; }
+  .dv-hotel-provider-grid { gap: 7px; padding: 10px 11px 11px; }
+  .dv-hotel-provider { min-height: 36px; padding: 7px 9px; }
+  .dv-hotel-provider-status { padding: 3px 6px; font-size: 10px; }
+  .dv-hotel-results-head { margin-bottom: 12px; }
+  .dv-hotel-results-head h2 { font-size: 20px; }
+  .dv-hotel-list { gap: 11px; }
+  .dv-hotel-card-main { min-height: 176px; }
+  .dv-hotel-image img { min-height: 176px; }
+  .dv-hotel-info, .dv-hotel-action { padding: 14px; }
+  .dv-hotel-title-row h3 { font-size: 16px; }
+  .dv-hotel-address { margin: 8px 0 10px; }
+  .dv-hotel-price { font-size: 22px; }
+  .dv-hotel-action-btn { min-height: 38px; border-radius: 10px; font-size: 12px; }
+  .dv-hotel-offers { padding: 12px; }
+  .dv-hotel-offers h4 { margin-bottom: 9px; font-size: 14px; }
+  .dv-hotel-offer-list { gap: 8px; }
+  .dv-hotel-offer { gap: 10px; padding: 10px 12px; }
+  .dv-hotel-offer-provider { gap: 4px; font-size: 12px; }
+  .dv-hotel-offer-provider strong { font-size: 13px; }
+  .dv-hotel-best { padding: 3px 6px; font-size: 9px; }
+  .dv-hotel-offer-price { font-size: 17px; }
+  .dv-hotel-policy { margin-top: 10px; padding: 5px 7px; font-size: 11px; }
+  .dv-hotel-reserve { min-height: 34px; min-width: 116px; }
+  .dv-hotel-step { max-width: 1120px; padding: 14px 14px 28px; }
+  .dv-hotel-step-header { margin-bottom: 12px; padding: 14px 16px; border-radius: 13px; }
+  .dv-hotel-step-thumb { width: 58px; height: 46px; border-radius: 10px; }
+  .dv-hotel-step-title h2 { font-size: 18px; }
+  .dv-hotel-step-meta { margin-top: 7px; }
+  .dv-hotel-room-layout, .dv-hotel-tariff-layout { gap: 14px; }
+  .dv-hotel-room-list, .dv-hotel-tariff-main, .dv-hotel-room-side, .dv-hotel-tariff-side { gap: 10px; }
+  .dv-hotel-room-card { gap: 14px; padding: 14px; border-radius: 13px; }
+  .dv-hotel-room-name h3 { font-size: 15px; }
+  .dv-hotel-room-description { font-size: 12px; }
+  .dv-hotel-room-action { padding-left: 14px; }
+  .dv-hotel-room-price { font-size: 21px; }
+  .dv-hotel-room-button { min-height: 38px; border-radius: 10px; font-size: 12px; }
+  .dv-hotel-side-card, .dv-hotel-tariff-card { padding: 13px; border-radius: 13px; }
+  .dv-hotel-tariff-head { margin-bottom: 10px; }
+  .dv-hotel-tariff-head h3 { font-size: 15px; }
+  .dv-hotel-tariff-row, .dv-hotel-side-row { padding: 7px 0; }
+  .dv-hotel-reserve-final { min-height: 40px; }
+
+  @media (min-width: 1024px) {
+    .dv-sidebar { width: 250px; }
+    .dv-selection-panel:not(.dv-selection-panel--placeholder) { width: 280px; }
+    .dv-summary-layout { grid-template-columns: minmax(0, 1fr) 320px; }
+    .dv-hotel-layout { grid-template-columns: 250px minmax(0, 1fr); }
+    .dv-hotel-card-main { grid-template-columns: 205px minmax(0, 1fr) 196px; }
+    .dv-hotel-room-layout { grid-template-columns: minmax(0, 1fr) 270px; }
+    .dv-hotel-room-card { grid-template-columns: minmax(0, 1fr) 185px; }
+    .dv-hotel-tariff-layout { grid-template-columns: minmax(0, 1fr) 300px; }
+  }
 `;
 
 // --- MOCK DATA DO HTML ---
