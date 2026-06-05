@@ -1268,6 +1268,7 @@ const INJECTED_CSS = `
   }
 
   .dv-hotel-search-filter {
+    width: min(420px, calc(100vw - 48px));
     grid-template-columns: minmax(0, 1fr);
     gap: 0;
     padding: 0;
@@ -1319,7 +1320,7 @@ const INJECTED_CSS = `
     border-bottom: 1px solid #edf2f7;
   }
 
-  .dv-hotel-search-filter__section:last-child {
+  .dv-hotel-search-filter__section:last-of-type {
     border-bottom: 0;
   }
 
@@ -1348,6 +1349,33 @@ const INJECTED_CSS = `
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
+  }
+
+  .dv-hotel-search-filter__field {
+    display: grid;
+    min-width: 0;
+    gap: 7px;
+  }
+
+  .dv-hotel-search-filter__control {
+    width: 100%;
+    min-height: 39px;
+    padding: 9px 10px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    background: #f8fafc;
+    color: #334155;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 800;
+    outline: none;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  }
+
+  .dv-hotel-search-filter__control:focus {
+    border-color: var(--reserve-primary);
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(66, 143, 112, 0.1);
   }
 
   .dv-hotel-search-filter__chips {
@@ -4380,7 +4408,7 @@ const INJECTED_CSS = `
   }
 
   /* Hotel availability */
-  .dv-hotel-search-grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(150px, 0.75fr) minmax(150px, 0.75fr) minmax(150px, 0.7fr) auto; gap: 12px; align-items: stretch; }
+  .dv-hotel-search-grid { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(150px, 0.82fr) minmax(150px, 0.82fr) auto; gap: 12px; align-items: stretch; }
   .dv-hotel-results { width: 100%; max-width: 1380px; margin: 0 auto; padding: 20px 16px 34px; }
   .dv-hotel-layout { display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 22px; align-items: start; }
   .dv-hotel-sidebar { position: sticky; top: 16px; }
@@ -5761,18 +5789,6 @@ const SearchScreen = ({ criteria, onCriteriaChange, onSubmit, inline = false, sh
               </span>
             </label>
 
-            <label className="dv-booking-field dv-booking-field--date">
-              <span className="dv-booking-label">Hospedes</span>
-              <span className="dv-booking-field__body">
-                <span className="q-icon">group</span>
-                <input
-                  className="dv-booking-input"
-                  value={formatPassengerLabel(passengerCount)}
-                  readOnly
-                />
-              </span>
-            </label>
-
             <button type="submit" className="dv-search-submit dv-search-submit--booking">
               <Search className="w-4 h-4" />
               Buscar hoteis
@@ -5948,20 +5964,20 @@ const SearchScreen = ({ criteria, onCriteriaChange, onSubmit, inline = false, sh
                 className="dv-range-input"
               />
               <div className="dv-hotel-search-filter__row">
-                <label className="dv-filter-block">
+                <label className="dv-hotel-search-filter__field">
                   <span className="dv-filter-block__title">Mínimo</span>
                   <input
-                    className="dv-filter-select"
+                    className="dv-hotel-search-filter__control"
                     type="number"
                     placeholder="R$ 0"
                     value={hotelFiltersData.valorMinimo}
                     onChange={(event) => handleHotelFilterChange('valorMinimo', event.target.value)}
                   />
                 </label>
-                <label className="dv-filter-block">
+                <label className="dv-hotel-search-filter__field">
                   <span className="dv-filter-block__title">Máximo</span>
                   <input
-                    className="dv-filter-select"
+                    className="dv-hotel-search-filter__control"
                     type="number"
                     placeholder="R$ 1.000"
                     value={hotelFiltersData.valorMaximo}
@@ -6011,25 +6027,25 @@ const SearchScreen = ({ criteria, onCriteriaChange, onSubmit, inline = false, sh
               <span className="dv-filter-block__title">Localização e Detalhes</span>
               <div className="dv-hotel-search-filter__row">
                 <input
-                  className="dv-filter-select"
+                  className="dv-hotel-search-filter__control"
                   placeholder="Nome do hotel"
                   value={hotelFiltersData.nomeHotel}
                   onChange={(event) => handleHotelFilterChange('nomeHotel', event.target.value)}
                 />
                 <input
-                  className="dv-filter-select"
+                  className="dv-hotel-search-filter__control"
                   placeholder="Rede hoteleira"
                   value={hotelFiltersData.redeHoteleira}
                   onChange={(event) => handleHotelFilterChange('redeHoteleira', event.target.value)}
                 />
                 <input
-                  className="dv-filter-select"
+                  className="dv-hotel-search-filter__control"
                   placeholder="Bairro"
                   value={hotelFiltersData.bairro}
                   onChange={(event) => handleHotelFilterChange('bairro', event.target.value)}
                 />
                 <input
-                  className="dv-filter-select"
+                  className="dv-hotel-search-filter__control"
                   placeholder="Ponto de interesse"
                   value={hotelFiltersData.pontoDeInteresse}
                   onChange={(event) => handleHotelFilterChange('pontoDeInteresse', event.target.value)}
