@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef } from 'react';
-import { Plane, Search, Loader2, Filter, X, SlidersHorizontal, Sparkles, BaggageClaim } from 'lucide-react';
+import { Plane, Search, Loader2, Filter, X, SlidersHorizontal, Sparkles, BaggageClaim, Star, Coffee, BedDouble, MapPin, DollarSign, Info, ShieldAlert, Network, CheckCircle } from 'lucide-react';
 
 const INJECTED_CSS = `
   @import url("https://fonts.googleapis.com/css2?family=Material+Icons&family=Open+Sans:wght@400;500;600;700;800;900&display=swap");
@@ -4170,6 +4170,97 @@ const INJECTED_CSS = `
     background: #f8fafc;
   }
 
+  /* Hotel availability */
+  .dv-hotel-search-grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(150px, 0.75fr) minmax(150px, 0.75fr) minmax(150px, 0.7fr) auto; gap: 12px; align-items: stretch; }
+  .dv-hotel-results { width: 100%; max-width: 1380px; margin: 0 auto; padding: 20px 16px 34px; }
+  .dv-hotel-layout { display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 22px; align-items: start; }
+  .dv-hotel-sidebar { position: sticky; top: 16px; }
+  .dv-hotel-filter-card, .dv-hotel-progress, .dv-hotel-card { border: 1px solid #e5e7eb; border-radius: 16px; background: #fff; box-shadow: 0 2px 12px rgba(15, 23, 42, 0.035); }
+  .dv-hotel-filter-card { overflow: hidden; }
+  .dv-hotel-filter-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 18px; border-bottom: 1px solid #f1f5f9; background: #fbfcfd; }
+  .dv-hotel-filter-title { display: inline-flex; align-items: center; gap: 8px; color: #1f2937; font-size: 15px; font-weight: 900; }
+  .dv-hotel-clear { border: 0; background: transparent; color: var(--reserve-secondary); cursor: pointer; font-size: 12px; font-weight: 850; }
+  .dv-hotel-filter-section { border-bottom: 1px solid #f1f5f9; }
+  .dv-hotel-filter-section:last-child { border-bottom: 0; }
+  .dv-hotel-filter-header { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 12px; padding: 15px 18px; background: transparent; color: #1f2937; cursor: pointer; text-align: left; }
+  .dv-hotel-filter-header strong { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 850; }
+  .dv-hotel-filter-header svg { color: var(--reserve-primary); }
+  .dv-hotel-filter-body { display: grid; gap: 8px; padding: 0 18px 16px; }
+  .dv-hotel-check { display: flex; align-items: center; justify-content: space-between; gap: 12px; color: #475569; cursor: pointer; font-size: 13px; font-weight: 750; }
+  .dv-hotel-check-main { display: inline-flex; min-width: 0; align-items: center; gap: 8px; }
+  .dv-hotel-check input { width: 16px; height: 16px; accent-color: var(--reserve-primary); }
+  .dv-hotel-check-count { border-radius: 999px; background: #f1f5f9; color: #64748b; font-size: 11px; font-weight: 850; padding: 2px 7px; }
+  .dv-hotel-price-row { display: flex; align-items: center; justify-content: space-between; color: #475569; font-size: 12px; font-weight: 850; }
+  .dv-hotel-progress { overflow: hidden; margin-bottom: 18px; }
+  .dv-hotel-progress-summary { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 16px; background: #fff; }
+  .dv-hotel-progress-main { display: flex; min-width: 0; align-items: center; gap: 12px; }
+  .dv-hotel-progress-icon { display: inline-flex; width: 40px; height: 40px; align-items: center; justify-content: center; border-radius: 999px; background: rgba(66, 143, 112, 0.1); color: var(--reserve-primary); }
+  .dv-hotel-progress-copy strong { display: block; color: #1f2937; font-size: 14px; font-weight: 900; }
+  .dv-hotel-progress-copy span { display: block; color: #64748b; font-size: 12px; font-weight: 700; margin-top: 2px; }
+  .dv-hotel-progress-bar { width: 190px; height: 8px; overflow: hidden; border-radius: 999px; background: #edf2f7; }
+  .dv-hotel-progress-fill { height: 100%; border-radius: inherit; background: var(--reserve-primary); }
+  .dv-hotel-provider-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; padding: 14px 16px 16px; border-top: 1px solid #f1f5f9; background: #fbfcfd; }
+  .dv-hotel-provider { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 12px; border: 1px solid #e5e7eb; border-radius: 12px; background: #fff; }
+  .dv-hotel-provider-name { color: #1f2937; font-size: 12px; font-weight: 900; }
+  .dv-hotel-provider-status { display: inline-flex; align-items: center; gap: 5px; border-radius: 8px; padding: 4px 7px; font-size: 11px; font-weight: 850; }
+  .dv-hotel-provider-status--success { background: rgba(66, 143, 112, 0.1); color: var(--reserve-primary); }
+  .dv-hotel-provider-status--failed { background: rgba(186, 46, 15, 0.1); color: #ba2e0f; }
+  .dv-hotel-results-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
+  .dv-hotel-results-head h2 { margin: 0; color: #1f2937; font-size: 22px; font-weight: 900; }
+  .dv-hotel-results-head p { margin: 4px 0 0; color: #64748b; font-size: 13px; font-weight: 750; }
+  .dv-hotel-list { display: grid; gap: 14px; }
+  .dv-hotel-card { overflow: hidden; transition: box-shadow 0.18s ease, border-color 0.18s ease; }
+  .dv-hotel-card:hover { box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08); }
+  .dv-hotel-card.is-selected { border-color: var(--reserve-primary); box-shadow: 0 0 0 1px rgba(66, 143, 112, 0.25), 0 12px 28px rgba(15, 23, 42, 0.08); }
+  .dv-hotel-card.is-blocked { opacity: 0.82; }
+  .dv-hotel-card-main { display: grid; grid-template-columns: 235px minmax(0, 1fr) 230px; min-height: 208px; }
+  .dv-hotel-image { position: relative; overflow: hidden; background: #eef2f7; }
+  .dv-hotel-image img { display: block; width: 100%; height: 100%; min-height: 208px; object-fit: cover; }
+  .dv-hotel-card.is-blocked .dv-hotel-image img { filter: grayscale(0.45); }
+  .dv-hotel-badge { position: absolute; top: 12px; left: 12px; border-radius: 8px; background: var(--reserve-primary); color: #fff; font-size: 11px; font-weight: 900; padding: 5px 8px; box-shadow: var(--shadow-sm); }
+  .dv-hotel-info { display: flex; min-width: 0; flex-direction: column; justify-content: space-between; padding: 18px; }
+  .dv-hotel-title-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+  .dv-hotel-title-row h3 { margin: 0; color: #1f2937; font-size: 18px; font-weight: 900; line-height: 1.25; }
+  .dv-hotel-stars { display: inline-flex; flex: 0 0 auto; gap: 1px; color: #f5a623; }
+  .dv-hotel-address { display: flex; align-items: flex-start; gap: 6px; margin: 10px 0 14px; color: #64748b; font-size: 12px; font-weight: 700; line-height: 1.45; }
+  .dv-hotel-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .dv-hotel-tag { display: inline-flex; align-items: center; gap: 6px; border: 1px solid #e5e7eb; border-radius: 9px; background: #f8fafc; color: #475569; font-size: 12px; font-weight: 850; padding: 6px 8px; }
+  .dv-hotel-tag--green { border-color: rgba(66, 143, 112, 0.25); background: rgba(66, 143, 112, 0.08); color: var(--reserve-primary); }
+  .dv-hotel-policy { display: inline-flex; width: fit-content; align-items: center; gap: 6px; margin-top: 14px; border-radius: 9px; padding: 7px 9px; font-size: 12px; font-weight: 800; }
+  .dv-hotel-policy--warning { background: rgba(204, 95, 33, 0.12); color: #cc5f21; }
+  .dv-hotel-policy--danger { background: rgba(186, 46, 15, 0.11); color: #ba2e0f; }
+  .dv-hotel-action { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 18px; border-left: 1px solid #f1f5f9; background: #fbfcfd; text-align: center; }
+  .dv-hotel-price-label, .dv-hotel-tax { color: #64748b; font-size: 11px; font-weight: 750; }
+  .dv-hotel-price { margin: 4px 0 3px; color: #1f2937; font-size: 26px; font-weight: 900; letter-spacing: -0.02em; }
+  .dv-hotel-provider-count { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; border-radius: 8px; background: rgba(66, 143, 112, 0.1); color: var(--reserve-primary); font-size: 11px; font-weight: 900; padding: 5px 8px; }
+  .dv-hotel-action-btn { display: inline-flex; width: 100%; min-height: 42px; align-items: center; justify-content: center; gap: 8px; border-radius: 11px; background: var(--reserve-primary); color: #fff; cursor: pointer; font-size: 13px; font-weight: 900; transition: background 0.18s ease, color 0.18s ease; }
+  .dv-hotel-action-btn:hover:not(:disabled) { background: #38634f; }
+  .dv-hotel-action-btn.is-muted { background: #e5e7eb; color: #1f2937; }
+  .dv-hotel-action-btn:disabled { cursor: not-allowed; background: #e5e7eb; color: #94a3b8; }
+  .dv-hotel-offers { border-top: 1px solid #f1f5f9; background: #fbfcfd; padding: 18px; }
+  .dv-hotel-offers h4 { margin: 0 0 12px; color: #1f2937; font-size: 15px; font-weight: 900; }
+  .dv-hotel-offer-list { display: grid; gap: 10px; }
+  .dv-hotel-offer { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 16px; overflow: hidden; border: 1px solid #e5e7eb; border-radius: 13px; background: #fff; padding: 14px 16px 14px 18px; }
+  .dv-hotel-offer.is-best::before, .dv-hotel-offer.is-selected::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background: var(--reserve-primary); }
+  .dv-hotel-offer.is-selected { border-color: var(--reserve-primary); box-shadow: 0 0 0 1px rgba(66, 143, 112, 0.22); }
+  .dv-hotel-offer-provider { display: flex; flex-direction: column; gap: 6px; color: #475569; font-size: 13px; font-weight: 750; }
+  .dv-hotel-offer-provider strong { color: #1f2937; font-size: 14px; font-weight: 900; }
+  .dv-hotel-best { display: inline-flex; width: fit-content; align-items: center; gap: 5px; border-radius: 7px; background: rgba(66, 143, 112, 0.1); color: var(--reserve-primary); font-size: 10px; font-weight: 900; letter-spacing: 0.04em; padding: 4px 7px; text-transform: uppercase; }
+  .dv-hotel-offer-price { color: #1f2937; font-size: 20px; font-weight: 900; text-align: right; }
+  .dv-hotel-offer-price span { display: block; color: #64748b; font-size: 11px; font-weight: 750; margin-top: 2px; }
+  .dv-hotel-reserve { display: inline-flex; min-width: 132px; min-height: 38px; align-items: center; justify-content: center; gap: 7px; border: 1px solid var(--reserve-primary); border-radius: 10px; background: #fff; color: var(--reserve-primary); cursor: pointer; font-size: 12px; font-weight: 900; }
+  .dv-hotel-reserve:hover:not(:disabled), .dv-hotel-reserve.is-selected { background: var(--reserve-primary); color: #fff; }
+  .dv-hotel-reserve:disabled { cursor: not-allowed; border-color: #e5e7eb; background: #f1f5f9; color: #94a3b8; }
+
+  @media (max-width: 1023px) {
+    .dv-hotel-search-grid, .dv-hotel-layout, .dv-hotel-card-main, .dv-hotel-provider-grid, .dv-hotel-offer { grid-template-columns: 1fr; }
+    .dv-hotel-sidebar { position: static; }
+    .dv-hotel-action { border-left: 0; border-top: 1px solid #f1f5f9; }
+    .dv-hotel-progress-summary, .dv-hotel-results-head { align-items: stretch; flex-direction: column; }
+    .dv-hotel-progress-bar { width: 100%; }
+    .dv-hotel-image img { height: 210px; min-height: 210px; }
+  }
+
   /* Availability filters */
   .dv-main-wrapper {
     max-width: 1400px;
@@ -4784,6 +4875,9 @@ const DEFAULT_SEARCH_CRITERIA = {
   departureDate: 'qui, 14 mai',
   returnDate: 'sex, 15 mai',
   multiSegments: [],
+  hotelDestination: 'Rio de Janeiro',
+  checkInDate: 'qui, 14 mai',
+  checkOutDate: 'sex, 15 mai',
   passengers: ['matheus-castro'],
   customPassengers: [],
   anonymousPassengerCount: 0
@@ -4833,6 +4927,89 @@ const FEATURED_FLIGHTS = [
   }
 ];
 
+const HOTEL_PROGRESS = {
+  progressoPercentual: 100,
+  fontesConcluidas: 5,
+  totalFontes: 5,
+  fontesSucesso: 1,
+  fontesFalha: 4,
+  fontes: [
+    { codSisRes: 'B2B', status: 'Concluida', quantidade: 4, erro: null },
+    { codSisRes: 'BBT', status: 'Falha', quantidade: 0, erro: '104 Invalid Agency Header Details!' },
+    { codSisRes: 'CMN', status: 'Falha', quantidade: 0, erro: 'Ocorreu um erro no fornecedor.' },
+    { codSisRes: 'OMN', status: 'Falha', quantidade: 0, erro: 'Authorization error: Invalid username, password and/or id.' },
+    { codSisRes: 'TRD', status: 'Falha', quantidade: 0, erro: 'Erro ao converter retorno do fornecedor.' }
+  ]
+};
+
+const HOTEL_OPTIONS = [
+  {
+    idReferencia: '4b843fdfac5647dda4f9c73a52856699',
+    nomeHotel: 'GRAN NOBILE RIO DE JANEIRO BARRA',
+    imagem: 'https://dadosb2b.s3.us-west-2.amazonaws.com/dev/imgHotel/28062_201718120619_LUXO_TWIN.jpg',
+    categoria: 5,
+    endereco: 'AV LUCIO COSTA, 3150 - BARRA DA TIJUCA - RIO DE JANEIRO',
+    cidade: 'Rio de Janeiro',
+    menorDiaria: 100,
+    marcadores: ['OfereceCafeDaManha', 'MenorDiaria'],
+    violouPolitica: false,
+    ofertas: [
+      { id: 'o1', codSisRes: 'B2B', preco: 100, violouPolitica: false },
+      { id: 'o2', codSisRes: 'TRD', preco: 125, violouPolitica: true, tratamento: 'Alerta', motivoViolacao: 'Acima da menor tarifa' },
+      { id: 'o3', codSisRes: 'OMN', preco: 140, violouPolitica: true, tratamento: 'Alerta', motivoViolacao: 'Acima da menor tarifa' }
+    ]
+  },
+  {
+    idReferencia: 'a043883304bc4a5380c7abb0e907393c',
+    nomeHotel: 'ARGENTINA HOTEL',
+    imagem: 'https://dadosb2b.s3.us-west-2.amazonaws.com/dev/imgHotel/U9kQYcHCDE-aliceHTL3.jpg',
+    categoria: 3,
+    endereco: 'RUA CRUZ LIMA, 30 - FLAMENGO - RIO DE JANEIRO',
+    cidade: 'Rio de Janeiro',
+    menorDiaria: 300,
+    marcadores: [],
+    violouPolitica: true,
+    tratamento: 'Alerta',
+    motivoViolacao: 'Acima do limite da menor tarifa (R$ 100,00)',
+    ofertas: [
+      { id: 'o4', codSisRes: 'TRD', preco: 300, violouPolitica: true, tratamento: 'Alerta', motivoViolacao: 'Acima do limite da menor tarifa (R$ 100,00)' }
+    ]
+  },
+  {
+    idReferencia: '08d5cc9508084b2d89ca82b8c7962927',
+    nomeHotel: 'VENIT BARRA HOTEL',
+    imagem: 'https://dadosb2b.s3.us-west-2.amazonaws.com/dev/imgHotel/31526_201816124903_1.jpg',
+    categoria: 4,
+    endereco: 'AVENIDA EMBAIXADOR ABELARDO BUENO 2710 - BARRA DA TIJUCA',
+    cidade: 'Rio de Janeiro',
+    menorDiaria: 1000,
+    marcadores: ['OfereceCafeDaManha', 'MaiorDiaria'],
+    violouPolitica: true,
+    tratamento: 'Bloqueio',
+    motivoViolacao: 'Hotel bloqueado pela politica da empresa',
+    ofertas: [
+      { id: 'o5', codSisRes: 'OMN', preco: 1000, violouPolitica: true, tratamento: 'Bloqueio', motivoViolacao: 'Hotel bloqueado pela politica da empresa' },
+      { id: 'o6', codSisRes: 'B2B', preco: 1050, violouPolitica: true, tratamento: 'Bloqueio', motivoViolacao: 'Hotel bloqueado pela politica da empresa' }
+    ]
+  },
+  {
+    idReferencia: 'd779a118844e45798b255b15ccce4f40',
+    nomeHotel: 'VENIT MIO HOTEL',
+    imagem: 'https://dadosb2b.s3.us-west-2.amazonaws.com/dev/imgHotel/18839_201628114231_13323.jpg',
+    categoria: 4,
+    endereco: 'AVENIDA EMBAIXADOR ABELARDO BUENO 2710 - BARRA DA TIJUCA',
+    cidade: 'Rio de Janeiro',
+    menorDiaria: 1000,
+    marcadores: ['OfereceCafeDaManha', 'MaiorDiaria'],
+    violouPolitica: true,
+    tratamento: 'Alerta',
+    motivoViolacao: 'Acima do limite da menor tarifa (R$ 100,00)',
+    ofertas: [
+      { id: 'o7', codSisRes: 'B2B', preco: 1000, violouPolitica: true, tratamento: 'Alerta', motivoViolacao: 'Acima do limite da menor tarifa (R$ 100,00)' }
+    ]
+  }
+];
+
 const createEmptyFlightsMap = () => ({ "0": [], "1": [], "99": [] });
 
 const createEmptySelectedFares = () => ({
@@ -4852,6 +5029,11 @@ const formatPrice = (value) => {
   const parts = value.toFixed(2).split('.');
   return { integer: parts[0], decimals: parts[1] };
 };
+
+const formatCurrency = (value) => value.toLocaleString('pt-BR', {
+  style: 'currency',
+  currency: 'BRL'
+});
 
 const getFlightMinPrice = (flight) => Math.min(...flight.Tarifas.map(tarifa => tarifa.Valor));
 
@@ -4957,7 +5139,7 @@ const formatPassengerSummary = (passengers, anonymousPassengerCount = 0) => {
 
 const getAirportNameFromLabel = (label = '') => label.replace(/\s*\([^)]*\)/g, '').trim();
 
-const SearchScreen = ({ criteria, onCriteriaChange, onSubmit, inline = false, showFeaturedFlights = true }) => {
+const SearchScreen = ({ criteria, onCriteriaChange, onSubmit, inline = false, showFeaturedFlights = true, serviceType = 'air', onServiceChange = () => {} }) => {
   const [showFilters, setShowFilters] = useState(false);
   const [flightTypeFilter, setFlightTypeFilter] = useState('all');
   const [periodFilter, setPeriodFilter] = useState('all');
@@ -4971,6 +5153,7 @@ const SearchScreen = ({ criteria, onCriteriaChange, onSubmit, inline = false, sh
   const anonymousPassengerCount = getAnonymousPassengerCount(criteria);
   const passengerCount = getPassengerCount(criteria);
   const tripType = criteria.tripType || DEFAULT_SEARCH_CRITERIA.tripType;
+  const isHotelService = serviceType === 'hotel';
   const multiSegments = Array.isArray(criteria.multiSegments) ? criteria.multiSegments : [];
   const originName = getAirportNameFromLabel(criteria.origin);
   const destinationName = getAirportNameFromLabel(criteria.destination);
@@ -5105,8 +5288,8 @@ const SearchScreen = ({ criteria, onCriteriaChange, onSubmit, inline = false, sh
     <section className="dv-search-hero">
       <div className="dv-service-tabs" aria-label="Servicos de viagem">
         <div className="dv-service-tab-list">
-          <button type="button" className="dv-service-tab is-active"><span className="q-icon">flight</span>Aereo</button>
-          <button type="button" className="dv-service-tab"><span className="q-icon">hotel</span>Hotel</button>
+          <button type="button" className={`dv-service-tab ${serviceType === 'air' ? 'is-active' : ''}`} onClick={() => onServiceChange('air')}><span className="q-icon">flight</span>Aereo</button>
+          <button type="button" className={`dv-service-tab ${serviceType === 'hotel' ? 'is-active' : ''}`} onClick={() => onServiceChange('hotel')}><span className="q-icon">hotel</span>Hotel</button>
           <button type="button" className="dv-service-tab"><span className="q-icon">directions_car</span>Carro</button>
           <button type="button" className="dv-service-tab"><span className="q-icon">directions_bus</span>Rodoviario</button>
         </div>
@@ -5121,18 +5304,24 @@ const SearchScreen = ({ criteria, onCriteriaChange, onSubmit, inline = false, sh
     <section className="dv-search-shell">
       <form className="dv-booking-card" onSubmit={onSubmit}>
         <div className="dv-booking-top">
-          <div className="dv-trip-segmented" aria-label="Tipo de viagem">
-            {TRIP_MODE_OPTIONS.map(option => (
-              <button
-                type="button"
-                className={`dv-trip-segmented__item ${tripType === option.value ? 'is-active' : ''}`}
-                key={option.value}
-                onClick={() => selectTripMode(option.value)}
-              >
-                {option.label}
-              </button>
-            ))}
-          </div>
+          {isHotelService ? (
+            <div className="dv-trip-segmented" aria-label="Tipo de hospedagem">
+              <button type="button" className="dv-trip-segmented__item is-active">Hospedagem</button>
+            </div>
+          ) : (
+            <div className="dv-trip-segmented" aria-label="Tipo de viagem">
+              {TRIP_MODE_OPTIONS.map(option => (
+                <button
+                  type="button"
+                  className={`dv-trip-segmented__item ${tripType === option.value ? 'is-active' : ''}`}
+                  key={option.value}
+                  onClick={() => selectTripMode(option.value)}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+          )}
 
           <div className="dv-booking-tools">
             <div className="dv-passenger-control">
@@ -5258,6 +5447,64 @@ const SearchScreen = ({ criteria, onCriteriaChange, onSubmit, inline = false, sh
           </div>
         </div>
 
+        {isHotelService ? (
+          <div className="dv-hotel-search-grid">
+            <label className="dv-booking-field dv-booking-field--route">
+              <span className="dv-booking-label">Destino</span>
+              <span className="dv-booking-field__body">
+                <span className="q-icon">location_on</span>
+                <span className="dv-booking-route-copy">
+                  <input
+                    className="dv-booking-input"
+                    value={criteria.hotelDestination || 'Rio de Janeiro'}
+                    onChange={(event) => onCriteriaChange('hotelDestination', event.target.value)}
+                  />
+                </span>
+              </span>
+            </label>
+
+            <label className="dv-booking-field dv-booking-field--date">
+              <span className="dv-booking-label">Check-in</span>
+              <span className="dv-booking-field__body">
+                <span className="q-icon">calendar_month</span>
+                <input
+                  className="dv-booking-input"
+                  value={criteria.checkInDate || 'qui, 14 mai'}
+                  onChange={(event) => onCriteriaChange('checkInDate', event.target.value)}
+                />
+              </span>
+            </label>
+
+            <label className="dv-booking-field dv-booking-field--date">
+              <span className="dv-booking-label">Check-out</span>
+              <span className="dv-booking-field__body">
+                <span className="q-icon">event_available</span>
+                <input
+                  className="dv-booking-input"
+                  value={criteria.checkOutDate || 'sex, 15 mai'}
+                  onChange={(event) => onCriteriaChange('checkOutDate', event.target.value)}
+                />
+              </span>
+            </label>
+
+            <label className="dv-booking-field dv-booking-field--date">
+              <span className="dv-booking-label">Hospedes</span>
+              <span className="dv-booking-field__body">
+                <span className="q-icon">group</span>
+                <input
+                  className="dv-booking-input"
+                  value={formatPassengerLabel(passengerCount)}
+                  readOnly
+                />
+              </span>
+            </label>
+
+            <button type="submit" className="dv-search-submit dv-search-submit--booking">
+              <Search className="w-4 h-4" />
+              Buscar hoteis
+            </button>
+          </div>
+        ) : (
         <div className={`dv-flight-search-grid dv-flight-search-grid--${tripType}`}>
           {tripType === 'multi' ? (
             <div className="dv-multi-route-builder" aria-label="Trechos adicionados">
@@ -5399,6 +5646,7 @@ const SearchScreen = ({ criteria, onCriteriaChange, onSubmit, inline = false, sh
             </>
           )}
         </div>
+        )}
 
         {showFilters && (
           <div className="dv-advanced-filters">
@@ -5457,7 +5705,7 @@ const SearchScreen = ({ criteria, onCriteriaChange, onSubmit, inline = false, sh
         )}
       </form>
 
-      {showFeaturedFlights && (
+      {showFeaturedFlights && !isHotelService && (
         <section className="dv-featured-flights" aria-label="Voos em destaque">
           <div className="dv-featured-flights__header">
             <h2>Voos em destaque</h2>
@@ -6648,9 +6896,234 @@ const FlightCard = ({ flight, onSelectFare, selectedFareKeys }) => {
   );
 };
 
+const HotelStars = ({ count }) => (
+  <span className="dv-hotel-stars" aria-label={`${count} estrelas`}>
+    {Array.from({ length: 5 }).map((_, index) => (
+      <Star key={index} size={14} fill={index < count ? 'currentColor' : 'none'} color={index < count ? '#f5a623' : '#d1d5db'} />
+    ))}
+  </span>
+);
+
+const HotelAvailabilityScreen = ({ searchCriteria }) => {
+  const [expandedFilters, setExpandedFilters] = useState({
+    stars: true,
+    price: true,
+    amenities: true,
+    location: false
+  });
+  const [expandedHotelId, setExpandedHotelId] = useState(HOTEL_OPTIONS[0]?.idReferencia || null);
+  const [selectedOffer, setSelectedOffer] = useState(null);
+
+  const toggleHotelFilter = (section) => {
+    setExpandedFilters(prev => ({ ...prev, [section]: !prev[section] }));
+  };
+
+  const HotelFilterSection = ({ id, title, icon: Icon, children }) => (
+    <section className="dv-hotel-filter-section">
+      <button type="button" className="dv-hotel-filter-header" aria-expanded={expandedFilters[id]} onClick={() => toggleHotelFilter(id)}>
+        <strong>{Icon && <Icon size={17} />} {title}</strong>
+        <span className="q-icon">{expandedFilters[id] ? 'expand_less' : 'expand_more'}</span>
+      </button>
+      {expandedFilters[id] && <div className="dv-hotel-filter-body">{children}</div>}
+    </section>
+  );
+
+  const HotelCheck = ({ label, count, icon: Icon }) => (
+    <label className="dv-hotel-check">
+      <span className="dv-hotel-check-main">
+        <input type="checkbox" />
+        {Icon && <Icon size={14} />}
+        <span>{label}</span>
+      </span>
+      {typeof count !== 'undefined' && <span className="dv-hotel-check-count">{count}</span>}
+    </label>
+  );
+
+  return (
+    <section className="dv-inline-results dv-inline-results--availability">
+      <div className="dv-hotel-results">
+        <div className="dv-hotel-layout">
+          <aside className="dv-hotel-sidebar">
+            <div className="dv-hotel-filter-card">
+              <div className="dv-hotel-filter-head">
+                <span className="dv-hotel-filter-title"><Filter size={18} /> Filtros</span>
+                <button type="button" className="dv-hotel-clear">Limpar tudo</button>
+              </div>
+
+              <HotelFilterSection id="stars" title="Categoria" icon={Star}>
+                <HotelCheck label={<HotelStars count={5} />} count={1} />
+                <HotelCheck label={<HotelStars count={4} />} count={2} />
+                <HotelCheck label={<HotelStars count={3} />} count={1} />
+              </HotelFilterSection>
+
+              <HotelFilterSection id="price" title="Faixa de preco" icon={DollarSign}>
+                <div className="dv-hotel-price-row"><span>R$ 50</span><strong>R$ 1.500</strong></div>
+                <input type="range" min="50" max="2000" value="1500" readOnly className="dv-range-input" />
+              </HotelFilterSection>
+
+              <HotelFilterSection id="amenities" title="Comodidades" icon={Coffee}>
+                <HotelCheck label="Cafe da manha" count={3} icon={Coffee} />
+                <HotelCheck label="Cama de casal" count={4} icon={BedDouble} />
+                <HotelCheck label="Wi-Fi gratis" count={4} />
+                <HotelCheck label="Piscina" count={2} />
+              </HotelFilterSection>
+
+              <HotelFilterSection id="location" title="Bairro / Regiao" icon={MapPin}>
+                <HotelCheck label="Barra da Tijuca" count={3} />
+                <HotelCheck label="Flamengo" count={1} />
+                <HotelCheck label="Copacabana" />
+                <HotelCheck label="Ipanema" />
+              </HotelFilterSection>
+            </div>
+          </aside>
+
+          <main className="dv-hotel-content">
+            <section className="dv-hotel-progress">
+              <div className="dv-hotel-progress-summary">
+                <div className="dv-hotel-progress-main">
+                  <span className="dv-hotel-progress-icon"><span className="q-icon">check</span></span>
+                  <span className="dv-hotel-progress-copy">
+                    <strong>Busca concluida</strong>
+                    <span>{HOTEL_PROGRESS.fontesConcluidas} de {HOTEL_PROGRESS.totalFontes} fontes pesquisadas ({HOTEL_PROGRESS.fontesSucesso} com sucesso)</span>
+                  </span>
+                </div>
+                <div className="dv-hotel-progress-bar"><div className="dv-hotel-progress-fill" style={{ width: `${HOTEL_PROGRESS.progressoPercentual}%` }} /></div>
+              </div>
+
+              <div className="dv-hotel-provider-grid">
+                {HOTEL_PROGRESS.fontes.map(fonte => {
+                  const isSuccess = fonte.status === 'Concluida';
+                  return (
+                    <div className="dv-hotel-provider" key={fonte.codSisRes} title={fonte.erro || ''}>
+                      <span className="dv-hotel-provider-name">VIA {fonte.codSisRes}</span>
+                      <span className={`dv-hotel-provider-status dv-hotel-provider-status--${isSuccess ? 'success' : 'failed'}`}>
+                        <span className="q-icon">{isSuccess ? 'check_circle' : 'info'}</span>
+                        {isSuccess ? `${fonte.quantidade} hoteis` : 'Falha'}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+
+            <div className="dv-hotel-results-head">
+              <div>
+                <h2>Hoteis em {searchCriteria.hotelDestination || 'Rio de Janeiro'}</h2>
+                <p>Encontramos {HOTEL_OPTIONS.length} opcoes disponiveis para voce</p>
+              </div>
+              <select className="dv-sort-select" defaultValue="price">
+                <option value="price">Menor preco</option>
+                <option value="recommended">Mais recomendados</option>
+                <option value="stars">Maior categoria</option>
+              </select>
+            </div>
+
+            <div className="dv-hotel-list">
+              {HOTEL_OPTIONS.map(hotel => {
+                const isBlocked = hotel.violouPolitica && hotel.tratamento === 'Bloqueio';
+                const isExpanded = expandedHotelId === hotel.idReferencia;
+                const hasSelectedOffer = selectedOffer?.hotelId === hotel.idReferencia;
+                const availableOffers = hotel.ofertas.filter(oferta => !(oferta.violouPolitica && oferta.tratamento === 'Bloqueio'));
+                const cheapestPrice = Math.min(...availableOffers.map(oferta => oferta.preco));
+
+                return (
+                  <article key={hotel.idReferencia} className={`dv-hotel-card ${isBlocked ? 'is-blocked' : ''} ${hasSelectedOffer ? 'is-selected' : ''}`}>
+                    <div className="dv-hotel-card-main">
+                      <div className="dv-hotel-image">
+                        <img src={hotel.imagem} alt={hotel.nomeHotel} />
+                        {hotel.marcadores.includes('MenorDiaria') && <span className="dv-hotel-badge">Menor tarifa</span>}
+                      </div>
+
+                      <div className="dv-hotel-info">
+                        <div>
+                          <div className="dv-hotel-title-row">
+                            <h3>{hotel.nomeHotel}</h3>
+                            <HotelStars count={hotel.categoria} />
+                          </div>
+                          <div className="dv-hotel-address"><MapPin size={14} /> <span>{hotel.endereco}</span></div>
+                          <div className="dv-hotel-tags">
+                            {hotel.marcadores.includes('OfereceCafeDaManha') && <span className="dv-hotel-tag dv-hotel-tag--green"><Coffee size={13} /> Cafe da manha</span>}
+                            <span className="dv-hotel-tag"><BedDouble size={13} /> Quarto padrao</span>
+                          </div>
+                          {hotel.violouPolitica && (
+                            <span className={`dv-hotel-policy dv-hotel-policy--${hotel.tratamento === 'Bloqueio' ? 'danger' : 'warning'}`}>
+                              {hotel.tratamento === 'Bloqueio' ? <ShieldAlert size={14} /> : <Info size={14} />}
+                              {hotel.motivoViolacao}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="dv-hotel-action">
+                        <div>
+                          <span className="dv-hotel-price-label">A partir de</span>
+                          <div className="dv-hotel-price">{formatCurrency(hotel.menorDiaria)}</div>
+                          <span className="dv-hotel-tax">Taxas inclusas</span>
+                          {hotel.ofertas.length > 1 && <span className="dv-hotel-provider-count"><Network size={12} /> {hotel.ofertas.length} fornecedores</span>}
+                        </div>
+                        <button
+                          type="button"
+                          disabled={isBlocked}
+                          className={`dv-hotel-action-btn ${isExpanded ? 'is-muted' : ''}`}
+                          onClick={() => setExpandedHotelId(isExpanded ? null : hotel.idReferencia)}
+                        >
+                          {isBlocked ? 'Nao permitido' : isExpanded ? 'Fechar opcoes' : `Ver ${hotel.ofertas.length} opcoes`}
+                          {!isBlocked && <span className="q-icon">{isExpanded ? 'expand_less' : 'expand_more'}</span>}
+                        </button>
+                      </div>
+                    </div>
+
+                    {isExpanded && !isBlocked && (
+                      <div className="dv-hotel-offers">
+                        <h4>Escolha sua oferta</h4>
+                        <div className="dv-hotel-offer-list">
+                          {hotel.ofertas.map(oferta => {
+                            const isOfferBlocked = oferta.violouPolitica && oferta.tratamento === 'Bloqueio';
+                            const isSelected = selectedOffer?.offerId === oferta.id;
+                            const isBest = oferta.preco === cheapestPrice && !isOfferBlocked;
+
+                            return (
+                              <div key={oferta.id} className={`dv-hotel-offer ${isBest ? 'is-best' : ''} ${isSelected ? 'is-selected' : ''}`}>
+                                <div className="dv-hotel-offer-provider">
+                                  <span>Operado por <strong>{oferta.codSisRes}</strong></span>
+                                  {isBest && <span className="dv-hotel-best"><Sparkles size={10} /> Melhor oferta</span>}
+                                  {oferta.violouPolitica && (
+                                    <span className={`dv-hotel-policy dv-hotel-policy--${oferta.tratamento === 'Bloqueio' ? 'danger' : 'warning'}`}>
+                                      {oferta.tratamento === 'Bloqueio' ? <ShieldAlert size={12} /> : <Info size={12} />}
+                                      {oferta.motivoViolacao}
+                                    </span>
+                                  )}
+                                </div>
+                                <div className="dv-hotel-offer-price">{formatCurrency(oferta.preco)}<span>Preco final</span></div>
+                                <button
+                                  type="button"
+                                  disabled={isOfferBlocked}
+                                  className={`dv-hotel-reserve ${isSelected ? 'is-selected' : ''}`}
+                                  onClick={() => setSelectedOffer({ hotelId: hotel.idReferencia, offerId: oferta.id })}
+                                >
+                                  {isOfferBlocked ? 'Nao permitido' : isSelected ? <><CheckCircle size={14} /> Escolhido</> : 'Reservar'}
+                                </button>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </article>
+                );
+              })}
+            </div>
+          </main>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 // --- COMPONENTE PRINCIPAL ---
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState('search');
+  const [activeService, setActiveService] = useState('air');
   const [searchCriteria, setSearchCriteria] = useState(DEFAULT_SEARCH_CRITERIA);
   const [isSearching, setIsSearching] = useState(false);
   const [suppliers, setSuppliers] = useState(INITIAL_SUPPLIERS);
@@ -6694,6 +7167,13 @@ export default function App() {
 
   const handleCriteriaChange = (field, value) => {
     setSearchCriteria(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleServiceChange = (service) => {
+    setActiveService(service);
+    setCurrentScreen('search');
+    clearPendingSearch();
+    setIsSearching(false);
   };
 
   const handleStopsToggle = (value) => {
@@ -6776,6 +7256,13 @@ export default function App() {
 
   const startSearch = (event) => {
     event?.preventDefault();
+    if (activeService === 'hotel') {
+      clearPendingSearch();
+      setIsSearching(false);
+      setCurrentScreen('hotelAvailability');
+      return;
+    }
+
     const tripType = searchCriteria.tripType || DEFAULT_SEARCH_CRITERIA.tripType;
     const isOneWay = tripType === 'oneway';
     clearPendingSearch();
@@ -7356,11 +7843,15 @@ export default function App() {
         criteria={searchCriteria}
         onCriteriaChange={handleCriteriaChange}
         onSubmit={startSearch}
+        serviceType={activeService}
+        onServiceChange={handleServiceChange}
         showFeaturedFlights={currentScreen === 'search'}
         inline
       />
 
-      {currentScreen === 'availability' ? (
+      {currentScreen === 'hotelAvailability' ? (
+        <HotelAvailabilityScreen searchCriteria={searchCriteria} />
+      ) : currentScreen === 'availability' ? (
       <section className="dv-inline-results dv-inline-results--availability">
       <div className="dv-main-wrapper mt-4">
         {/* OVERLAY MOBILE PARA FILTROS */}
