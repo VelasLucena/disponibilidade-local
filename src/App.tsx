@@ -5409,6 +5409,7 @@ const getPassengerCount = (criteria = {}) => {
 };
 
 const formatPassengerLabel = (count) => `${count} ${count === 1 ? 'passageiro' : 'passageiros'}`;
+const formatGuestLabel = (count) => `${count} ${count === 1 ? 'hospede' : 'hospedes'}`;
 
 const formatPassengerSummary = (passengers, anonymousPassengerCount = 0) => {
   const passengerNames = passengers.map(passenger => passenger.name);
@@ -5448,11 +5449,16 @@ const SearchScreen = ({ criteria, onCriteriaChange, onSubmit, inline = false, sh
   const selectedPassengerIds = Array.isArray(criteria.passengers) ? criteria.passengers : DEFAULT_SEARCH_CRITERIA.passengers;
   const customPassengers = Array.isArray(criteria.customPassengers) ? criteria.customPassengers : [];
   const passengerOptions = [...PASSENGER_OPTIONS, ...customPassengers];
-  const selectedPassengers = getSelectedPassengers(selectedPassengerIds, customPassengers);
-  const anonymousPassengerCount = getAnonymousPassengerCount(criteria);
-  const passengerCount = getPassengerCount(criteria);
-  const tripType = criteria.tripType || DEFAULT_SEARCH_CRITERIA.tripType;
   const isHotelService = serviceType === 'hotel';
+  const selectedPassengers = getSelectedPassengers(selectedPassengerIds, customPassengers);
+  const anonymousPassengerCount = isHotelService ? 0 : getAnonymousPassengerCount(criteria);
+  const passengerCount = isHotelService ? Math.max(1, selectedPassengerIds.length) : getPassengerCount(criteria);
+  const passengerLabel = isHotelService ? formatGuestLabel(passengerCount) : formatPassengerLabel(passengerCount);
+  const passengerPickerLabel = isHotelService ? 'Selecionar hospedes' : 'Selecionar passageiros';
+  const passengerInputPlaceholder = isHotelService ? 'Buscar ou adicionar hospede...' : 'Buscar ou adicionar passageiro...';
+  const passengerHint = isHotelService ? 'Pressione Enter para adicionar hospedes.' : 'Pressione Enter para adicionar convidados.';
+  const passengerEmptyText = isHotelService ? 'Nenhum hospede encontrado.' : 'Nenhum passageiro encontrado.';
+  const tripType = criteria.tripType || DEFAULT_SEARCH_CRITERIA.tripType;
   const hotelMaxPriceLabel = hotelFiltersData.valorMaximo
     ? Number(hotelFiltersData.valorMaximo).toLocaleString('pt-BR')
     : 'Ilimitado';
@@ -5507,7 +5513,8 @@ const SearchScreen = ({ criteria, onCriteriaChange, onSubmit, inline = false, sh
     setIsPassengerPickerOpen(false);
   };
   const removePassenger = (passengerId) => {
-    if (selectedPassengerIds.length + anonymousPassengerCount <= 1) return;
+    if (isHotelService && selectedPassengerIds.length <= 1) return;
+    if (!isHotelService && selectedPassengerIds.length + anonymousPassengerCount <= 1) return;
     onCriteriaChange('passengers', selectedPassengerIds.filter(id => id !== passengerId));
   };
   const addAnonymousPassenger = () => {
@@ -5655,11 +5662,11 @@ const SearchScreen = ({ criteria, onCriteriaChange, onSubmit, inline = false, sh
                   type="button"
                   className="dv-passenger-toolbar"
                   aria-expanded={isPassengerPickerOpen}
-                  aria-label="Selecionar passageiros"
+                  aria-label={passengerPickerLabel}
                   onClick={() => setIsPassengerPickerOpen(prev => !prev)}
                 >
                   <span className="q-icon">person</span>
-                  <strong>{formatPassengerLabel(passengerCount)}</strong>
+                  <strong>{passengerLabel}</strong>
                   <span className="q-icon">expand_more</span>
                 </button>
 
@@ -5672,14 +5679,14 @@ const SearchScreen = ({ criteria, onCriteriaChange, onSubmit, inline = false, sh
                           <button
                             type="button"
                             aria-label={`Remover ${passenger.name}`}
-                            disabled={selectedPassengerIds.length + anonymousPassengerCount <= 1}
+                            disabled={isHotelService ? selectedPassengerIds.length <= 1 : selectedPassengerIds.length + anonymousPassengerCount <= 1}
                             onClick={() => removePassenger(passenger.id)}
                           >
                             <span className="q-icon">close</span>
                           </button>
                         </span>
                       ))}
-                      {anonymousPassengerCount > 0 && (
+                      {!isHotelService && anonymousPassengerCount > 0 && (
                         <span className="dv-passenger-chip dv-passenger-chip--anonymous">
                           <span>{formatPassengerLabel(anonymousPassengerCount)} sem nome</span>
                           <button
@@ -5699,9 +5706,9 @@ const SearchScreen = ({ criteria, onCriteriaChange, onSubmit, inline = false, sh
                         value={passengerQuery}
                         onChange={(event) => setPassengerQuery(event.target.value)}
                         onKeyDown={handlePassengerKeyDown}
-                        placeholder="Buscar ou adicionar passageiro..."
+                        placeholder={passengerInputPlaceholder}
                       />
-                      <span className="dv-passenger-hint">Pressione Enter para adicionar convidados.</span>
+                      <span className="dv-passenger-hint">{passengerHint}</span>
                     </div>
 
                     {hasPassengerQuery && (
@@ -5725,7 +5732,7 @@ const SearchScreen = ({ criteria, onCriteriaChange, onSubmit, inline = false, sh
                             </button>
                           ))
                         ) : (
-                          <span className="dv-passenger-no-results">Nenhum passageiro encontrado.</span>
+                          <span className="dv-passenger-no-results">{passengerEmptyText}</span>
                         )}
                       </div>
                     )}
@@ -5733,25 +5740,29 @@ const SearchScreen = ({ criteria, onCriteriaChange, onSubmit, inline = false, sh
                 )}
               </div>
 
-              <button
-                type="button"
-                className="dv-passenger-quick-add dv-passenger-quick-add--decrease"
-                aria-label="Diminuir quantidade de passageiros"
-                disabled={anonymousPassengerCount <= 0 || passengerCount <= 1}
-                onClick={removeAnonymousPassenger}
-              >
-                <span className="q-icon">remove</span>
-              </button>
+              {!isHotelService && (
+                <>
+                  <button
+                    type="button"
+                    className="dv-passenger-quick-add dv-passenger-quick-add--decrease"
+                    aria-label="Diminuir quantidade de passageiros"
+                    disabled={anonymousPassengerCount <= 0 || passengerCount <= 1}
+                    onClick={removeAnonymousPassenger}
+                  >
+                    <span className="q-icon">remove</span>
+                  </button>
 
-              <button
-                type="button"
-                className="dv-passenger-quick-add dv-passenger-quick-add--increase"
-                aria-label="Adicionar passageiro sem especificar"
-                disabled={passengerCount >= 9}
-                onClick={addAnonymousPassenger}
-              >
-                <span className="q-icon">add</span>
-              </button>
+                  <button
+                    type="button"
+                    className="dv-passenger-quick-add dv-passenger-quick-add--increase"
+                    aria-label="Adicionar passageiro sem especificar"
+                    disabled={passengerCount >= 9}
+                    onClick={addAnonymousPassenger}
+                  >
+                    <span className="q-icon">add</span>
+                  </button>
+                </>
+              )}
             </div>
 
             <button
@@ -7648,6 +7659,14 @@ export default function App() {
     setCurrentScreen('search');
     clearPendingSearch();
     setIsSearching(false);
+
+    if (service === 'hotel') {
+      setSearchCriteria(prev => ({
+        ...prev,
+        passengers: Array.isArray(prev.passengers) && prev.passengers.length > 0 ? prev.passengers : DEFAULT_SEARCH_CRITERIA.passengers,
+        anonymousPassengerCount: 0
+      }));
+    }
   };
 
   const handleStopsToggle = (value) => {
@@ -7731,6 +7750,11 @@ export default function App() {
   const startSearch = (event) => {
     event?.preventDefault();
     if (activeService === 'hotel') {
+      if (!Array.isArray(searchCriteria.passengers) || searchCriteria.passengers.length === 0) {
+        setSearchCriteria(prev => ({ ...prev, passengers: DEFAULT_SEARCH_CRITERIA.passengers, anonymousPassengerCount: 0 }));
+        return;
+      }
+
       clearPendingSearch();
       setIsSearching(false);
       setCurrentScreen('hotelAvailability');
