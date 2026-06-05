@@ -4505,11 +4505,58 @@ const INJECTED_CSS = `
   .dv-hotel-reserve { display: inline-flex; min-width: 132px; min-height: 38px; align-items: center; justify-content: center; gap: 7px; border: 1px solid var(--reserve-primary); border-radius: 10px; background: #fff; color: var(--reserve-primary); cursor: pointer; font-size: 12px; font-weight: 900; }
   .dv-hotel-reserve:hover:not(:disabled), .dv-hotel-reserve.is-selected { background: var(--reserve-primary); color: #fff; }
   .dv-hotel-reserve:disabled { cursor: not-allowed; border-color: #e5e7eb; background: #f1f5f9; color: #94a3b8; }
+  .dv-hotel-step { width: 100%; max-width: 1240px; margin: 0 auto; padding: 20px 16px 36px; }
+  .dv-hotel-step-header { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 16px; margin-bottom: 16px; padding: 18px 20px; border: 1px solid #e5e7eb; border-radius: 16px; background: #ffffff; box-shadow: 0 2px 12px rgba(15, 23, 42, 0.035); }
+  .dv-hotel-back { display: inline-flex; min-height: 38px; align-items: center; justify-content: center; gap: 7px; border-radius: 10px; background: #f1f5f9; color: #334155; cursor: pointer; font-size: 12px; font-weight: 900; padding: 9px 13px; }
+  .dv-hotel-back:hover { background: #e5e7eb; }
+  .dv-hotel-step-title { display: flex; min-width: 0; align-items: center; gap: 14px; }
+  .dv-hotel-step-thumb { width: 68px; height: 54px; flex: 0 0 auto; overflow: hidden; border-radius: 12px; background: #e2e8f0; }
+  .dv-hotel-step-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .dv-hotel-step-title h2 { margin: 0; color: #172033; font-size: 21px; font-weight: 900; line-height: 1.18; }
+  .dv-hotel-step-title p { margin: 4px 0 0; color: #64748b; font-size: 12px; font-weight: 750; line-height: 1.45; }
+  .dv-hotel-step-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 9px; }
+  .dv-hotel-step-chip { display: inline-flex; min-height: 26px; align-items: center; gap: 6px; border: 1px solid #e5e7eb; border-radius: 999px; background: #f8fafc; color: #475569; font-size: 11px; font-weight: 850; padding: 5px 9px; }
+  .dv-hotel-room-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 18px; align-items: start; }
+  .dv-hotel-room-list { display: grid; gap: 12px; }
+  .dv-hotel-room-card { display: grid; grid-template-columns: minmax(0, 1fr) 210px; gap: 18px; align-items: stretch; padding: 18px; border: 1px solid #e5e7eb; border-radius: 16px; background: #ffffff; box-shadow: 0 2px 12px rgba(15, 23, 42, 0.035); }
+  .dv-hotel-room-main { display: grid; gap: 12px; min-width: 0; }
+  .dv-hotel-room-name { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+  .dv-hotel-room-name h3 { margin: 0; color: #1f2937; font-size: 17px; font-weight: 900; line-height: 1.25; }
+  .dv-hotel-room-code { color: #64748b; font-size: 11px; font-weight: 850; }
+  .dv-hotel-room-description { margin: 0; color: #64748b; font-size: 13px; font-weight: 700; line-height: 1.45; }
+  .dv-hotel-room-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .dv-hotel-room-tag { display: inline-flex; min-height: 28px; align-items: center; gap: 6px; border-radius: 9px; background: #f8fafc; color: #475569; font-size: 12px; font-weight: 850; padding: 6px 9px; }
+  .dv-hotel-room-tag.is-included { background: rgba(66, 143, 112, 0.08); color: var(--reserve-primary); }
+  .dv-hotel-room-action { display: flex; flex-direction: column; align-items: stretch; justify-content: center; gap: 10px; padding-left: 18px; border-left: 1px solid #f1f5f9; text-align: right; }
+  .dv-hotel-room-price { color: #1f2937; font-size: 25px; font-weight: 900; letter-spacing: -0.02em; }
+  .dv-hotel-room-price span { display: block; margin-top: 2px; color: #64748b; font-size: 11px; font-weight: 800; letter-spacing: 0; }
+  .dv-hotel-room-button { display: inline-flex; min-height: 42px; align-items: center; justify-content: center; gap: 8px; border-radius: 11px; background: var(--reserve-primary); color: #ffffff; cursor: pointer; font-size: 13px; font-weight: 900; padding: 10px 14px; }
+  .dv-hotel-room-button:hover { background: #38634f; }
+  .dv-hotel-room-side, .dv-hotel-tariff-side { position: sticky; top: 18px; display: grid; gap: 12px; }
+  .dv-hotel-side-card, .dv-hotel-tariff-card { border: 1px solid #e5e7eb; border-radius: 16px; background: #ffffff; box-shadow: 0 2px 12px rgba(15, 23, 42, 0.035); padding: 16px; }
+  .dv-hotel-side-card h3, .dv-hotel-tariff-card h3 { margin: 0 0 12px; color: #172033; font-size: 15px; font-weight: 900; }
+  .dv-hotel-side-row, .dv-hotel-tariff-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1px solid #f1f5f9; color: #64748b; font-size: 12px; font-weight: 800; }
+  .dv-hotel-side-row:last-child, .dv-hotel-tariff-row:last-child { border-bottom: 0; }
+  .dv-hotel-side-row strong, .dv-hotel-tariff-row strong { color: #1f2937; font-weight: 900; text-align: right; }
+  .dv-hotel-tariff-layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 18px; align-items: start; }
+  .dv-hotel-tariff-main { display: grid; gap: 14px; }
+  .dv-hotel-tariff-card--highlight { border-color: rgba(66, 143, 112, 0.26); box-shadow: 0 0 0 1px rgba(66, 143, 112, 0.12), 0 14px 28px -24px rgba(15, 23, 42, 0.4); }
+  .dv-hotel-tariff-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
+  .dv-hotel-tariff-head h3 { margin-bottom: 4px; font-size: 17px; }
+  .dv-hotel-tariff-head p { margin: 0; color: #64748b; font-size: 12px; font-weight: 750; line-height: 1.45; }
+  .dv-hotel-status { display: inline-flex; min-height: 28px; align-items: center; gap: 6px; border-radius: 999px; font-size: 11px; font-weight: 900; padding: 5px 9px; white-space: nowrap; }
+  .dv-hotel-status--ok { background: rgba(66, 143, 112, 0.1); color: var(--reserve-primary); }
+  .dv-hotel-status--warning { background: rgba(204, 95, 33, 0.12); color: #cc5f21; }
+  .dv-hotel-policy-list { display: grid; gap: 10px; }
+  .dv-hotel-policy-text { margin: 0; color: #475569; font-size: 13px; font-weight: 700; line-height: 1.55; }
+  .dv-hotel-reserve-final { display: inline-flex; width: 100%; min-height: 46px; align-items: center; justify-content: center; gap: 8px; border-radius: 12px; background: var(--reserve-primary); color: #ffffff; cursor: pointer; font-size: 14px; font-weight: 900; margin-top: 12px; }
+  .dv-hotel-reserve-final:hover { background: #38634f; }
 
   @media (max-width: 1023px) {
-    .dv-hotel-search-grid, .dv-hotel-layout, .dv-hotel-card-main, .dv-hotel-provider-grid, .dv-hotel-offer { grid-template-columns: 1fr; }
+    .dv-hotel-search-grid, .dv-hotel-layout, .dv-hotel-card-main, .dv-hotel-provider-grid, .dv-hotel-offer, .dv-hotel-room-layout, .dv-hotel-room-card, .dv-hotel-tariff-layout { grid-template-columns: 1fr; }
     .dv-hotel-sidebar { position: static; }
-    .dv-hotel-action { border-left: 0; border-top: 1px solid #f1f5f9; }
+    .dv-hotel-action, .dv-hotel-room-action { border-left: 0; border-top: 1px solid #f1f5f9; padding-left: 0; padding-top: 16px; text-align: left; }
+    .dv-hotel-room-side, .dv-hotel-tariff-side { position: static; }
     .dv-hotel-progress-summary, .dv-hotel-results-head { align-items: stretch; flex-direction: column; }
     .dv-hotel-progress-bar { width: 100%; }
     .dv-hotel-image img { height: 210px; min-height: 210px; }
@@ -5298,6 +5345,93 @@ const HOTEL_OPTIONS = [
     ]
   }
 ];
+
+const HOTEL_ROOM_TARIFFS = [
+  {
+    idReferenciaTarifa: '3191a97ae201499fa7f7a8fc1b307bad',
+    codigo: '807.52087',
+    nome: 'MIO LUXO TWIN-TARIFA',
+    tipoQuarto: 'MIO LUXO TWIN',
+    descricao: 'Apartamento luxo com duas camas, mesa de trabalho e vista para a Barra.',
+    pensao: 'Cafe da Manha.',
+    cafeDaManha: true,
+    quantidadeDisponivel: 2,
+    valores: { moeda: 'BRL', diaria: 1000, taxas: 0, total: 1000 }
+  },
+  {
+    idReferenciaTarifa: '11f2c2ddfad04a24bbaf0a6e639267e2',
+    codigo: '807.52088',
+    nome: 'MIO LUXO TWIN-TARIFA',
+    tipoQuarto: 'MIO LUXO TWIN',
+    descricao: 'Mesmo quarto, com regra flexivel para alteracao ate o check-in.',
+    pensao: 'Cafe da Manha.',
+    cafeDaManha: true,
+    quantidadeDisponivel: 1,
+    valores: { moeda: 'BRL', diaria: 1100, taxas: 0, total: 1100 }
+  },
+  {
+    idReferenciaTarifa: '2f48fbfc4a3f4dff8f97496d3599a68f',
+    codigo: '806.52087',
+    nome: 'MIO LUXO KING-TARIFA',
+    tipoQuarto: 'MIO LUXO KING',
+    descricao: 'Apartamento luxo com cama king, bancada executiva e cafe incluso.',
+    pensao: 'Cafe da Manha.',
+    cafeDaManha: true,
+    quantidadeDisponivel: 2,
+    valores: { moeda: 'BRL', diaria: 1000, taxas: 0, total: 1000 }
+  },
+  {
+    idReferenciaTarifa: '3aafec8eacc04527b306b15aab5e1a37',
+    codigo: '806.52088',
+    nome: 'MIO LUXO KING-TARIFA',
+    tipoQuarto: 'MIO LUXO KING',
+    descricao: 'Cama king com politica flexivel e pagamento no checkout.',
+    pensao: 'Cafe da Manha.',
+    cafeDaManha: true,
+    quantidadeDisponivel: 1,
+    valores: { moeda: 'BRL', diaria: 1100, taxas: 0, total: 1100 }
+  }
+];
+
+const HOTEL_TARIFFING_TEMPLATE = {
+  tarifacaoId: '0a989eb08b43449e829582be0d32210e',
+  sistemaReserva: { codSisRes: 'B2B', idAgencia: 1 },
+  valores: {
+    quantidadeDiarias: 1,
+    rac: 0,
+    totalComRac: 1000,
+    moeda: 'BRL',
+    diaria: 1000,
+    taxas: 0,
+    total: 1000
+  },
+  cancelamento: {
+    limite: '2026-08-29T14:00:00-03:00',
+    permiteReservarSemPrazo: true,
+    bloqueadoPorPrazoAusente: false
+  },
+  pagamento: {
+    garantiasAceitas: ['Cash', 'Checkout', 'CreditCard'],
+    opcoesAceitas: ['DiariaEExtras', 'DiariaEExtrasSemBebidasAlcolicas', 'SomenteDiarias', 'DiariaELavanderia', 'DiariaECafe']
+  },
+  politicasFornecedor: [
+    {
+      titulo: 'Politicas do Hotel',
+      conteudo: 'Tarifas incluem cafe da manha servido no restaurante do hotel. Horario de check-in a partir das 14 horas e check-out ate as 12 horas. O hotel e 100% nao fumante.'
+    },
+    {
+      titulo: 'Politicas do Hotel',
+      conteudo: 'Cancelamento gratuito ate 29/08/2026 14:00. Check-in permitido somente apos as 14:00. Check-out as 12:00.'
+    }
+  ],
+  politicasEmpresa: [
+    { tipo: 'MenorTarifa', violou: true, valor: 100, tratamento: 'Alerta' },
+    { tipo: 'AntecedenciaMinima', violou: false, valor: 1, tratamento: 'Alerta' }
+  ],
+  regrasEmpresa: [
+    { tipo: 'MargemMenorTarifa', limite: 100, valor: 1000, violou: true, tratamento: 'Alerta' }
+  ]
+};
 
 const createEmptyFlightsMap = () => ({ "0": [], "1": [], "99": [] });
 
@@ -7378,7 +7512,7 @@ const HotelStars = ({ count }) => (
   </span>
 );
 
-const HotelAvailabilityScreen = ({ searchCriteria }) => {
+const HotelAvailabilityScreen = ({ searchCriteria, onSelectHotel }) => {
   const [expandedFilters, setExpandedFilters] = useState({
     stars: true,
     price: true,
@@ -7546,6 +7680,7 @@ const HotelAvailabilityScreen = ({ searchCriteria }) => {
                             if (hasSingleOffer && singleOffer && !isSingleOfferBlocked) {
                               setSelectedOffer({ hotelId: hotel.idReferencia, offerId: singleOffer.id });
                               setExpandedHotelId(null);
+                              onSelectHotel(hotel, singleOffer);
                               return;
                             }
 
@@ -7584,7 +7719,10 @@ const HotelAvailabilityScreen = ({ searchCriteria }) => {
                                   type="button"
                                   disabled={isOfferBlocked}
                                   className={`dv-hotel-reserve ${isSelected ? 'is-selected' : ''}`}
-                                  onClick={() => setSelectedOffer({ hotelId: hotel.idReferencia, offerId: oferta.id })}
+                                  onClick={() => {
+                                    setSelectedOffer({ hotelId: hotel.idReferencia, offerId: oferta.id });
+                                    onSelectHotel(hotel, oferta);
+                                  }}
                                 >
                                   {isOfferBlocked ? 'Nao permitido' : isSelected ? <><CheckCircle size={14} /> Escolhido</> : 'Reservar'}
                                 </button>
@@ -7605,6 +7743,199 @@ const HotelAvailabilityScreen = ({ searchCriteria }) => {
   );
 };
 
+const HotelStepHeader = ({ hotel, searchCriteria, offer, title, onBack }) => (
+  <header className="dv-hotel-step-header">
+    <div className="dv-hotel-step-title">
+      <span className="dv-hotel-step-thumb">
+        <img src={hotel.imagem} alt={hotel.nomeHotel} />
+      </span>
+      <div>
+        <h2>{title}</h2>
+        <p>{hotel.nomeHotel} - {hotel.endereco}</p>
+        <div className="dv-hotel-step-meta">
+          <span className="dv-hotel-step-chip"><span className="q-icon">calendar_month</span>{searchCriteria.checkInDate} ate {searchCriteria.checkOutDate}</span>
+          <span className="dv-hotel-step-chip"><span className="q-icon">hotel</span>{formatGuestLabel(Math.max(1, searchCriteria.passengers?.length || 1))}</span>
+          <span className="dv-hotel-step-chip"><Network size={13} />Via {offer?.codSisRes || 'B2B'}</span>
+        </div>
+      </div>
+    </div>
+    <button type="button" className="dv-hotel-back" onClick={onBack}>
+      <span className="q-icon">arrow_back</span>
+      Voltar
+    </button>
+  </header>
+);
+
+const HotelRoomsScreen = ({ hotel, offer, searchCriteria, onBack, onSelectTariff }) => {
+  const cheapestTotal = Math.min(...HOTEL_ROOM_TARIFFS.map(tariff => tariff.valores.total));
+
+  return (
+    <section className="dv-inline-results dv-inline-results--availability">
+      <div className="dv-hotel-step">
+        <HotelStepHeader
+          hotel={hotel}
+          offer={offer}
+          searchCriteria={searchCriteria}
+          title="Escolha o quarto"
+          onBack={onBack}
+        />
+
+        <div className="dv-hotel-room-layout">
+          <main className="dv-hotel-room-list">
+            {HOTEL_ROOM_TARIFFS.map(tariff => {
+              const isBest = tariff.valores.total === cheapestTotal;
+
+              return (
+                <article className="dv-hotel-room-card" key={tariff.idReferenciaTarifa}>
+                  <div className="dv-hotel-room-main">
+                    <div className="dv-hotel-room-name">
+                      <div>
+                        <h3>{tariff.tipoQuarto}</h3>
+                        <span className="dv-hotel-room-code">Codigo {tariff.codigo}</span>
+                      </div>
+                      {isBest && <span className="dv-hotel-best"><Sparkles size={10} /> Melhor tarifa</span>}
+                    </div>
+                    <p className="dv-hotel-room-description">{tariff.descricao}</p>
+                    <div className="dv-hotel-room-tags">
+                      <span className="dv-hotel-room-tag is-included"><Coffee size={13} /> {tariff.pensao}</span>
+                      <span className="dv-hotel-room-tag"><BedDouble size={13} /> {tariff.nome}</span>
+                      <span className="dv-hotel-room-tag"><span className="q-icon">meeting_room</span>{tariff.quantidadeDisponivel || 1} disponivel</span>
+                    </div>
+                  </div>
+
+                  <div className="dv-hotel-room-action">
+                    <div className="dv-hotel-room-price">
+                      {formatCurrency(tariff.valores.total)}
+                      <span>total com taxas</span>
+                    </div>
+                    <button type="button" className="dv-hotel-room-button" onClick={() => onSelectTariff(tariff)}>
+                      Tarifar quarto
+                    </button>
+                  </div>
+                </article>
+              );
+            })}
+          </main>
+
+          <aside className="dv-hotel-room-side">
+            <div className="dv-hotel-side-card">
+              <h3>Consulta de tarifas</h3>
+              <div className="dv-hotel-side-row"><span>ID consulta</span><strong>d7632ee2...</strong></div>
+              <div className="dv-hotel-side-row"><span>Quartos</span><strong>{HOTEL_ROOM_TARIFFS.length}</strong></div>
+              <div className="dv-hotel-side-row"><span>Fornecedor</span><strong>{offer?.codSisRes || 'B2B'}</strong></div>
+              <div className="dv-hotel-side-row"><span>Menor total</span><strong>{formatCurrency(cheapestTotal)}</strong></div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const HotelTariffingScreen = ({ hotel, offer, tariff, searchCriteria, onBack }) => {
+  const tariffing = {
+    ...HOTEL_TARIFFING_TEMPLATE,
+    hotel: {
+      codigoHotel: '19278',
+      nomeHotel: hotel.nomeHotel,
+      imagem: hotel.imagem,
+      categoria: hotel.categoria,
+      redeHoteleira: null
+    },
+    localizacao: {
+      codigoCidade: 'RIO',
+      codigoPais: 'BR',
+      endereco: hotel.endereco,
+      cidade: 'Rio de Janeiro, Galeao/Antonio Carlos Jobim',
+      latitude: -22.9729812,
+      longitude: -43.3907755
+    },
+    tarifa: tariff,
+    valores: {
+      ...HOTEL_TARIFFING_TEMPLATE.valores,
+      diaria: tariff.valores.diaria,
+      taxas: tariff.valores.taxas,
+      total: tariff.valores.total,
+      totalComRac: tariff.valores.total + HOTEL_TARIFFING_TEMPLATE.valores.rac
+    }
+  };
+  const guests = getSelectedPassengers(searchCriteria.passengers, searchCriteria.customPassengers);
+
+  return (
+    <section className="dv-inline-results dv-inline-results--availability">
+      <div className="dv-hotel-step">
+        <HotelStepHeader
+          hotel={hotel}
+          offer={offer}
+          searchCriteria={searchCriteria}
+          title="Revisao da tarifacao"
+          onBack={onBack}
+        />
+
+        <div className="dv-hotel-tariff-layout">
+          <main className="dv-hotel-tariff-main">
+            <section className="dv-hotel-tariff-card dv-hotel-tariff-card--highlight">
+              <div className="dv-hotel-tariff-head">
+                <div>
+                  <h3>{tariff.tipoQuarto}</h3>
+                  <p>{tariff.nome} - {tariff.pensao}</p>
+                </div>
+                <span className="dv-hotel-status dv-hotel-status--ok"><CheckCircle size={13} /> Tarifado</span>
+              </div>
+              <div className="dv-hotel-tariff-row"><span>Tarifacao</span><strong>{tariffing.tarifacaoId}</strong></div>
+              <div className="dv-hotel-tariff-row"><span>Sistema reserva</span><strong>{tariffing.sistemaReserva.codSisRes}</strong></div>
+              <div className="dv-hotel-tariff-row"><span>Diarias</span><strong>{tariffing.valores.quantidadeDiarias}</strong></div>
+              <div className="dv-hotel-tariff-row"><span>Hospedes</span><strong>{guests.map(guest => guest.name).join(', ') || 'Matheus Castro (Voce)'}</strong></div>
+            </section>
+
+            <section className="dv-hotel-tariff-card">
+              <h3>Politicas da empresa</h3>
+              <div className="dv-hotel-policy-list">
+                {tariffing.politicasEmpresa.map(policy => (
+                  <div className="dv-hotel-tariff-row" key={policy.tipo}>
+                    <span>{policy.tipo}</span>
+                    <strong className={`dv-hotel-status ${policy.violou ? 'dv-hotel-status--warning' : 'dv-hotel-status--ok'}`}>
+                      {policy.violou ? 'Violada' : 'Cumprida'}
+                    </strong>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <section className="dv-hotel-tariff-card">
+              <h3>Politicas do fornecedor</h3>
+              <div className="dv-hotel-policy-list">
+                {tariffing.politicasFornecedor.map((policy, index) => (
+                  <p className="dv-hotel-policy-text" key={`${policy.titulo}-${index}`}>
+                    <strong>{policy.titulo}:</strong> {policy.conteudo}
+                  </p>
+                ))}
+              </div>
+            </section>
+          </main>
+
+          <aside className="dv-hotel-tariff-side">
+            <div className="dv-hotel-tariff-card">
+              <h3>Resumo da compra</h3>
+              <div className="dv-hotel-tariff-row"><span>Diaria</span><strong>{formatCurrency(tariffing.valores.diaria)}</strong></div>
+              <div className="dv-hotel-tariff-row"><span>Taxas</span><strong>{formatCurrency(tariffing.valores.taxas)}</strong></div>
+              <div className="dv-hotel-tariff-row"><span>RAC</span><strong>{formatCurrency(tariffing.valores.rac)}</strong></div>
+              <div className="dv-hotel-tariff-row"><span>Total</span><strong>{formatCurrency(tariffing.valores.totalComRac)}</strong></div>
+              <button type="button" className="dv-hotel-reserve-final">Reservar</button>
+            </div>
+
+            <div className="dv-hotel-tariff-card">
+              <h3>Pagamento e cancelamento</h3>
+              <div className="dv-hotel-tariff-row"><span>Garantias</span><strong>{tariffing.pagamento.garantiasAceitas.join(', ')}</strong></div>
+              <div className="dv-hotel-tariff-row"><span>Cancelamento</span><strong>Gratis ate 29/08/2026 14:00</strong></div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 // --- COMPONENTE PRINCIPAL ---
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState('search');
@@ -7617,6 +7948,8 @@ export default function App() {
   
   const [flightsMap, setFlightsMap] = useState(createEmptyFlightsMap);
   const [selectedFares, setSelectedFares] = useState(createEmptySelectedFares);
+  const [selectedHotelContext, setSelectedHotelContext] = useState(null);
+  const [selectedHotelTariff, setSelectedHotelTariff] = useState(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isSisResMinimized, setIsSisResMinimized] = useState(false);
 
@@ -7659,6 +7992,8 @@ export default function App() {
     setCurrentScreen('search');
     clearPendingSearch();
     setIsSearching(false);
+    setSelectedHotelContext(null);
+    setSelectedHotelTariff(null);
 
     if (service === 'hotel') {
       setSearchCriteria(prev => ({
@@ -7667,6 +8002,17 @@ export default function App() {
         anonymousPassengerCount: 0
       }));
     }
+  };
+
+  const openHotelRooms = (hotel, offer = null) => {
+    setSelectedHotelContext({ hotel, offer });
+    setSelectedHotelTariff(null);
+    setCurrentScreen('hotelRooms');
+  };
+
+  const openHotelTariffing = (tariff) => {
+    setSelectedHotelTariff(tariff);
+    setCurrentScreen('hotelTariffing');
   };
 
   const handleStopsToggle = (value) => {
@@ -7757,6 +8103,8 @@ export default function App() {
 
       clearPendingSearch();
       setIsSearching(false);
+      setSelectedHotelContext(null);
+      setSelectedHotelTariff(null);
       setCurrentScreen('hotelAvailability');
       return;
     }
@@ -8348,7 +8696,23 @@ export default function App() {
       />
 
       {currentScreen === 'hotelAvailability' ? (
-        <HotelAvailabilityScreen searchCriteria={searchCriteria} />
+        <HotelAvailabilityScreen searchCriteria={searchCriteria} onSelectHotel={openHotelRooms} />
+      ) : currentScreen === 'hotelRooms' && selectedHotelContext ? (
+        <HotelRoomsScreen
+          hotel={selectedHotelContext.hotel}
+          offer={selectedHotelContext.offer}
+          searchCriteria={searchCriteria}
+          onBack={() => setCurrentScreen('hotelAvailability')}
+          onSelectTariff={openHotelTariffing}
+        />
+      ) : currentScreen === 'hotelTariffing' && selectedHotelContext && selectedHotelTariff ? (
+        <HotelTariffingScreen
+          hotel={selectedHotelContext.hotel}
+          offer={selectedHotelContext.offer}
+          tariff={selectedHotelTariff}
+          searchCriteria={searchCriteria}
+          onBack={() => setCurrentScreen('hotelRooms')}
+        />
       ) : currentScreen === 'availability' ? (
       <section className="dv-inline-results dv-inline-results--availability">
       <div className="dv-main-wrapper mt-4">
