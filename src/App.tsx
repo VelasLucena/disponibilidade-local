@@ -1267,16 +1267,17 @@ const INJECTED_CSS = `
     color: var(--reserve-primary);
   }
 
-  .dv-hotel-search-filter {
-    width: min(420px, calc(100vw - 48px));
+  .dv-advanced-filters.dv-hotel-search-filter {
+    width: min(420px, calc(100vw - 32px));
+    max-height: min(720px, calc(100vh - 120px));
     grid-template-columns: minmax(0, 1fr);
     gap: 0;
-    padding: 0;
-    overflow: hidden;
-    border: 1px solid #edf2f7;
-    border-radius: 14px;
+    padding: 24px;
+    overflow: hidden auto;
+    border: 1px solid #f3f4f6;
+    border-radius: 12px;
     background: #ffffff;
-    box-shadow: 0 18px 38px -30px rgba(15, 23, 42, 0.58);
+    box-shadow: 0 24px 52px -28px rgba(15, 23, 42, 0.62);
   }
 
   .dv-hotel-search-filter__header {
@@ -1284,8 +1285,9 @@ const INJECTED_CSS = `
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    padding: 16px 18px 14px;
-    border-bottom: 1px solid #edf2f7;
+    padding: 0 0 12px;
+    border-bottom: 1px solid #f3f4f6;
+    margin-bottom: 24px;
   }
 
   .dv-hotel-search-filter__title {
@@ -1314,14 +1316,15 @@ const INJECTED_CSS = `
 
   .dv-hotel-search-filter__section {
     display: grid;
-    gap: 12px;
+    gap: 14px;
     min-width: 0;
-    padding: 18px;
-    border-bottom: 1px solid #edf2f7;
+    padding: 0;
   }
 
-  .dv-hotel-search-filter__section:last-of-type {
-    border-bottom: 0;
+  .dv-hotel-search-filter__section + .dv-hotel-search-filter__section {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid #f3f4f6;
   }
 
   .dv-hotel-search-filter__section-head {
@@ -1348,7 +1351,20 @@ const INJECTED_CSS = `
   .dv-hotel-search-filter__row {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
+    gap: 12px;
+  }
+
+  .dv-hotel-search-filter__price-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .dv-hotel-search-filter__price-divider {
+    flex: 0 0 auto;
+    color: #94a3b8;
+    font-size: 13px;
+    font-weight: 850;
   }
 
   .dv-hotel-search-filter__field {
@@ -1359,15 +1375,15 @@ const INJECTED_CSS = `
 
   .dv-hotel-search-filter__control {
     width: 100%;
-    min-height: 39px;
-    padding: 9px 10px;
+    min-height: 40px;
+    padding: 10px 12px;
     border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    background: #f8fafc;
+    border-radius: 8px;
+    background: #f9fafb;
     color: #334155;
     font: inherit;
-    font-size: 12px;
-    font-weight: 800;
+    font-size: 13px;
+    font-weight: 750;
     outline: none;
     transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
   }
@@ -1414,8 +1430,8 @@ const INJECTED_CSS = `
 
   .dv-hotel-search-filter__star {
     display: inline-flex;
-    width: 43px;
-    height: 43px;
+    width: 48px;
+    height: 48px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -1452,9 +1468,10 @@ const INJECTED_CSS = `
     align-items: center;
     justify-content: flex-end;
     gap: 10px;
-    padding: 14px 18px 18px;
-    border-top: 1px solid #edf2f7;
-    background: #fbfcfd;
+    margin-top: 24px;
+    padding: 16px 0 0;
+    border-top: 1px solid #f3f4f6;
+    background: #ffffff;
   }
 
   .dv-hotel-search-filter__clear,
@@ -5963,7 +5980,7 @@ const SearchScreen = ({ criteria, onCriteriaChange, onSubmit, inline = false, sh
                 onChange={(event) => handleHotelFilterChange('valorMaximo', event.target.value)}
                 className="dv-range-input"
               />
-              <div className="dv-hotel-search-filter__row">
+              <div className="dv-hotel-search-filter__price-row">
                 <label className="dv-hotel-search-filter__field">
                   <span className="dv-filter-block__title">Mínimo</span>
                   <input
@@ -5974,6 +5991,7 @@ const SearchScreen = ({ criteria, onCriteriaChange, onSubmit, inline = false, sh
                     onChange={(event) => handleHotelFilterChange('valorMinimo', event.target.value)}
                   />
                 </label>
+                <span className="dv-hotel-search-filter__price-divider">até</span>
                 <label className="dv-hotel-search-filter__field">
                   <span className="dv-filter-block__title">Máximo</span>
                   <input
