@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" role="img" aria-labelledby="title desc">
+  <title id="title">Gran Nobile Rio de Janeiro Barra</title>
+  <desc id="desc">Hotel tower near Barra beach with warm sunset light.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#86b8d9"/>
+      <stop offset="0.52" stop-color="#f4c48c"/>
+      <stop offset="1" stop-color="#f5f7fb"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2b6f83"/>
+      <stop offset="1" stop-color="#60a8b5"/>
+    </linearGradient>
+    <linearGradient id="tower" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#eef2f7"/>
+      <stop offset="1" stop-color="#a9b6c5"/>
+    </linearGradient>
+  </defs>
+  <rect width="960" height="640" fill="url(#sky)"/>
+  <circle cx="760" cy="126" r="58" fill="#fff3c4" opacity=".9"/>
+  <path d="M0 430 C160 388 308 456 474 421 C642 386 760 414 960 380 L960 640 L0 640 Z" fill="url(#sea)"/>
+  <path d="M0 474 C166 446 316 496 496 465 C646 439 784 460 960 435 L960 640 L0 640 Z" fill="#f0dfbf"/>
+  <path d="M112 520 C260 490 386 534 552 511 C728 486 826 514 960 488 L960 640 L0 640 L0 548 C34 536 72 528 112 520 Z" fill="#e4c58e"/>
+  <g transform="translate(314 116)">
+    <path d="M46 42 L310 0 L362 384 L0 384 Z" fill="#7d8b9b" opacity=".3"/>
+    <path d="M72 32 L300 32 Q318 32 322 50 L360 384 L28 384 L50 50 Q52 32 72 32 Z" fill="url(#tower)"/>
+    <path d="M88 56 L288 56 L318 384 L58 384 Z" fill="#f8fafc" opacity=".35"/>
+    <g fill="#4b6478" opacity=".78">
+      <rect x="86" y="78" width="38" height="26" rx="4"/>
+      <rect x="150" y="78" width="38" height="26" rx="4"/>
+      <rect x="214" y="78" width="38" height="26" rx="4"/>
+      <rect x="278" y="78" width="24" height="26" rx="4"/>
+      <rect x="78" y="126" width="38" height="26" rx="4"/>
+      <rect x="144" y="126" width="38" height="26" rx="4"/>
+      <rect x="210" y="126" width="38" height="26" rx="4"/>
+      <rect x="274" y="126" width="36" height="26" rx="4"/>
+      <rect x="70" y="174" width="38" height="26" rx="4"/>
+      <rect x="138" y="174" width="38" height="26" rx="4"/>
+      <rect x="206" y="174" width="38" height="26" rx="4"/>
+      <rect x="272" y="174" width="40" height="26" rx="4"/>
+      <rect x="66" y="222" width="38" height="26" rx="4"/>
+      <rect x="134" y="222" width="38" height="26" rx="4"/>
+      <rect x="202" y="222" width="38" height="26" rx="4"/>
+      <rect x="270" y="222" width="40" height="26" rx="4"/>
+      <rect x="62" y="270" width="38" height="26" rx="4"/>
+      <rect x="130" y="270" width="38" height="26" rx="4"/>
+      <rect x="198" y="270" width="38" height="26" rx="4"/>
+      <rect x="266" y="270" width="40" height="26" rx="4"/>
+    </g>
+    <rect x="112" y="330" width="132" height="54" rx="8" fill="#345263"/>
+    <rect x="152" y="340" width="52" height="44" rx="4" fill="#f6d89b"/>
+  </g>
+  <g fill="#2e6c61" opacity=".72">
+    <path d="M108 420 C126 384 142 374 154 354 C164 382 182 398 194 424 C164 410 136 410 108 420 Z"/>
+    <rect x="147" y="414" width="11" height="82" rx="5"/>
+    <path d="M775 404 C792 370 812 354 822 330 C834 367 854 386 866 412 C836 398 806 398 775 404 Z"/>
+    <rect x="817" y="400" width="12" height="88" rx="6"/>
+  </g>
+</svg>

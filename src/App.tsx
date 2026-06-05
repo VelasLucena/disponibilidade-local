@@ -5482,7 +5482,7 @@ const HOTEL_OPTIONS = [
   {
     idReferencia: '4b843fdfac5647dda4f9c73a52856699',
     nomeHotel: 'GRAN NOBILE RIO DE JANEIRO BARRA',
-    imagem: 'https://dadosb2b.s3.us-west-2.amazonaws.com/dev/imgHotel/28062_201718120619_LUXO_TWIN.jpg',
+    imagem: './img/hotels/gran-nobile-rio-barra.svg',
     categoria: 5,
     endereco: 'AV LUCIO COSTA, 3150 - BARRA DA TIJUCA - RIO DE JANEIRO',
     cidade: 'Rio de Janeiro',
@@ -5514,7 +5514,7 @@ const HOTEL_OPTIONS = [
   {
     idReferencia: '08d5cc9508084b2d89ca82b8c7962927',
     nomeHotel: 'VENIT BARRA HOTEL',
-    imagem: 'https://dadosb2b.s3.us-west-2.amazonaws.com/dev/imgHotel/31526_201816124903_1.jpg',
+    imagem: './img/hotels/venit-barra-hotel.svg',
     categoria: 4,
     endereco: 'AVENIDA EMBAIXADOR ABELARDO BUENO 2710 - BARRA DA TIJUCA',
     cidade: 'Rio de Janeiro',
@@ -5531,7 +5531,7 @@ const HOTEL_OPTIONS = [
   {
     idReferencia: 'd779a118844e45798b255b15ccce4f40',
     nomeHotel: 'VENIT MIO HOTEL',
-    imagem: 'https://dadosb2b.s3.us-west-2.amazonaws.com/dev/imgHotel/18839_201628114231_13323.jpg',
+    imagem: './img/hotels/venit-mio-hotel.svg',
     categoria: 4,
     endereco: 'AVENIDA EMBAIXADOR ABELARDO BUENO 2710 - BARRA DA TIJUCA',
     cidade: 'Rio de Janeiro',

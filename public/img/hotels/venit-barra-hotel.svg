@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" role="img" aria-labelledby="title desc">
+  <title id="title">Venit Barra Hotel</title>
+  <desc id="desc">Modern corporate hotel facade with pool and city lights.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#15364f"/>
+      <stop offset=".58" stop-color="#526f85"/>
+      <stop offset="1" stop-color="#d7e4ec"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e7eef5"/>
+      <stop offset=".42" stop-color="#8ea3b6"/>
+      <stop offset="1" stop-color="#3f5f78"/>
+    </linearGradient>
+    <linearGradient id="pool" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#3fc6ca"/>
+      <stop offset="1" stop-color="#117e9c"/>
+    </linearGradient>
+  </defs>
+  <rect width="960" height="640" fill="url(#sky)"/>
+  <circle cx="132" cy="104" r="44" fill="#f4e3b2" opacity=".85"/>
+  <path d="M0 456 L960 394 L960 640 L0 640 Z" fill="#d8d0bd"/>
+  <path d="M0 505 C150 472 304 500 466 476 C642 450 774 469 960 438 L960 640 L0 640 Z" fill="#c6aa7a"/>
+  <g transform="translate(236 110)">
+    <rect x="18" y="96" width="432" height="300" rx="22" fill="#203548" opacity=".32"/>
+    <path d="M54 52 L330 16 Q366 12 384 42 L438 396 L18 396 L50 86 Q52 64 54 52 Z" fill="url(#glass)"/>
+    <path d="M88 76 L314 46 L344 396 L48 396 Z" fill="#f8fbfd" opacity=".16"/>
+    <g fill="#f7c873" opacity=".9">
+      <rect x="90" y="100" width="44" height="24" rx="5"/>
+      <rect x="162" y="92" width="44" height="24" rx="5"/>
+      <rect x="234" y="84" width="44" height="24" rx="5"/>
+      <rect x="306" y="76" width="38" height="24" rx="5"/>
+      <rect x="84" y="154" width="44" height="24" rx="5"/>
+      <rect x="158" y="146" width="44" height="24" rx="5"/>
+      <rect x="232" y="138" width="44" height="24" rx="5"/>
+      <rect x="306" y="130" width="42" height="24" rx="5"/>
+      <rect x="78" y="208" width="44" height="24" rx="5"/>
+      <rect x="154" y="200" width="44" height="24" rx="5"/>
+      <rect x="230" y="192" width="44" height="24" rx="5"/>
+      <rect x="306" y="184" width="44" height="24" rx="5"/>
+      <rect x="72" y="262" width="44" height="24" rx="5"/>
+      <rect x="150" y="254" width="44" height="24" rx="5"/>
+      <rect x="228" y="246" width="44" height="24" rx="5"/>
+      <rect x="306" y="238" width="46" height="24" rx="5"/>
+    </g>
+    <rect x="128" y="326" width="136" height="70" rx="10" fill="#1b2a38"/>
+    <rect x="176" y="340" width="40" height="56" rx="4" fill="#80b7c8"/>
+  </g>
+  <ellipse cx="536" cy="520" rx="268" ry="50" fill="#9a7d51" opacity=".38"/>
+  <ellipse cx="536" cy="506" rx="238" ry="42" fill="url(#pool)"/>
+  <path d="M308 500 C430 526 582 484 762 510" fill="none" stroke="#bdebf2" stroke-width="7" opacity=".65"/>
+  <g fill="#263f38">
+    <rect x="86" y="398" width="10" height="116" rx="5"/>
+    <path d="M92 398 C62 388 58 356 78 336 C82 370 108 378 92 398 Z"/>
+    <path d="M94 398 C128 386 130 354 106 334 C104 370 78 381 94 398 Z"/>
+    <rect x="806" y="374" width="12" height="138" rx="6"/>
+    <path d="M812 376 C774 360 772 322 796 300 C802 344 832 354 812 376 Z"/>
+    <path d="M814 376 C852 358 852 318 826 298 C824 342 792 356 814 376 Z"/>
+  </g>
+</svg>
