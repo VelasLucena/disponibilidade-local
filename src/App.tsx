@@ -7488,6 +7488,9 @@ const HotelAvailabilityScreen = ({ searchCriteria }) => {
                 const hasSelectedOffer = selectedOffer?.hotelId === hotel.idReferencia;
                 const availableOffers = hotel.ofertas.filter(oferta => !(oferta.violouPolitica && oferta.tratamento === 'Bloqueio'));
                 const cheapestPrice = Math.min(...availableOffers.map(oferta => oferta.preco));
+                const hasSingleOffer = hotel.ofertas.length === 1;
+                const singleOffer = hotel.ofertas[0];
+                const isSingleOfferBlocked = Boolean(singleOffer?.violouPolitica && singleOffer.tratamento === 'Bloqueio');
 
                 return (
                   <article key={hotel.idReferencia} className={`dv-hotel-card ${isBlocked ? 'is-blocked' : ''} ${hasSelectedOffer ? 'is-selected' : ''}`}>
@@ -7526,17 +7529,25 @@ const HotelAvailabilityScreen = ({ searchCriteria }) => {
                         </div>
                         <button
                           type="button"
-                          disabled={isBlocked}
-                          className={`dv-hotel-action-btn ${isExpanded ? 'is-muted' : ''}`}
-                          onClick={() => setExpandedHotelId(isExpanded ? null : hotel.idReferencia)}
+                          disabled={isBlocked || (hasSingleOffer && isSingleOfferBlocked)}
+                          className={`dv-hotel-action-btn ${isExpanded && !hasSingleOffer ? 'is-muted' : ''}`}
+                          onClick={() => {
+                            if (hasSingleOffer && singleOffer && !isSingleOfferBlocked) {
+                              setSelectedOffer({ hotelId: hotel.idReferencia, offerId: singleOffer.id });
+                              setExpandedHotelId(null);
+                              return;
+                            }
+
+                            setExpandedHotelId(isExpanded ? null : hotel.idReferencia);
+                          }}
                         >
-                          {isBlocked ? 'Nao permitido' : isExpanded ? 'Fechar opcoes' : `Ver ${hotel.ofertas.length} opcoes`}
-                          {!isBlocked && <span className="q-icon">{isExpanded ? 'expand_less' : 'expand_more'}</span>}
+                          {isBlocked || (hasSingleOffer && isSingleOfferBlocked) ? 'Nao permitido' : hasSingleOffer ? 'Selecionar' : isExpanded ? 'Fechar opcoes' : `Ver ${hotel.ofertas.length} opcoes`}
+                          {!isBlocked && !hasSingleOffer && <span className="q-icon">{isExpanded ? 'expand_less' : 'expand_more'}</span>}
                         </button>
                       </div>
                     </div>
 
-                    {isExpanded && !isBlocked && (
+                    {isExpanded && !isBlocked && !hasSingleOffer && (
                       <div className="dv-hotel-offers">
                         <h4>Escolha sua oferta</h4>
                         <div className="dv-hotel-offer-list">
