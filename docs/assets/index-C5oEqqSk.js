@@ -857,22 +857,22 @@ Error generating stack: `+e.message+`
   .dv-search-hero {
     position: relative;
     z-index: 1;
-    padding: 40px 16px 128px;
+    padding: 32px 20px 108px;
     background: #38634f;
   }
 
   .dv-search-screen--reserve .dv-search-shell {
     position: relative;
     z-index: 2;
-    max-width: 1024px;
-    margin-top: -96px;
-    padding: 0 16px;
+    max-width: 1160px;
+    margin-top: -84px;
+    padding: 0 20px;
   }
 
   .dv-service-tabs {
     display: flex;
     justify-content: center;
-    margin-bottom: 28px;
+    margin-bottom: 22px;
   }
 
   .dv-service-tab-list {
@@ -919,16 +919,16 @@ Error generating stack: `+e.message+`
   }
 
   .dv-search-hero-copy {
-    max-width: 860px;
+    max-width: 780px;
     margin: 0 auto;
     color: #ffffff;
     text-align: center;
   }
 
   .dv-search-hero-copy h1 {
-    margin: 0 0 12px;
+    margin: 0 0 8px;
     color: #ffffff;
-    font-size: clamp(30px, 4vw, 40px);
+    font-size: clamp(28px, 3.2vw, 36px);
     font-weight: 900;
     line-height: 1.1;
   }
@@ -936,18 +936,18 @@ Error generating stack: `+e.message+`
   .dv-search-hero-copy p {
     margin: 0;
     color: rgba(255,255,255,0.82);
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     line-height: 1.45;
   }
 
   .dv-booking-card {
     position: relative;
-    padding: 24px;
+    padding: 20px;
     border: 1px solid rgba(243, 244, 246, 0.98);
-    border-radius: 16px;
+    border-radius: 14px;
     background: #ffffff;
-    box-shadow: 0 24px 54px -30px rgba(15, 23, 42, 0.58);
+    box-shadow: 0 18px 42px -30px rgba(15, 23, 42, 0.58);
   }
 
   .dv-booking-top {
@@ -955,7 +955,7 @@ Error generating stack: `+e.message+`
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    margin-bottom: 24px;
+    margin-bottom: 18px;
   }
 
   .dv-trip-segmented {
@@ -1515,7 +1515,7 @@ Error generating stack: `+e.message+`
   .dv-flight-search-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 42px minmax(0, 1fr) minmax(150px, 0.8fr) minmax(150px, 0.8fr);
-    gap: 12px;
+    gap: 10px;
     align-items: stretch;
   }
 
@@ -1530,11 +1530,11 @@ Error generating stack: `+e.message+`
   .dv-booking-field {
     display: flex;
     min-width: 0;
-    min-height: 56px;
+    min-height: 54px;
     flex-direction: column;
     justify-content: center;
     gap: 5px;
-    padding: 10px 12px;
+    padding: 9px 12px;
     border: 1px solid #d1d5db;
     border-radius: var(--radius-md);
     background: #ffffff;
@@ -1542,7 +1542,7 @@ Error generating stack: `+e.message+`
   }
 
   .dv-booking-field--route {
-    min-height: 58px;
+    min-height: 56px;
   }
 
   .dv-booking-field:focus-within {
@@ -1690,10 +1690,10 @@ Error generating stack: `+e.message+`
   .dv-search-submit.dv-search-submit--booking {
     grid-column: 1 / -1;
     justify-self: end;
-    min-width: 184px;
-    min-height: 52px;
-    margin-top: 12px;
-    padding: 12px 28px;
+    min-width: 176px;
+    min-height: 48px;
+    margin-top: 10px;
+    padding: 11px 26px;
     border-radius: 12px;
     background: var(--reserve-primary);
     box-shadow: 0 16px 28px -20px rgba(66, 143, 112, 0.72);
@@ -1771,14 +1771,14 @@ Error generating stack: `+e.message+`
   }
 
   .dv-featured-flights {
-    margin-top: 42px;
+    margin-top: 30px;
   }
 
   .dv-featured-flights__header {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    margin-bottom: 22px;
+    margin-bottom: 16px;
   }
 
   .dv-featured-flights__eyebrow {
@@ -1794,7 +1794,7 @@ Error generating stack: `+e.message+`
   .dv-featured-flights__header h2 {
     margin: 0;
     color: #1f2937;
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 900;
     line-height: 1.15;
   }
@@ -1816,7 +1816,7 @@ Error generating stack: `+e.message+`
   .dv-featured-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 24px;
+    gap: 18px;
   }
 
   .dv-featured-card {
@@ -1837,7 +1837,7 @@ Error generating stack: `+e.message+`
 
   .dv-featured-card__image {
     position: relative;
-    height: 192px;
+    height: 150px;
     overflow: hidden;
     background: #e2e8f0;
   }
@@ -1877,8 +1877,8 @@ Error generating stack: `+e.message+`
 
   .dv-featured-card__body {
     display: grid;
-    gap: 14px;
-    padding: 16px;
+    gap: 12px;
+    padding: 14px;
   }
 
   .dv-featured-route {
@@ -1907,7 +1907,7 @@ Error generating stack: `+e.message+`
 
   .dv-featured-route strong {
     color: #1f2937;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 900;
   }
 
@@ -1935,7 +1935,7 @@ Error generating stack: `+e.message+`
 
   .dv-featured-price-row strong {
     color: var(--reserve-primary);
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 900;
     line-height: 1;
   }
@@ -4402,7 +4402,7 @@ Error generating stack: `+e.message+`
   }
 
   .dv-search-screen--inline .dv-search-hero {
-    padding-bottom: 112px;
+    padding-bottom: 100px;
   }
 
   .dv-search-screen--inline .dv-search-shell {
@@ -4430,7 +4430,7 @@ Error generating stack: `+e.message+`
   }
 
   /* Hotel availability */
-  .dv-hotel-search-grid { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(150px, 0.82fr) minmax(150px, 0.82fr) auto; gap: 12px; align-items: stretch; }
+  .dv-hotel-search-grid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(150px, 0.85fr) minmax(150px, 0.85fr); gap: 10px; align-items: stretch; }
   .dv-hotel-results { width: 100%; max-width: 1380px; margin: 0 auto; padding: 20px 16px 34px; }
   .dv-hotel-layout { display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 22px; align-items: start; }
   .dv-hotel-sidebar { position: sticky; top: 16px; }
