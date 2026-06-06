@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef } from 'react';
-import { Plane, Search, Loader2, Filter, X, SlidersHorizontal, Sparkles, BaggageClaim, Star, Coffee, BedDouble, MapPin, DollarSign, Info, ShieldAlert, Network, CheckCircle } from 'lucide-react';
+import { Plane, Search, Loader2, Filter, X, SlidersHorizontal, Sparkles, BaggageClaim, Star, Coffee, BedDouble, MapPin, DollarSign, Info, ShieldAlert, Network, CheckCircle, Building2 } from 'lucide-react';
 
 const INJECTED_CSS = `
   @import url("https://fonts.googleapis.com/css2?family=Material+Icons&family=Open+Sans:wght@400;500;600;700;800;900&display=swap");
@@ -4638,6 +4638,49 @@ const INJECTED_CSS = `
   .dv-hotel-total-final span { display: block; color: #94a3b8; font-size: 10px; font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase; }
   .dv-hotel-total-final strong { display: block; margin-top: 4px; color: var(--reserve-primary); font-size: 25px; font-weight: 900; }
   .dv-hotel-total-help { margin: 10px 0 0; color: #94a3b8; font-size: 10px; font-weight: 750; line-height: 1.45; text-align: center; }
+  .dv-hotel-step--checkout { max-width: 1180px; padding: 20px 16px 42px; }
+  .dv-hotel-review-hero--checkout { min-height: 104px; margin-bottom: 28px; padding: 24px; border-radius: 16px; box-shadow: 0 18px 38px -30px rgba(15, 23, 42, 0.72); }
+  .dv-hotel-review-hero--checkout h2 { font-size: 24px; line-height: 1.1; }
+  .dv-hotel-review-hero--checkout p { margin-top: 5px; font-size: 13px; font-weight: 750; }
+  .dv-hotel-review-hero--checkout .dv-hotel-back { min-height: 40px; padding: 10px 16px; border-radius: 12px; font-size: 13px; }
+  .dv-hotel-tariff-layout--checkout { grid-template-columns: minmax(0, 1fr) 360px; gap: 28px; align-items: start; }
+  .dv-hotel-checkout-main { gap: 24px; }
+  .dv-hotel-checkout-card { border-radius: 24px; box-shadow: 0 8px 28px -26px rgba(15, 23, 42, 0.5); }
+  .dv-hotel-checkout-card .dv-hotel-review-card__head { padding: 24px; gap: 14px; }
+  .dv-hotel-checkout-card .dv-hotel-review-card__icon { width: 40px; height: 40px; }
+  .dv-hotel-checkout-card .dv-hotel-review-card__head h3 { font-size: 18px; }
+  .dv-hotel-checkout-card .dv-hotel-review-card__head p { margin-top: 3px; font-size: 12px; }
+  .dv-hotel-checkout-card .dv-hotel-review-card__body { gap: 22px; padding: 24px; }
+  .dv-hotel-summary-identity { display: flex; align-items: flex-start; gap: 14px; padding: 18px; border: 1px solid #edf2f7; border-radius: 18px; background: #f8fafc; }
+  .dv-hotel-summary-identity .dv-hotel-review-card__icon { flex: 0 0 auto; background: #ffffff; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04); }
+  .dv-hotel-summary-identity h4 { margin: 0; color: #172033; font-size: 17px; font-weight: 900; line-height: 1.25; }
+  .dv-hotel-summary-identity p { margin: 4px 0 0; color: #64748b; font-size: 12px; font-weight: 750; line-height: 1.45; }
+  .dv-hotel-checkout-card .dv-hotel-stay-grid { gap: 16px; }
+  .dv-hotel-checkout-card .dv-hotel-stay-box { padding: 20px; border-radius: 18px; }
+  .dv-hotel-checkout-card .dv-hotel-stay-box strong { font-size: 18px; }
+  .dv-hotel-checkout-card .dv-hotel-selected-room { padding: 20px; border-radius: 18px; }
+  .dv-hotel-checkout-card .dv-hotel-selected-room h4 { font-size: 16px; }
+  .dv-hotel-checkout-card .dv-hotel-policy-alert { padding: 20px; border-radius: 18px; }
+  .dv-hotel-checkout-card .dv-hotel-policy-note { padding: 20px; border-radius: 18px; gap: 12px; }
+  .dv-hotel-checkout-card .dv-hotel-billing-grid { gap: 20px; }
+  .dv-hotel-checkout-card .dv-hotel-billing-field { gap: 7px; }
+  .dv-hotel-checkout-card .dv-hotel-billing-field > span { color: #374151; font-size: 10px; font-weight: 900; letter-spacing: 0.02em; text-transform: uppercase; }
+  .dv-hotel-checkout-card .dv-hotel-billing-input { min-height: 46px; padding: 12px 14px; border-radius: 12px; font-size: 13px; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04); }
+  .dv-hotel-guests-section { padding-top: 26px; border-top: 1px solid #f1f5f9; }
+  .dv-hotel-guests-title { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+  .dv-hotel-guests-title h3 { margin: 0; color: #172033; font-size: 18px; font-weight: 900; }
+  .dv-hotel-guests-title span { display: inline-flex; min-height: 22px; align-items: center; border-radius: 7px; background: #f1f5f9; color: #64748b; font-size: 12px; font-weight: 900; padding: 3px 8px; }
+  .dv-hotel-checkout-card .dv-hotel-guest-picker { max-width: 520px; margin-bottom: 18px; }
+  .dv-hotel-checkout-card .dv-hotel-guest-card { padding: 12px; border-radius: 13px; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04); }
+  .dv-hotel-checkout-card .dv-hotel-guest-main { font-size: 13px; }
+  .dv-hotel-guest-owner { display: inline-flex; margin-left: 8px; border-radius: 999px; background: #f1f5f9; color: #64748b; font-size: 10px; font-weight: 900; letter-spacing: 0.06em; padding: 3px 8px; text-transform: uppercase; }
+  .dv-hotel-total-card--checkout { position: sticky; top: 24px; padding: 28px; border-radius: 24px; box-shadow: 0 24px 44px -32px rgba(15, 23, 42, 0.62); }
+  .dv-hotel-total-card--checkout h3 { margin-bottom: 24px; font-size: 20px; }
+  .dv-hotel-total-card--checkout .dv-hotel-tariff-row { padding: 10px 0; font-size: 13px; }
+  .dv-hotel-total-card--checkout .dv-hotel-total-final { margin: 22px 0 26px; padding-top: 22px; border-top: 2px dashed #dbe3ef; }
+  .dv-hotel-total-card--checkout .dv-hotel-total-final strong { color: var(--reserve-primary); font-size: 30px; }
+  .dv-hotel-total-card--checkout .dv-hotel-reserve-final { min-height: 52px; margin-top: 0; border-radius: 12px; font-size: 15px; }
+  .dv-hotel-total-card--checkout .dv-hotel-total-help { margin-top: 18px; font-size: 11px; }
 
   @media (max-width: 1023px) {
     .dv-hotel-search-grid, .dv-hotel-layout, .dv-hotel-card-main, .dv-hotel-provider-grid, .dv-hotel-offer, .dv-hotel-room-layout, .dv-hotel-room-card, .dv-hotel-tariff-layout { grid-template-columns: 1fr; }
@@ -4653,6 +4696,8 @@ const INJECTED_CSS = `
     .dv-hotel-stay-grid, .dv-hotel-billing-grid { grid-template-columns: 1fr; }
     .dv-hotel-billing-field--wide { grid-column: auto; }
     .dv-hotel-selected-room { align-items: flex-start; flex-direction: column; }
+    .dv-hotel-review-hero--checkout { align-items: flex-start; flex-direction: column; }
+    .dv-hotel-total-card--checkout { position: static; }
   }
 
   /* Availability filters */
@@ -5369,6 +5414,19 @@ const INJECTED_CSS = `
     .dv-hotel-room-layout { grid-template-columns: minmax(0, 1fr) 270px; }
     .dv-hotel-room-card { grid-template-columns: minmax(0, 1fr) 185px; }
     .dv-hotel-tariff-layout { grid-template-columns: minmax(0, 1fr) 300px; }
+  }
+
+  .dv-hotel-step.dv-hotel-step--checkout { max-width: 1180px; padding: 20px 16px 42px; }
+  .dv-app-container { overflow-x: clip; overflow-y: visible; }
+  .dv-hotel-review-hero.dv-hotel-review-hero--checkout { min-height: 104px; margin-bottom: 28px; padding: 24px; border-radius: 16px; }
+  .dv-hotel-tariff-main.dv-hotel-checkout-main { gap: 24px; }
+  .dv-hotel-review-card.dv-hotel-checkout-card { border-radius: 24px; box-shadow: 0 8px 28px -26px rgba(15, 23, 42, 0.5); }
+  .dv-hotel-tariff-side.dv-hotel-tariff-side--checkout { display: block; position: static; align-self: stretch; }
+  .dv-hotel-tariff-card.dv-hotel-total-card--checkout { padding: 28px; border-radius: 24px; box-shadow: 0 24px 44px -32px rgba(15, 23, 42, 0.62); }
+
+  @media (min-width: 1024px) {
+    .dv-hotel-tariff-layout.dv-hotel-tariff-layout--checkout { grid-template-columns: minmax(0, 1fr) 360px; gap: 28px; align-items: stretch; }
+    .dv-hotel-tariff-card.dv-hotel-total-card--checkout { position: sticky; top: 24px; }
   }
 `;
 
@@ -8199,9 +8257,8 @@ const HotelTariffingScreen = ({ hotel, offer, tariff, searchCriteria, onBack }) 
   const [billingData, setBillingData] = useState({
     company: 'Tech Solutions S.A.',
     costCenter: 'CC-4092 (Desenvolvimento)',
-    project: 'PRJ-Nexus Implantacao',
     reason: 'Reuniao presencial com cliente',
-    paymentMethod: 'Faturado (Agencia)'
+    paymentMethod: 'Faturado (Agencia) - Todas as despesas'
   });
   const [selectedGuests, setSelectedGuests] = useState(initialGuests);
   const [guestInput, setGuestInput] = useState('');
@@ -8232,7 +8289,6 @@ const HotelTariffingScreen = ({ hotel, offer, tariff, searchCriteria, onBack }) 
       totalComRac: tariff.valores.total + HOTEL_TARIFFING_TEMPLATE.valores.rac
     }
   };
-  const nights = HOTEL_TARIFFING_TEMPLATE.valores.quantidadeDiarias;
   const serviceFee = 45;
   const totalWithService = tariffing.valores.totalComRac + serviceFee;
   const violatesLowestFare = tariff.valores.total > 1050;
@@ -8244,7 +8300,6 @@ const HotelTariffingScreen = ({ hotel, offer, tariff, searchCriteria, onBack }) 
   const billingOptions = {
     company: ['Tech Solutions S.A.', 'Acme Corp', 'Global Industries', 'Nexus Tech'],
     costCenter: ['CC-4092 (Desenvolvimento)', 'CC-1021 (Marketing)', 'CC-3055 (Vendas)', 'CC-9901 (RH)'],
-    project: ['PRJ-Nexus Implantacao', 'PRJ-Alpha Upgrade', 'PRJ-Omega Migration', 'Operacao Padrao'],
     reason: ['Reuniao presencial com cliente', 'Treinamento de equipe', 'Evento corporativo', 'Visita tecnica']
   };
 
@@ -8288,11 +8343,11 @@ const HotelTariffingScreen = ({ hotel, offer, tariff, searchCriteria, onBack }) 
 
   return (
     <section className="dv-inline-results dv-inline-results--availability">
-      <div className="dv-hotel-step">
-        <header className="dv-hotel-review-hero">
+      <div className="dv-hotel-step dv-hotel-step--checkout">
+        <header className="dv-hotel-review-hero dv-hotel-review-hero--checkout">
           <div>
-            <h2>Revisao e confirmacao</h2>
-            <p>Verifique os dados antes de finalizar a reserva do hotel.</p>
+            <h2>Revisao e Confirmacao</h2>
+            <p>Verifique os dados antes de finalizar a emissao.</p>
           </div>
           <button type="button" className="dv-hotel-back" onClick={onBack}>
             <span className="q-icon">arrow_back</span>
@@ -8300,17 +8355,25 @@ const HotelTariffingScreen = ({ hotel, offer, tariff, searchCriteria, onBack }) 
           </button>
         </header>
 
-        <div className="dv-hotel-tariff-layout">
-          <main className="dv-hotel-tariff-main">
-            <section className="dv-hotel-review-card">
+        <div className="dv-hotel-tariff-layout dv-hotel-tariff-layout--checkout">
+          <main className="dv-hotel-tariff-main dv-hotel-checkout-main">
+            <section className="dv-hotel-review-card dv-hotel-checkout-card">
               <header className="dv-hotel-review-card__head">
-                <span className="dv-hotel-review-card__icon"><MapPin size={18} /></span>
+                <span className="dv-hotel-review-card__icon"><Building2 size={18} /></span>
                 <div>
-                  <h3>{hotel.nomeHotel}</h3>
-                  <p>{hotel.endereco}</p>
+                  <h3>Resumo da Hospedagem</h3>
+                  <p>Dados da estadia e quarto selecionado.</p>
                 </div>
               </header>
               <div className="dv-hotel-review-card__body">
+                <div className="dv-hotel-summary-identity">
+                  <span className="dv-hotel-review-card__icon"><MapPin size={18} /></span>
+                  <div>
+                    <h4>{hotel.nomeHotel}</h4>
+                    <p>{hotel.endereco}</p>
+                  </div>
+                </div>
+
                 <div className="dv-hotel-stay-grid">
                   <div className="dv-hotel-stay-box">
                     <span>Check-in</span>
@@ -8339,11 +8402,11 @@ const HotelTariffingScreen = ({ hotel, offer, tariff, searchCriteria, onBack }) 
               </div>
             </section>
 
-            <section className="dv-hotel-review-card">
+            <section className="dv-hotel-review-card dv-hotel-checkout-card">
               <header className="dv-hotel-review-card__head">
                 <span className="dv-hotel-review-card__icon"><span className="q-icon">verified_user</span></span>
                 <div>
-                  <h3>Regras e conformidade</h3>
+                  <h3>Regras e Conformidade</h3>
                   <p>Politicas corporativas e regras do fornecedor.</p>
                 </div>
               </header>
@@ -8379,11 +8442,11 @@ const HotelTariffingScreen = ({ hotel, offer, tariff, searchCriteria, onBack }) 
               </div>
             </section>
 
-            <section className="dv-hotel-review-card">
+            <section className="dv-hotel-review-card dv-hotel-checkout-card">
               <header className="dv-hotel-review-card__head">
                 <span className="dv-hotel-review-card__icon"><span className="q-icon">assignment</span></span>
                 <div>
-                  <h3>Dados de faturamento</h3>
+                  <h3>Dados de Faturamento</h3>
                   <p>Informacoes obrigatorias para solicitacao e aprovacao.</p>
                 </div>
               </header>
@@ -8391,17 +8454,18 @@ const HotelTariffingScreen = ({ hotel, offer, tariff, searchCriteria, onBack }) 
                 <div className="dv-hotel-billing-grid">
                   <BillingField label="Empresa *" field="company" options={billingOptions.company} />
                   <BillingField label="Centro de custo *" field="costCenter" options={billingOptions.costCenter} />
-                  <BillingField label="Projeto" field="project" options={billingOptions.project} />
                   <BillingField label="Motivo da viagem *" field="reason" options={billingOptions.reason} />
-                  <BillingField label="Garantia / pagamento *" field="paymentMethod" wide options={['Faturado (Agencia)', 'Faturado somente diarias', 'Cartao corporativo']} />
+                  <BillingField label="Garantia / pagamento *" field="paymentMethod" options={[
+                    'Faturado (Agencia) - Todas as despesas',
+                    'Faturado (Agencia) - Somente diarias',
+                    'Cartao de credito corporativo'
+                  ]} />
                 </div>
 
-                <div>
-                  <div className="dv-hotel-tariff-head">
-                    <div>
-                      <h3>Hospedes <span className="dv-hotel-check-count">{selectedGuests.length}</span></h3>
-                      <p>Selecione quem ficara vinculado a reserva.</p>
-                    </div>
+                <div className="dv-hotel-guests-section">
+                  <div className="dv-hotel-guests-title">
+                    <h3>Hospedes</h3>
+                    <span>{selectedGuests.length}</span>
                   </div>
 
                   <div className="dv-hotel-guest-picker">
@@ -8436,7 +8500,8 @@ const HotelTariffingScreen = ({ hotel, offer, tariff, searchCriteria, onBack }) 
                       <div className="dv-hotel-guest-card" key={guest}>
                         <span className="dv-hotel-guest-main">
                           <span className="q-icon">person</span>
-                          <span>{guest} {index === 0 ? '(Titular)' : ''}</span>
+                          <span>{guest}</span>
+                          {index === 0 && <em className="dv-hotel-guest-owner">Titular</em>}
                         </span>
                         {selectedGuests.length > 1 && (
                           <button type="button" className="dv-hotel-guest-remove" aria-label={`Remover ${guest}`} onClick={() => removeGuest(guest)}>
@@ -8451,32 +8516,19 @@ const HotelTariffingScreen = ({ hotel, offer, tariff, searchCriteria, onBack }) 
             </section>
           </main>
 
-          <aside className="dv-hotel-tariff-side">
-            <div className="dv-hotel-tariff-card dv-hotel-total-card">
-              <h3>Resumo da compra</h3>
-              <div className="dv-hotel-tariff-row"><span>Tarifacao</span><strong>{tariffing.tarifacaoId.slice(0, 8)}...</strong></div>
-              <div className="dv-hotel-tariff-row"><span>Sistema reserva</span><strong>{tariffing.sistemaReserva.codSisRes}</strong></div>
-              <div className="dv-hotel-tariff-row"><span>Diarias</span><strong>{nights}</strong></div>
-              <div className="dv-hotel-tariff-row"><span>Hospedes</span><strong>{selectedGuests.length}</strong></div>
+          <aside className="dv-hotel-tariff-side dv-hotel-tariff-side--checkout">
+            <div className="dv-hotel-tariff-card dv-hotel-total-card dv-hotel-total-card--checkout">
+              <h3>Valores</h3>
               <div className="dv-hotel-tariff-row"><span>Tarifa com taxas</span><strong>{formatCurrency(tariffing.valores.total)}</strong></div>
-              <div className="dv-hotel-tariff-row"><span>Taxas</span><strong>{formatCurrency(tariffing.valores.taxas)}</strong></div>
-              <div className="dv-hotel-tariff-row"><span>RAC</span><strong>{formatCurrency(tariffing.valores.rac)}</strong></div>
-              <div className="dv-hotel-tariff-row"><span>Fee da agencia</span><strong>{formatCurrency(serviceFee)}</strong></div>
+              <div className="dv-hotel-tariff-row"><span>Fee da Agencia</span><strong>{formatCurrency(serviceFee)}</strong></div>
               <div className="dv-hotel-total-final">
-                <span>Custo final</span>
+                <span>Custo Final</span>
                 <strong>{formatCurrency(totalWithService)}</strong>
               </div>
               <button type="button" className="dv-hotel-reserve-final" disabled={selectedGuests.length === 0}>
-                Reservar
+                Finalizar Solicitacao
               </button>
-              <p className="dv-hotel-total-help">Ao reservar, a solicitacao segue as politicas do fornecedor e da empresa.</p>
-            </div>
-
-            <div className="dv-hotel-tariff-card">
-              <h3>Pagamento e cancelamento</h3>
-              <div className="dv-hotel-tariff-row"><span>Garantias</span><strong>{tariffing.pagamento.garantiasAceitas.join(', ')}</strong></div>
-              <div className="dv-hotel-tariff-row"><span>Pagamento</span><strong>{billingData.paymentMethod}</strong></div>
-              <div className="dv-hotel-tariff-row"><span>Cancelamento</span><strong>Gratis ate 29/08/2026 14:00</strong></div>
+              <p className="dv-hotel-total-help">Ao finalizar, a solicitacao segue as politicas do fornecedor e da empresa.</p>
             </div>
           </aside>
         </div>
