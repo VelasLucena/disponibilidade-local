@@ -4465,6 +4465,7 @@ const INJECTED_CSS = `
   .dv-hotel-list { display: grid; gap: 14px; }
   .dv-hotel-card { overflow: hidden; transition: box-shadow 0.18s ease, border-color 0.18s ease; }
   .dv-hotel-card:hover { box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08); }
+  .dv-hotel-card.is-dropdown-open { overflow: visible; position: relative; z-index: 50; }
   .dv-hotel-card.is-selected { border-color: var(--reserve-primary); box-shadow: 0 0 0 1px rgba(66, 143, 112, 0.25), 0 12px 28px rgba(15, 23, 42, 0.08); }
   .dv-hotel-card.is-blocked { opacity: 0.82; }
   .dv-hotel-card-main { display: grid; grid-template-columns: 235px minmax(0, 1fr) 230px; min-height: 208px; }
@@ -4487,6 +4488,8 @@ const INJECTED_CSS = `
   .dv-hotel-price-label, .dv-hotel-tax { color: #64748b; font-size: 11px; font-weight: 750; }
   .dv-hotel-price { margin: 4px 0 3px; color: #1f2937; font-size: 26px; font-weight: 900; letter-spacing: -0.02em; }
   .dv-hotel-provider-count { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; border-radius: 8px; background: rgba(66, 143, 112, 0.1); color: var(--reserve-primary); font-size: 11px; font-weight: 900; padding: 5px 8px; }
+  .dv-hotel-provider-main { display: inline-flex; max-width: 100%; align-items: center; justify-content: center; gap: 5px; margin: 8px auto 0; color: #475569; font-size: 11px; font-weight: 850; }
+  .dv-hotel-provider-main span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .dv-hotel-action-btn { display: inline-flex; width: 100%; min-height: 42px; align-items: center; justify-content: center; gap: 8px; border-radius: 11px; background: var(--reserve-primary); color: #fff; cursor: pointer; font-size: 13px; font-weight: 900; transition: background 0.18s ease, color 0.18s ease; }
   .dv-hotel-action-btn:hover:not(:disabled) { background: #38634f; }
   .dv-hotel-action-btn.is-muted { background: #e5e7eb; color: #1f2937; }
@@ -4505,6 +4508,30 @@ const INJECTED_CSS = `
   .dv-hotel-reserve { display: inline-flex; min-width: 132px; min-height: 38px; align-items: center; justify-content: center; gap: 7px; border: 1px solid var(--reserve-primary); border-radius: 10px; background: #fff; color: var(--reserve-primary); cursor: pointer; font-size: 12px; font-weight: 900; }
   .dv-hotel-reserve:hover:not(:disabled), .dv-hotel-reserve.is-selected { background: var(--reserve-primary); color: #fff; }
   .dv-hotel-reserve:disabled { cursor: not-allowed; border-color: #e5e7eb; background: #f1f5f9; color: #94a3b8; }
+  .dv-hotel-dedup { position: relative; width: 100%; }
+  .dv-hotel-dedup-backdrop { position: fixed; inset: 0; z-index: 45; background: transparent; cursor: default; }
+  .dv-hotel-dedup-menu { position: absolute; z-index: 60; top: calc(100% + 10px); right: 0; width: min(380px, calc(100vw - 32px)); padding: 8px; border: 1px solid #edf2f7; border-radius: 16px; background: #ffffff; box-shadow: 0 18px 44px -26px rgba(15, 23, 42, 0.62); text-align: left; }
+  .dv-hotel-dedup-menu::before { content: ""; position: absolute; top: -7px; right: 34px; width: 14px; height: 14px; border-top: 1px solid #edf2f7; border-left: 1px solid #edf2f7; background: #ffffff; transform: rotate(45deg); }
+  .dv-hotel-dedup-head { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 10px 10px; border-bottom: 1px solid #f1f5f9; }
+  .dv-hotel-dedup-head strong { color: #64748b; font-size: 10px; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; }
+  .dv-hotel-dedup-head span { color: #94a3b8; font-size: 11px; font-weight: 850; }
+  .dv-hotel-dedup-list { position: relative; z-index: 1; display: grid; gap: 5px; max-height: 300px; overflow-y: auto; padding: 6px 2px 0; }
+  .dv-hotel-dedup-option { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 10px; border: 1px solid transparent; border-radius: 12px; background: #ffffff; transition: border-color 0.18s ease, background 0.18s ease; }
+  .dv-hotel-dedup-option:hover { border-color: #edf2f7; background: #f8fafc; }
+  .dv-hotel-dedup-option.is-selected { border-color: rgba(66, 143, 112, 0.24); background: rgba(66, 143, 112, 0.05); }
+  .dv-hotel-dedup-option.is-blocked { opacity: 0.62; }
+  .dv-hotel-dedup-provider { display: grid; gap: 4px; min-width: 0; }
+  .dv-hotel-dedup-provider strong { overflow: hidden; color: #172033; font-size: 13px; font-weight: 900; text-overflow: ellipsis; white-space: nowrap; }
+  .dv-hotel-dedup-note { display: inline-flex; min-width: 0; align-items: center; gap: 5px; color: #94a3b8; font-size: 11px; font-weight: 750; }
+  .dv-hotel-dedup-note.is-warning { color: #cc5f21; }
+  .dv-hotel-dedup-note.is-danger { color: #ba2e0f; }
+  .dv-hotel-dedup-note span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dv-hotel-dedup-side { display: inline-flex; align-items: center; gap: 12px; }
+  .dv-hotel-dedup-price { color: #172033; font-size: 16px; font-weight: 900; white-space: nowrap; }
+  .dv-hotel-dedup-select { display: inline-flex; min-height: 32px; align-items: center; justify-content: center; gap: 5px; padding: 7px 11px; border: 1px solid #e5e7eb; border-radius: 9px; background: #ffffff; color: #172033; cursor: pointer; font-size: 12px; font-weight: 900; }
+  .dv-hotel-dedup-select:hover:not(:disabled) { border-color: var(--reserve-primary); background: var(--reserve-primary); color: #ffffff; }
+  .dv-hotel-dedup-select.is-selected { border-color: var(--reserve-primary); background: var(--reserve-primary); color: #ffffff; }
+  .dv-hotel-dedup-select:disabled { cursor: not-allowed; background: #f1f5f9; color: #94a3b8; }
   .dv-hotel-step { width: 100%; max-width: 1240px; margin: 0 auto; padding: 20px 16px 36px; }
   .dv-hotel-step-header { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 16px; margin-bottom: 16px; padding: 18px 20px; border: 1px solid #e5e7eb; border-radius: 16px; background: #ffffff; box-shadow: 0 2px 12px rgba(15, 23, 42, 0.035); }
   .dv-hotel-step-header--hero { overflow: hidden; grid-template-columns: 240px minmax(0, 1fr) auto; padding: 0; border: 0; border-radius: 18px; background: #38634f; color: #ffffff; box-shadow: 0 18px 38px -30px rgba(15, 23, 42, 0.72); }
@@ -5553,6 +5580,8 @@ const HOTEL_OPTIONS = [
     endereco: 'AV LUCIO COSTA, 3150 - BARRA DA TIJUCA - RIO DE JANEIRO',
     cidade: 'Rio de Janeiro',
     menorDiaria: 100,
+    sistemaReserva: { codSisRes: 'B2B' },
+    fontesDeduplicadas: ['TRD', 'OMN'],
     marcadores: ['OfereceCafeDaManha', 'MenorDiaria'],
     violouPolitica: false,
     ofertas: [
@@ -5569,6 +5598,8 @@ const HOTEL_OPTIONS = [
     endereco: 'RUA CRUZ LIMA, 30 - FLAMENGO - RIO DE JANEIRO',
     cidade: 'Rio de Janeiro',
     menorDiaria: 300,
+    sistemaReserva: { codSisRes: 'TRD' },
+    fontesDeduplicadas: [],
     marcadores: [],
     violouPolitica: true,
     tratamento: 'Alerta',
@@ -5585,6 +5616,8 @@ const HOTEL_OPTIONS = [
     endereco: 'AVENIDA EMBAIXADOR ABELARDO BUENO 2710 - BARRA DA TIJUCA',
     cidade: 'Rio de Janeiro',
     menorDiaria: 1000,
+    sistemaReserva: { codSisRes: 'OMN' },
+    fontesDeduplicadas: ['B2B'],
     marcadores: ['OfereceCafeDaManha', 'MaiorDiaria'],
     violouPolitica: true,
     tratamento: 'Bloqueio',
@@ -5602,6 +5635,8 @@ const HOTEL_OPTIONS = [
     endereco: 'AVENIDA EMBAIXADOR ABELARDO BUENO 2710 - BARRA DA TIJUCA',
     cidade: 'Rio de Janeiro',
     menorDiaria: 1000,
+    sistemaReserva: { codSisRes: 'B2B' },
+    fontesDeduplicadas: [],
     marcadores: ['OfereceCafeDaManha', 'MaiorDiaria'],
     violouPolitica: true,
     tratamento: 'Alerta',
@@ -5697,6 +5732,17 @@ const HOTEL_TARIFFING_TEMPLATE = {
   regrasEmpresa: [
     { tipo: 'MargemMenorTarifa', limite: 100, valor: 1000, violou: true, tratamento: 'Alerta' }
   ]
+};
+
+const getProviderName = (code) => {
+  const names = {
+    B2B: 'B2B Reservas',
+    TRD: 'Trend Viagens',
+    OMN: 'Omnibees',
+    CMN: 'Cangooroo',
+    BBT: 'BestBuy Travel'
+  };
+  return names[code] || code;
 };
 
 const createEmptyFlightsMap = () => ({ "0": [], "1": [], "99": [] });
@@ -7785,7 +7831,7 @@ const HotelAvailabilityScreen = ({ searchCriteria, onSelectHotel }) => {
     amenities: true,
     location: false
   });
-  const [expandedHotelId, setExpandedHotelId] = useState(HOTEL_OPTIONS[0]?.idReferencia || null);
+  const [expandedHotelId, setExpandedHotelId] = useState(null);
   const [selectedOffer, setSelectedOffer] = useState(null);
 
   const toggleHotelFilter = (section) => {
@@ -7898,13 +7944,13 @@ const HotelAvailabilityScreen = ({ searchCriteria, onSelectHotel }) => {
                 const isExpanded = expandedHotelId === hotel.idReferencia;
                 const hasSelectedOffer = selectedOffer?.hotelId === hotel.idReferencia;
                 const availableOffers = hotel.ofertas.filter(oferta => !(oferta.violouPolitica && oferta.tratamento === 'Bloqueio'));
-                const cheapestPrice = Math.min(...availableOffers.map(oferta => oferta.preco));
+                const cheapestPrice = Math.min(...(availableOffers.length > 0 ? availableOffers : hotel.ofertas).map(oferta => oferta.preco));
                 const hasSingleOffer = hotel.ofertas.length === 1;
                 const singleOffer = hotel.ofertas[0];
                 const isSingleOfferBlocked = Boolean(singleOffer?.violouPolitica && singleOffer.tratamento === 'Bloqueio');
 
                 return (
-                  <article key={hotel.idReferencia} className={`dv-hotel-card ${isBlocked ? 'is-blocked' : ''} ${hasSelectedOffer ? 'is-selected' : ''}`}>
+                  <article key={hotel.idReferencia} className={`dv-hotel-card ${isBlocked ? 'is-blocked' : ''} ${hasSelectedOffer ? 'is-selected' : ''} ${isExpanded ? 'is-dropdown-open' : ''}`}>
                     <div className="dv-hotel-card-main">
                       <div className="dv-hotel-image">
                         <img src={hotel.imagem} alt={hotel.nomeHotel} />
@@ -7936,68 +7982,99 @@ const HotelAvailabilityScreen = ({ searchCriteria, onSelectHotel }) => {
                           <span className="dv-hotel-price-label">A partir de</span>
                           <div className="dv-hotel-price">{formatCurrency(hotel.menorDiaria)}</div>
                           <span className="dv-hotel-tax">Taxas inclusas</span>
-                          {hotel.ofertas.length > 1 && <span className="dv-hotel-provider-count"><Network size={12} /> {hotel.ofertas.length} fornecedores</span>}
+                          <span className="dv-hotel-provider-main" title={getProviderName(hotel.sistemaReserva?.codSisRes || hotel.ofertas[0]?.codSisRes || 'B2B')}>
+                            <span className="q-icon">layers</span>
+                            <span>{getProviderName(hotel.sistemaReserva?.codSisRes || hotel.ofertas[0]?.codSisRes || 'B2B')}</span>
+                          </span>
+                          {hotel.fontesDeduplicadas?.length > 0 && (
+                            <span className="dv-hotel-provider-count" title={`Tambem encontrado em: ${hotel.fontesDeduplicadas.join(', ')}`}>
+                              <Network size={12} /> +{hotel.fontesDeduplicadas.length} opcoes unificadas
+                            </span>
+                          )}
                         </div>
-                        <button
-                          type="button"
-                          disabled={isBlocked || (hasSingleOffer && isSingleOfferBlocked)}
-                          className={`dv-hotel-action-btn ${isExpanded && !hasSingleOffer ? 'is-muted' : ''}`}
-                          onClick={() => {
-                            if (hasSingleOffer && singleOffer && !isSingleOfferBlocked) {
-                              setSelectedOffer({ hotelId: hotel.idReferencia, offerId: singleOffer.id });
-                              setExpandedHotelId(null);
-                              onSelectHotel(hotel, singleOffer);
-                              return;
-                            }
+                        <div className="dv-hotel-dedup">
+                          <button
+                            type="button"
+                            disabled={isBlocked || (hasSingleOffer && isSingleOfferBlocked)}
+                            className={`dv-hotel-action-btn ${isExpanded && !hasSingleOffer ? 'is-muted' : ''}`}
+                            onClick={() => {
+                              if (hasSingleOffer && singleOffer && !isSingleOfferBlocked) {
+                                setSelectedOffer({ hotelId: hotel.idReferencia, offerId: singleOffer.id, codSisRes: singleOffer.codSisRes });
+                                setExpandedHotelId(null);
+                                onSelectHotel(hotel, singleOffer);
+                                return;
+                              }
 
-                            setExpandedHotelId(isExpanded ? null : hotel.idReferencia);
-                          }}
-                        >
-                          {isBlocked || (hasSingleOffer && isSingleOfferBlocked) ? 'Nao permitido' : hasSingleOffer ? 'Selecionar' : isExpanded ? 'Fechar opcoes' : `Ver ${hotel.ofertas.length} opcoes`}
-                          {!isBlocked && !hasSingleOffer && <span className="q-icon">{isExpanded ? 'expand_less' : 'expand_more'}</span>}
-                        </button>
+                              setExpandedHotelId(isExpanded ? null : hotel.idReferencia);
+                            }}
+                          >
+                            {isBlocked || (hasSingleOffer && isSingleOfferBlocked)
+                              ? 'Nao permitido'
+                              : hasSingleOffer
+                                ? 'Selecionar'
+                                : hasSelectedOffer
+                                  ? 'Ver selecao'
+                                  : `Ver ${hotel.ofertas.length} opcoes`}
+                            {!isBlocked && !hasSingleOffer && <span className="q-icon">{isExpanded ? 'expand_less' : 'expand_more'}</span>}
+                          </button>
+
+                          {isExpanded && !isBlocked && !hasSingleOffer && (
+                            <>
+                              <div className="dv-hotel-dedup-backdrop" onClick={() => setExpandedHotelId(null)} />
+                              <div className="dv-hotel-dedup-menu">
+                                <div className="dv-hotel-dedup-head">
+                                  <strong>Escolha o fornecedor</strong>
+                                  <span>{hotel.ofertas.length} opcoes</span>
+                                </div>
+
+                                <div className="dv-hotel-dedup-list">
+                                  {hotel.ofertas.map(oferta => {
+                                    const isOfferBlocked = oferta.violouPolitica && oferta.tratamento === 'Bloqueio';
+                                    const isSelected = selectedOffer?.hotelId === hotel.idReferencia && selectedOffer?.offerId === oferta.id;
+                                    const isBest = oferta.preco === cheapestPrice && !isOfferBlocked;
+
+                                    return (
+                                      <div key={oferta.id} className={`dv-hotel-dedup-option ${isSelected ? 'is-selected' : ''} ${isOfferBlocked ? 'is-blocked' : ''}`}>
+                                        <div className="dv-hotel-dedup-provider">
+                                          <strong title={getProviderName(oferta.codSisRes)}>{getProviderName(oferta.codSisRes)}</strong>
+                                          {oferta.violouPolitica ? (
+                                            <span className={`dv-hotel-dedup-note ${oferta.tratamento === 'Bloqueio' ? 'is-danger' : 'is-warning'}`}>
+                                              {oferta.tratamento === 'Bloqueio' ? <ShieldAlert size={12} /> : <Info size={12} />}
+                                              <span title={oferta.motivoViolacao}>{oferta.motivoViolacao}</span>
+                                            </span>
+                                          ) : isBest ? (
+                                            <span className="dv-hotel-dedup-note"><Sparkles size={12} /> <span>Melhor oferta</span></span>
+                                          ) : (
+                                            <span className="dv-hotel-dedup-note"><CheckCircle size={12} /> <span>Dentro da politica</span></span>
+                                          )}
+                                        </div>
+
+                                        <div className="dv-hotel-dedup-side">
+                                          <span className="dv-hotel-dedup-price">{formatCurrency(oferta.preco)}</span>
+                                          <button
+                                            type="button"
+                                            disabled={isOfferBlocked}
+                                            className={`dv-hotel-dedup-select ${isSelected ? 'is-selected' : ''}`}
+                                            onClick={() => {
+                                              if (isOfferBlocked) return;
+                                              setSelectedOffer({ hotelId: hotel.idReferencia, offerId: oferta.id, codSisRes: oferta.codSisRes });
+                                              setExpandedHotelId(null);
+                                              onSelectHotel(hotel, oferta);
+                                            }}
+                                          >
+                                            {isSelected ? <><span className="q-icon">check</span> Selecionado</> : 'Selecionar'}
+                                          </button>
+                                        </div>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            </>
+                          )}
+                        </div>
                       </div>
                     </div>
-
-                    {isExpanded && !isBlocked && !hasSingleOffer && (
-                      <div className="dv-hotel-offers">
-                        <h4>Escolha sua oferta</h4>
-                        <div className="dv-hotel-offer-list">
-                          {hotel.ofertas.map(oferta => {
-                            const isOfferBlocked = oferta.violouPolitica && oferta.tratamento === 'Bloqueio';
-                            const isSelected = selectedOffer?.offerId === oferta.id;
-                            const isBest = oferta.preco === cheapestPrice && !isOfferBlocked;
-
-                            return (
-                              <div key={oferta.id} className={`dv-hotel-offer ${isBest ? 'is-best' : ''} ${isSelected ? 'is-selected' : ''}`}>
-                                <div className="dv-hotel-offer-provider">
-                                  <span>Operado por <strong>{oferta.codSisRes}</strong></span>
-                                  {isBest && <span className="dv-hotel-best"><Sparkles size={10} /> Melhor oferta</span>}
-                                  {oferta.violouPolitica && (
-                                    <span className={`dv-hotel-policy dv-hotel-policy--${oferta.tratamento === 'Bloqueio' ? 'danger' : 'warning'}`}>
-                                      {oferta.tratamento === 'Bloqueio' ? <ShieldAlert size={12} /> : <Info size={12} />}
-                                      {oferta.motivoViolacao}
-                                    </span>
-                                  )}
-                                </div>
-                                <div className="dv-hotel-offer-price">{formatCurrency(oferta.preco)}<span>Preco final</span></div>
-                                <button
-                                  type="button"
-                                  disabled={isOfferBlocked}
-                                  className={`dv-hotel-reserve ${isSelected ? 'is-selected' : ''}`}
-                                  onClick={() => {
-                                    setSelectedOffer({ hotelId: hotel.idReferencia, offerId: oferta.id });
-                                    onSelectHotel(hotel, oferta);
-                                  }}
-                                >
-                                  {isOfferBlocked ? 'Nao permitido' : isSelected ? <><CheckCircle size={14} /> Escolhido</> : 'Reservar'}
-                                </button>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
                   </article>
                 );
               })}
