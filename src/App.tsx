@@ -4770,7 +4770,8 @@ const INJECTED_CSS = `
   }
 
   /* Hotel availability */
-  .dv-hotel-search-grid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(150px, 0.85fr) minmax(150px, 0.85fr); gap: 10px; align-items: stretch; }
+  .dv-hotel-search-grid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(150px, 0.85fr) minmax(150px, 0.85fr) auto; gap: 10px; align-items: stretch; padding-bottom: 14px; }
+  .dv-hotel-search-grid .dv-search-submit--booking { grid-column: auto; align-self: stretch; justify-self: stretch; margin-top: 0; white-space: nowrap; }
   .dv-hotel-results { width: 100%; max-width: 1380px; margin: 0 auto; padding: 20px 16px 34px; }
   .dv-hotel-layout { display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 22px; align-items: start; }
   .dv-hotel-sidebar { position: sticky; top: 16px; }
