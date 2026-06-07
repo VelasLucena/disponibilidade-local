@@ -864,6 +864,351 @@ const INJECTED_CSS = `
     padding: 0 20px;
   }
 
+  .dv-search-company-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    width: 100%;
+    max-width: 1080px;
+    margin: 0 auto 24px;
+  }
+
+  .dv-search-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    color: #ffffff;
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+  }
+
+  .dv-search-brand__mark {
+    display: inline-flex;
+    width: 34px;
+    height: 34px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .dv-company-switcher {
+    position: relative;
+    min-width: min(100%, 340px);
+  }
+
+  .dv-company-button {
+    display: flex;
+    width: 100%;
+    min-height: 48px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.18);
+    color: #ffffff;
+    cursor: pointer;
+    padding: 8px 12px;
+    text-align: left;
+    transition: background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+  }
+
+  .dv-company-button.has-company {
+    border-color: #ffffff;
+    background: #ffffff;
+    color: #38634f;
+    box-shadow: 0 14px 28px -24px rgba(15, 23, 42, 0.42);
+  }
+
+  .dv-company-button:hover,
+  .dv-company-button:focus-visible {
+    border-color: rgba(255, 255, 255, 0.72);
+    outline: none;
+  }
+
+  .dv-company-button__main {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .dv-company-button__icon {
+    display: inline-flex;
+    width: 30px;
+    height: 30px;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    background: rgba(255, 255, 255, 0.16);
+    color: currentColor;
+  }
+
+  .dv-company-button.has-company .dv-company-button__icon {
+    background: rgba(66, 143, 112, 0.1);
+    color: var(--reserve-primary);
+  }
+
+  .dv-company-button__copy {
+    display: grid;
+    min-width: 0;
+    gap: 2px;
+  }
+
+  .dv-company-button__label {
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .dv-company-button.has-company .dv-company-button__label {
+    color: #94a3b8;
+  }
+
+  .dv-company-button__name {
+    overflow: hidden;
+    color: currentColor;
+    font-size: 13px;
+    font-weight: 900;
+    line-height: 1.15;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .dv-company-button > .q-icon {
+    flex: 0 0 auto;
+    transition: transform 0.18s ease;
+  }
+
+  .dv-company-button.is-open > .q-icon {
+    transform: rotate(180deg);
+  }
+
+  .dv-company-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 130;
+    width: min(350px, calc(100vw - 32px));
+    overflow: hidden;
+    border: 1px solid #edf2f7;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 22px 46px -28px rgba(15, 23, 42, 0.62);
+  }
+
+  .dv-company-dropdown__head {
+    padding: 13px;
+    border-bottom: 1px solid #edf2f7;
+    background: #f8fafc;
+  }
+
+  .dv-company-dropdown__label {
+    display: block;
+    margin: 0 0 8px 2px;
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .dv-company-search {
+    width: 100%;
+    min-height: 40px;
+    border: 1px solid #dbe3ef;
+    border-radius: 11px;
+    background: #ffffff;
+    color: #172033;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 750;
+    outline: none;
+    padding: 10px 12px;
+  }
+
+  .dv-company-search:focus {
+    border-color: var(--reserve-primary);
+    box-shadow: 0 0 0 3px rgba(66, 143, 112, 0.12);
+  }
+
+  .dv-company-options {
+    display: grid;
+    max-height: 250px;
+    overflow-y: auto;
+  }
+
+  .dv-company-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border-bottom: 1px solid #f1f5f9;
+    background: #ffffff;
+    color: #172033;
+    cursor: pointer;
+    padding: 13px 16px;
+    text-align: left;
+    transition: background 0.18s ease, color 0.18s ease;
+  }
+
+  .dv-company-option:last-child {
+    border-bottom: 0;
+  }
+
+  .dv-company-option:hover,
+  .dv-company-option.is-selected {
+    background: rgba(66, 143, 112, 0.08);
+    color: var(--reserve-primary);
+  }
+
+  .dv-company-option__name {
+    display: block;
+    font-size: 13px;
+    font-weight: 900;
+  }
+
+  .dv-company-option__cnpj {
+    display: block;
+    margin-top: 2px;
+    color: #94a3b8;
+    font-size: 11px;
+    font-weight: 800;
+  }
+
+  .dv-company-empty {
+    display: grid;
+    justify-items: center;
+    gap: 8px;
+    padding: 22px 18px;
+    color: #94a3b8;
+    font-size: 12px;
+    font-weight: 800;
+    text-align: center;
+  }
+
+  .dv-company-gate {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(12px);
+  }
+
+  .dv-company-gate__card {
+    width: min(100%, 560px);
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    border-radius: 22px;
+    background: #ffffff;
+    box-shadow: 0 28px 70px -38px rgba(15, 23, 42, 0.82);
+    padding: 28px;
+  }
+
+  .dv-company-gate__head {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .dv-company-gate__icon {
+    display: inline-flex;
+    width: 54px;
+    height: 54px;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border-radius: 18px;
+    background: rgba(66, 143, 112, 0.1);
+    color: var(--reserve-primary);
+  }
+
+  .dv-company-gate h3 {
+    margin: 0;
+    color: #172033;
+    font-size: 21px;
+    font-weight: 900;
+    line-height: 1.2;
+  }
+
+  .dv-company-gate p {
+    margin: 6px 0 0;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 750;
+    line-height: 1.5;
+  }
+
+  .dv-company-gate__label {
+    display: block;
+    margin-bottom: 8px;
+    color: #374151;
+    font-size: 12px;
+    font-weight: 900;
+  }
+
+  .dv-company-gate__search {
+    position: relative;
+  }
+
+  .dv-company-gate__search .q-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    z-index: 2;
+    color: #94a3b8;
+    transform: translateY(-50%);
+  }
+
+  .dv-company-gate__search .dv-company-search {
+    min-height: 50px;
+    border-color: var(--reserve-primary);
+    border-width: 2px;
+    border-radius: 14px 14px 0 0;
+    padding-left: 44px;
+  }
+
+  .dv-company-gate .dv-company-options {
+    max-height: 260px;
+    border: 2px solid var(--reserve-primary);
+    border-top: 0;
+    border-radius: 0 0 14px 14px;
+    box-shadow: 0 18px 34px -28px rgba(15, 23, 42, 0.48);
+  }
+
+  @media (max-width: 768px) {
+    .dv-search-company-row {
+      flex-direction: column;
+      align-items: stretch;
+      margin-bottom: 18px;
+    }
+
+    .dv-search-brand {
+      justify-content: center;
+    }
+
+    .dv-company-switcher {
+      min-width: 0;
+      width: 100%;
+    }
+
+    .dv-company-dropdown {
+      left: 0;
+      right: auto;
+      width: 100%;
+    }
+  }
+
   .dv-service-tabs {
     display: flex;
     justify-content: center;
@@ -5544,6 +5889,12 @@ const PASSENGER_OPTIONS = [
   { id: 'felipe-ramos', name: 'Felipe Ramos', role: 'Colaborador', document: 'CPF ***.502-55', department: 'Tecnologia' }
 ];
 
+const COMPANY_OPTIONS = [
+  { id: 'acme-corporation', name: 'Acme Corporation', cnpj: '12.345.678/0001-90' },
+  { id: 'tech-solutions-brasil', name: 'Tech Solutions Brasil', cnpj: '98.765.432/0001-10' },
+  { id: 'global-industries', name: 'Global Industries', cnpj: '45.678.901/0001-23' }
+];
+
 const FEATURED_FLIGHTS = [
   {
     id: 1,
@@ -5933,11 +6284,13 @@ const formatPassengerSummary = (passengers, anonymousPassengerCount = 0) => {
 
 const getAirportNameFromLabel = (label = '') => label.replace(/\s*\([^)]*\)/g, '').trim();
 
-const SearchScreen = ({ criteria, onCriteriaChange, onSubmit, inline = false, showFeaturedFlights = true, serviceType = 'air', onServiceChange = () => {} }) => {
+const SearchScreen = ({ criteria, onCriteriaChange, onSubmit, inline = false, showFeaturedFlights = true, serviceType = 'air', onServiceChange = () => {}, selectedCompany = null, onCompanyChange = () => {} }) => {
   const [showFilters, setShowFilters] = useState(false);
   const [flightTypeFilter, setFlightTypeFilter] = useState('all');
   const [periodFilter, setPeriodFilter] = useState('all');
   const [timeRange, setTimeRange] = useState('+2');
+  const [companyQuery, setCompanyQuery] = useState('');
+  const [isCompanyDropdownOpen, setIsCompanyDropdownOpen] = useState(false);
   const [hotelFiltersData, setHotelFiltersData] = useState({
     valorMinimo: '',
     valorMaximo: '1000',
@@ -5980,6 +6333,16 @@ const SearchScreen = ({ criteria, onCriteriaChange, onSubmit, inline = false, sh
       .toLowerCase()
       .includes(normalizedPassengerQuery);
   }).slice(0, 5);
+  const normalizedCompanyQuery = companyQuery.trim().toLowerCase();
+  const filteredCompanies = COMPANY_OPTIONS.filter(company => (
+    company.name.toLowerCase().includes(normalizedCompanyQuery) ||
+    company.cnpj.includes(companyQuery.trim())
+  ));
+  const selectCompany = (company) => {
+    onCompanyChange(company);
+    setCompanyQuery('');
+    setIsCompanyDropdownOpen(false);
+  };
   const addPassenger = (passengerId) => {
     if (selectedPassengerIds.includes(passengerId)) return;
     onCriteriaChange('passengers', [...selectedPassengerIds, passengerId]);
@@ -6110,10 +6473,120 @@ const SearchScreen = ({ criteria, onCriteriaChange, onSubmit, inline = false, sh
       categoriaMaxima: '5'
     });
   };
+  const CompanyOptionsList = ({ emptyIcon = false }) => (
+    <div className="dv-company-options">
+      {filteredCompanies.length > 0 ? (
+        filteredCompanies.map(company => (
+          <button
+            type="button"
+            className={`dv-company-option ${selectedCompany?.id === company.id ? 'is-selected' : ''}`}
+            key={company.id}
+            onMouseDown={(event) => {
+              event.preventDefault();
+              selectCompany(company);
+            }}
+            onClick={() => selectCompany(company)}
+          >
+            <span>
+              <span className="dv-company-option__name">{company.name}</span>
+              <span className="dv-company-option__cnpj">CNPJ: {company.cnpj}</span>
+            </span>
+            {selectedCompany?.id === company.id && <span className="q-icon">check</span>}
+          </button>
+        ))
+      ) : (
+        <span className="dv-company-empty">
+          {emptyIcon && <Building2 size={30} />}
+          Nenhuma empresa encontrada.
+        </span>
+      )}
+    </div>
+  );
 
   return (
   <main className={`dv-search-screen dv-search-screen--reserve ${inline ? 'dv-search-screen--inline' : ''}`}>
+    {!selectedCompany && (
+      <div className="dv-company-gate" role="dialog" aria-modal="true" aria-labelledby="company-gate-title">
+        <div className="dv-company-gate__card">
+          <div className="dv-company-gate__head">
+            <span className="dv-company-gate__icon"><Building2 size={27} /></span>
+            <div>
+              <h3 id="company-gate-title">Selecione a Empresa</h3>
+              <p>Escolha a empresa para qual deseja consultar a disponibilidade.</p>
+            </div>
+          </div>
+
+          <label className="dv-company-gate__label" htmlFor="company-gate-search">Empresa de Busca</label>
+          <div className="dv-company-gate__search">
+            <span className="q-icon">search</span>
+            <input
+              id="company-gate-search"
+              className="dv-company-search"
+              value={companyQuery}
+              onChange={(event) => setCompanyQuery(event.target.value)}
+              placeholder="Buscar por nome ou CNPJ..."
+              autoFocus
+            />
+          </div>
+          <CompanyOptionsList emptyIcon />
+        </div>
+      </div>
+    )}
+
     <section className="dv-search-hero">
+      <div className="dv-search-company-row">
+        <div className="dv-search-brand">
+          <span className="dv-search-brand__mark"><span className="q-icon">travel_explore</span></span>
+          Reserve
+        </div>
+
+        <div
+          className="dv-company-switcher"
+          onBlur={(event) => {
+            if (!event.currentTarget.contains(event.relatedTarget)) {
+              setIsCompanyDropdownOpen(false);
+            }
+          }}
+        >
+          <button
+            type="button"
+            className={`dv-company-button ${selectedCompany ? 'has-company' : ''} ${isCompanyDropdownOpen ? 'is-open' : ''}`}
+            aria-expanded={isCompanyDropdownOpen}
+            onClick={() => setIsCompanyDropdownOpen(prev => !prev)}
+          >
+            <span className="dv-company-button__main">
+              <span className="dv-company-button__icon"><Building2 size={16} /></span>
+              <span className="dv-company-button__copy">
+                {selectedCompany ? (
+                  <>
+                    <span className="dv-company-button__label">Empresa selecionada</span>
+                    <span className="dv-company-button__name">{selectedCompany.name}</span>
+                  </>
+                ) : (
+                  <span className="dv-company-button__name">Selecionar empresa</span>
+                )}
+              </span>
+            </span>
+            <span className="q-icon">expand_more</span>
+          </button>
+
+          {isCompanyDropdownOpen && (
+            <div className="dv-company-dropdown">
+              <div className="dv-company-dropdown__head">
+                <span className="dv-company-dropdown__label">Trocar empresa</span>
+                <input
+                  className="dv-company-search"
+                  value={companyQuery}
+                  onChange={(event) => setCompanyQuery(event.target.value)}
+                  placeholder="Buscar por nome ou CNPJ..."
+                />
+              </div>
+              <CompanyOptionsList />
+            </div>
+          )}
+        </div>
+      </div>
+
       <div className="dv-service-tabs" aria-label="Servicos de viagem">
         <div className="dv-service-tab-list">
           <button type="button" className={`dv-service-tab ${serviceType === 'air' ? 'is-active' : ''}`} onClick={() => onServiceChange('air')}><span className="q-icon">flight</span>Aereo</button>
@@ -7272,7 +7745,7 @@ const TariffSummaryScreen = ({ selectedFares, flightsMap, searchCriteria, onBack
   const [isPassengerPickerOpen, setIsPassengerPickerOpen] = useState(false);
   const [expandedPolicyId, setExpandedPolicyId] = useState(null);
   const [corporateFields, setCorporateFields] = useState({
-    company: 'Tech Solutions S.A.',
+    company: searchCriteria.companyName || 'Tech Solutions Brasil',
     costCenter: 'CC-4092 (Desenvolvimento)',
     project: 'PRJ-Nexus Implantação',
     activity: 'Consultoria Técnica',
@@ -7322,7 +7795,7 @@ const TariffSummaryScreen = ({ selectedFares, flightsMap, searchCriteria, onBack
   const effectiveAdvanceDays = 18;
   const missingAdvanceDays = Math.max(0, requiredAdvanceDays - effectiveAdvanceDays);
   const isAdvanceViolated = missingAdvanceDays > 0;
-  const mockCompanies = ['Tech Solutions S.A.', 'Acme Corp', 'Global Industries', 'Nexus Tech'];
+  const mockCompanies = COMPANY_OPTIONS.map(company => company.name);
   const mockCostCenters = ['CC-4092 (Desenvolvimento)', 'CC-1021 (Marketing)', 'CC-3055 (Vendas)', 'CC-9901 (RH)'];
   const mockProjects = ['PRJ-Nexus Implantação', 'PRJ-Alpha Upgrade', 'PRJ-Omega Migration', 'Operação Padrão'];
   const mockConsultants = ['Marcos Silva', 'Ana Costa', 'Julio Cesar', 'Fernanda Lima', 'Felipe Santos'];
@@ -8255,7 +8728,7 @@ const HotelTariffingScreen = ({ hotel, offer, tariff, searchCriteria, onBack }) 
       : ['Matheus Castro (Voce)'];
   }, [searchCriteria.passengers, searchCriteria.customPassengers]);
   const [billingData, setBillingData] = useState({
-    company: 'Tech Solutions S.A.',
+    company: searchCriteria.companyName || 'Tech Solutions S.A.',
     costCenter: 'CC-4092 (Desenvolvimento)',
     reason: 'Reuniao presencial com cliente',
     paymentMethod: 'Faturado (Agencia) - Todas as despesas'
@@ -8298,7 +8771,7 @@ const HotelTariffingScreen = ({ hotel, offer, tariff, searchCriteria, onBack }) 
     !selectedGuests.includes(guest)
   ));
   const billingOptions = {
-    company: ['Tech Solutions S.A.', 'Acme Corp', 'Global Industries', 'Nexus Tech'],
+    company: COMPANY_OPTIONS.map(company => company.name),
     costCenter: ['CC-4092 (Desenvolvimento)', 'CC-1021 (Marketing)', 'CC-3055 (Vendas)', 'CC-9901 (RH)'],
     reason: ['Reuniao presencial com cliente', 'Treinamento de equipe', 'Evento corporativo', 'Visita tecnica']
   };
@@ -8542,6 +9015,7 @@ export default function App() {
   const [currentScreen, setCurrentScreen] = useState('search');
   const [activeService, setActiveService] = useState('air');
   const [searchCriteria, setSearchCriteria] = useState(DEFAULT_SEARCH_CRITERIA);
+  const [selectedCompany, setSelectedCompany] = useState(COMPANY_OPTIONS[1]);
   const [isSearching, setIsSearching] = useState(false);
   const [suppliers, setSuppliers] = useState(INITIAL_SUPPLIERS);
   const [progress, setProgress] = useState(0);
@@ -8586,6 +9060,16 @@ export default function App() {
 
   const handleCriteriaChange = (field, value) => {
     setSearchCriteria(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleCompanyChange = (company) => {
+    setSelectedCompany(company);
+    setSearchCriteria(prev => ({
+      ...prev,
+      companyId: company?.id || '',
+      companyName: company?.name || '',
+      companyDocument: company?.cnpj || ''
+    }));
   };
 
   const handleServiceChange = (service) => {
@@ -9303,6 +9787,8 @@ export default function App() {
         onSubmit={startSearch}
         serviceType={activeService}
         onServiceChange={handleServiceChange}
+        selectedCompany={selectedCompany}
+        onCompanyChange={handleCompanyChange}
         showFeaturedFlights={currentScreen === 'search'}
         inline
       />
